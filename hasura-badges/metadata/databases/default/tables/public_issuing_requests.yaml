@@ -10,10 +10,10 @@ select_permissions:
     permission:
       columns:
         - disapproval_motivation
+        - id
         - is_approved
         - request_id
       filter: {}
-      limit: 0
       allow_aggregations: true
       query_root_fields:
         - select
