@@ -9,3 +9,25 @@ array_relationships:
         table:
           name: issuing_requests
           schema: public
+select_permissions:
+  - role: manager
+    permission:
+      columns:
+        - badge_id
+        - badge_version
+        - candidature_evidences
+        - engineer_id
+        - is_issued
+        - manager_id
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+      subscription_root_fields: []
+update_permissions:
+  - role: manager
+    permission:
+      columns:
+        - is_issued
+      filter: {}
+      check: {}
