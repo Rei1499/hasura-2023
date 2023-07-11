@@ -26,3 +26,27 @@ array_relationships:
         table:
           name: engineer_badge_candidature_proposal_response
           schema: public
+insert_permissions:
+  - role: manager
+    permission:
+      check: {}
+      columns:
+        - badge_id
+        - badge_version
+        - engineer
+        - proposal_description
+select_permissions:
+  - role: manager
+    permission:
+      columns:
+        - badge_id
+        - badge_version
+        - engineer
+        - id
+        - proposal_description
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+        - select_by_pk
+      subscription_root_fields: []
