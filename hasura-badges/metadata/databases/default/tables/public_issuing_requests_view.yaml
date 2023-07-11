@@ -12,6 +12,7 @@ select_permissions:
         - candidature_evidences
         - engineer_id
         - engineer_name
+        - id
         - is_issued
         - manager_id
       filter: {}
