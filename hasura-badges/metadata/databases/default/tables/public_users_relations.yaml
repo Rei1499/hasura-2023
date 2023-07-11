@@ -17,39 +17,18 @@ object_relationships:
   - name: userByManager
     using:
       foreign_key_constraint_on: manager
-insert_permissions:
-  - role: backoffice
-    permission:
-      check: {}
-      set:
-        created_at: now()
-        created_by: x-hasura-tenant-id
-      columns:
-        - engineer
-        - manager
 select_permissions:
-  - role: backoffice
-    permission:
-      columns:
-        - created_by
-        - engineer
-        - manager
-        - created_at
-      filter: {}
-      limit: 10
-      query_root_fields:
-        - select
-      subscription_root_fields:
-        - select
   - role: manager
     permission:
       columns:
+        - created_at
+        - created_by
         - engineer
         - manager
       filter: {}
+      allow_aggregations: true
       query_root_fields:
         - select
-        - select_by_pk
       subscription_root_fields: []
 delete_permissions:
   - role: backoffice
