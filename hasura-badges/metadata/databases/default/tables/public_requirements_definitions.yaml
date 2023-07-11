@@ -51,6 +51,18 @@ select_permissions:
       query_root_fields:
         - select
       subscription_root_fields: []
+  - role: manager
+    permission:
+      columns:
+        - badge_id
+        - description
+        - modified_at
+        - title
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+      subscription_root_fields: []
 update_permissions:
   - role: backoffice
     permission:

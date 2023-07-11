@@ -8,3 +8,27 @@ object_relationships:
   - name: user
     using:
       foreign_key_constraint_on: created_by
+select_permissions:
+  - role: manager
+    permission:
+      columns:
+        - disapproval_motivation
+        - is_approved
+        - proposal_id
+        - response_id
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+        - select_by_pk
+      subscription_root_fields: []
+update_permissions:
+  - role: manager
+    permission:
+      columns:
+        - disapproval_motivation
+        - is_approved
+        - proposal_id
+        - response_id
+      filter: {}
+      check: {}
