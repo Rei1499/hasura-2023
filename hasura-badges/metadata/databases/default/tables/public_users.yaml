@@ -144,10 +144,7 @@ select_permissions:
         - id
         - created_at
         - modified_at
-      filter:
-        id:
-          _eq: x-hasura-tenant-id
-      limit: 1
+      filter: {}
       query_root_fields:
         - select
       subscription_root_fields: []

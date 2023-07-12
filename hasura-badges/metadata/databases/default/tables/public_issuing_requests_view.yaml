@@ -12,10 +12,11 @@ select_permissions:
         - candidature_evidences
         - engineer_id
         - engineer_name
+        - id
         - is_issued
         - manager_id
       filter: {}
-      limit: 10
+      allow_aggregations: true
       query_root_fields:
         - select
       subscription_root_fields: []

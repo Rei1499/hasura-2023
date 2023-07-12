@@ -24,7 +24,8 @@ select_permissions:
         - requirements
         - title
       filter: {}
-      limit: 10
+      limit: 0
+      allow_aggregations: true
       query_root_fields:
         - select
       subscription_root_fields: []
