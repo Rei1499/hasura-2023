@@ -22,7 +22,6 @@ import React from "react";
 import { RouteProps } from "react-router-dom";
 
 import {
-  SupervisorAccount as ManagersIcon,
   Engineering as EngineersIcon,
   Security as ShieldIcon
 } from "@mui/icons-material";
@@ -34,9 +33,9 @@ import { DrawerMenu } from "./layouts/BasicLayout";
 
 const menuItems = [
   {
-    link: "managers",
-    text: "managers",
-    icon: <ManagersIcon />
+    link: "badges",
+    text: "Badges List",
+    icon: <ShieldIcon />
   },
   {
     link: "engineers",
@@ -44,8 +43,13 @@ const menuItems = [
     icon: <EngineersIcon />
   },
   {
-    link: "badges",
-    text: "Badges Definitions",
+    link: "candidatures",
+    text: "Candidatures List",
+    icon: <ShieldIcon />
+  },
+  {
+    link: "issues",
+    text: "Issues List",
     icon: <ShieldIcon />
   }
 ];
@@ -60,8 +64,20 @@ const AppManager: React.FC = () => (
     routes={
       [
         {
-          path: "managers",
-          element: <ManagerEngineer />
+          path: "badges",
+          element: <Badges />
+        },
+        {
+          path: "engineers",
+          element: <Engineers />
+        },
+        {
+          path: "candidatures",
+          element: <Candidatures />
+        },
+        {
+          path: "issues",
+          element: <Issues />
         }
       ] as RouteProps[]
     }
