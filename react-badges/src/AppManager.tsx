@@ -28,6 +28,7 @@ import {
 
 import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
 import ManagerEngineer from "./views/backoffice/ManagerEngineer";
+import IssueComponenet from "./views/manager/IssueComponent";
 
 import { DrawerMenu } from "./layouts/BasicLayout";
 
@@ -77,7 +78,7 @@ const AppManager: React.FC = () => (
         },
         {
           path: "issues",
-          element: <Issues />
+          element: <IssueComponenet />
         }
       ] as RouteProps[]
     }
