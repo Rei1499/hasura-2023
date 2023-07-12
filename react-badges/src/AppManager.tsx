@@ -27,8 +27,9 @@ import {
 } from "@mui/icons-material";
 
 import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
-import ManagerEngineer from "./views/backoffice/ManagerEngineer";
+
 import IssueComponenet from "./views/manager/IssueComponent";
+import Candidatures from "./views/manager/Candidatures";
 
 import { DrawerMenu } from "./layouts/BasicLayout";
 
@@ -72,10 +73,10 @@ const AppManager: React.FC = () => (
         //   path: "engineers",
         //   element: <Engineers />
         // },
-        // {
-        //   path: "candidatures",
-        //   element: <Candidatures />
-        // },
+        {
+          path: "candidatures",
+          element: <Candidatures />
+        },
         {
           path: "issues",
           element: <IssueComponenet />
