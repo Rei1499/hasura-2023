@@ -24,8 +24,7 @@ import { RouteProps } from "react-router-dom";
 import {
   SupervisorAccount as ManagersIcon,
   Engineering as EngineersIcon,
-  Security as ShieldIcon,
-  
+  Security as ShieldIcon
 } from "@mui/icons-material";
 
 import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
@@ -51,12 +50,12 @@ const menuItems = [
   }
 ];
 
-const AppBackoffice: React.FC = () => (
+const AppManager: React.FC = () => (
   <AppEntrypoint
-    icon={<BackofficeIcon />}
-    title={"Backoffice"}
-    defaultRoute="managers"
-    drawerContents={[<DrawerMenu title="Backoffice:" items={menuItems} />]}
+    icon={<ManagerIcon />}
+    title={"Manager"}
+    defaultRoute=""
+    drawerContents={[<DrawerMenu title="Manager:" items={menuItems} />]}
     mobileUtils={menuItems}
     routes={
       [
@@ -69,5 +68,4 @@ const AppBackoffice: React.FC = () => (
   />
 );
 
-export default AppBackoffice;
-
+export default AppManager;
