@@ -46,6 +46,7 @@ select_permissions:
       columns:
         - description
         - id
+        - photo_Url
         - requirements
         - title
       filter: {}
@@ -53,3 +54,16 @@ select_permissions:
       query_root_fields:
         - select
       subscription_root_fields: []
+update_permissions:
+  - role: manager
+    permission:
+      columns:
+        - id
+        - created_at
+        - created_by
+        - title
+        - description
+        - requirements
+        - photo_Url
+      filter: {}
+      check: {}
