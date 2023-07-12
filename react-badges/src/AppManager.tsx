@@ -64,18 +64,18 @@ const AppManager: React.FC = () => (
     mobileUtils={menuItems}
     routes={
       [
-        {
-          path: "badges",
-          element: <Badges />
-        },
-        {
-          path: "engineers",
-          element: <Engineers />
-        },
-        {
-          path: "candidatures",
-          element: <Candidatures />
-        },
+        // {
+        //   path: "badges",
+        //   element: <Badges />
+        // },
+        // {
+        //   path: "engineers",
+        //   element: <Engineers />
+        // },
+        // {
+        //   path: "candidatures",
+        //   element: <Candidatures />
+        // },
         {
           path: "issues",
           element: <IssueComponenet />

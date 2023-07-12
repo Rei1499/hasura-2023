@@ -9,13 +9,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: modified_by
 array_relationships:
-  - name: badge_candidature_requests
-    using:
-      foreign_key_constraint_on:
-        column: badge_id
-        table:
-          name: badge_candidature_request
-          schema: public
   - name: badges_definitions_requirements_definitions
     using:
       foreign_key_constraint_on:
