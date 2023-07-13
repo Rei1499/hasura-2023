@@ -30,6 +30,8 @@ import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
 
 import IssueComponenet from "./views/manager/IssueComponent";
 import Candidatures from "./views/manager/Candidatures";
+import Engineers from "./views/manager/Engineers";
+import Badges from "./views/manager/Badges";
 
 import { DrawerMenu } from "./layouts/BasicLayout";
 
@@ -65,14 +67,14 @@ const AppManager: React.FC = () => (
     mobileUtils={menuItems}
     routes={
       [
-        // {
-        //   path: "badges",
-        //   element: <Badges />
-        // },
-        // {
-        //   path: "engineers",
-        //   element: <Engineers />
-        // },
+        {
+          path: "badges",
+          element: <Badges />
+        },
+        {
+          path: "engineers",
+          element: <Engineers />
+        },
         {
           path: "candidatures",
           element: <Candidatures />
