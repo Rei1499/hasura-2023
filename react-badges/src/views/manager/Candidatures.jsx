@@ -2,32 +2,28 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { candidatureColumns } from "../../components/reUsable/DataTable";
 import Table from "../../components/reUsable/Table";
-import { 
-  GET_CANDIDATURE_VIEW ,
+import { useQuery, useMutation } from "@apollo/client";
+import {
+  GET_CANDIDATURE_VIEW,
   CANDIDATURE_APPROVED,
-  CREATE_PROPOSAL_MANAGER,
-} from "../../queries/CandidatureMutations"
+  CREATE_PROPOSAL_MANAGER
+} from "../../queries/CandidatureMutations";
 
-
-const IssuingRequests = ({ managerId }) => {
-  const { loading, error, data } = useQuery(GET_ISSUING_REQUESTS_FOR_MANAGER, {
+const Candidatures = ({ managerId }) => {
+  const { loading, error, data } = useQuery(GET_CANDIDATURE_VIEW, {
     variables: { managerId }
   });
 
-  const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL);
-  const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
-
+  const [approveCandidatureProposal] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL);
+  const [rejectCandidatureProposal] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
 
   if (loading) {
-    return <Box>Loading issuing requests...</Box>;
+    return <Box>Loading candidatures...</Box>;
   }
 
   if (error) {
-    return <Box>Error loading issuing requests: {error.message}</Box>;
+    return <Box>Error loading candidatures: {error.message}</Box>;
   }
-
-
-const Candidatures = () => {
   return (
     <>
       <Box>

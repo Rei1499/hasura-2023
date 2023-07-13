@@ -22,6 +22,28 @@ export const GET_ISSUING_REQUESTS_FOR_MANAGER = gql`
   }
 `;
 
+export const GET_PROPOSALS_WITH_STATUS = gql`
+query getProposalsWithStatus {
+  manager_to_engineer_badge_candidature_proposals(where: {user: {id: {_eq: 2}}}) {
+    id
+    proposal_description
+    badge_id
+    badge_version
+    engineer
+    engineer_badge_candidature_proposal_responses {
+      is_approved
+    }
+  }
+  engineer_to_manager_badge_candidature_proposals(where: {manager: {_eq: 1}}) {
+    id
+    badge_id
+    badge_version
+    created_at
+    created_by
+    manager
+  }
+}`
+
 export const UPDATE_ISSUING_REQUEST_REJECTION = gql`
   mutation IssueRefused($id: Int!) {
     update_issuing_requests(

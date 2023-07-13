@@ -38,13 +38,24 @@ export const CANDIDATURE_APPROVED = gql`
 `;
 
 export const CREATE_PROPOSAL_MANAGER = gql`
-mutation createProposalManager {
-    insert_manager_to_engineer_badge_candidature_proposals_one(on_conflict: {constraint: manager_to_engineer_badge_candidature_proposals_pkey, where: {}}, object: {badge_id: 1, badge_version: "2023-07-11T14:40:02.292438", proposal_description: "TestTest123", engineer: 1}) {
+  mutation createProposalManager {
+    insert_manager_to_engineer_badge_candidature_proposals_one(
+      on_conflict: {
+        constraint: manager_to_engineer_badge_candidature_proposals_pkey
+        where: {}
+      }
+      object: {
+        badge_id: 1
+        badge_version: "2023-07-11T14:40:02.292438"
+        proposal_description: "TestTest123"
+        engineer: 1
+      }
+    ) {
       id
       badge_id
       badge_version
       engineer
       proposal_description
     }
-
-  `;
+  }
+`;
