@@ -77,7 +77,7 @@ const AppManager: React.FC = () => (
         },
         {
           path: "candidatures",
-          element: <Candidatures />
+          element: <Candidatures managerId={2} />
         },
         {
           path: "issues",
