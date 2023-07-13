@@ -62,7 +62,7 @@ const AppManager: React.FC = () => (
   <AppEntrypoint
     icon={<ManagerIcon />}
     title={"Manager"}
-    defaultRoute=""
+    defaultRoute="badges"
     drawerContents={[<DrawerMenu title="Manager:" items={menuItems} />]}
     mobileUtils={menuItems}
     routes={
