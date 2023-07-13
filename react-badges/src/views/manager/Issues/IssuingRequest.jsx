@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import {
   GET_ISSUING_REQUESTS_FOR_MANAGER,
   UPDATE_ISSUING_REQUEST_APPROVAL,
@@ -34,32 +34,33 @@ const IssuingRequests = ({ managerId }) => {
   };
 
   if (loading) {
-    return <div>Loading issuing requests...</div>;
+    return <Typography>Loading issuing requests...</Typography>;
   }
 
   if (error) {
-    return <div>Error loading issuing requests: {error.message}</div>;
+    return (
+      <Typography variant="body1" color="error">
+        Error loading issuing requests: {error.message}
+      </Typography>
+    );
   }
 
   return (
     <div>
-      <h2>Issuing Requests</h2>
+      <Typography variant="h2">Issuing Requests</Typography>
       {data.issuing_requests.map((request) => (
         <div key={request.id}>
-          <p>
+          <Typography variant="body1">
             Badge Title:{" "}
             {request.badge_candidature_request?.badges_definition?.title}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant="body1">
             Badge Description:{" "}
             {request.badge_candidature_request?.badges_definition?.description}
-          </p>
-          <p>Engineer ID: {request.badge_candidature_request?.engineer_id}</p>
-          <p>
-            Badge Description:{" "}
-            {request.badge_candidature_request?.badges_definition?.description}
-          </p>
-
+          </Typography>
+          <Typography variant="body1">
+            Engineer ID: {request.badge_candidature_request?.engineer_id}
+          </Typography>
           <Button onClick={() => handleApproveIssuingRequest(request.id)}>
             Approve
           </Button>
