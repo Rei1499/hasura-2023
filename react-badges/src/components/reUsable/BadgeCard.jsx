@@ -48,12 +48,7 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
           title={title}
           subheader={created}
         />
-        <CardMedia
-          component="img"
-          height="194"
-          image={photo}
-          alt="Paella dish"
-        />
+        <CardMedia component="img" height="194" image={photo} />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
             {description}
@@ -71,7 +66,14 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>{requirement}</Typography>
+            {requirement &&
+              requirement.map((item, index) => (
+                <>
+                  <Typography paragraph>{item.id}</Typography>
+                  <Typography paragraph>{item.title}</Typography>
+                  <Typography paragraph>{item.description}</Typography>
+                </>
+              ))}
           </CardContent>
         </Collapse>
       </Card>
