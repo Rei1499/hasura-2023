@@ -42,6 +42,44 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
   }
 `;
 
+export const APPROVE_CANDIDATURE_PROPOSAL = gql`
+  mutation approveCandidatureProposal {
+    update_manager_badge_candidature_proposal_response(
+      where: {
+        user: { users_relations: { manager: { _eq: 2 } }, id: { _eq: 1 } }
+        response_id: { _eq: 1 }
+      }
+      _set: { is_approved: true }
+    ) {
+      returning {
+        disapproval_motivation
+        is_approved
+        proposal_id
+        response_id
+      }
+    }
+  }
+`;
+
+export const DISAPPROVE_CANDIDATURE_PROPOSAL = gql`
+  mutation disapproveCandidatureProposal {
+    update_manager_badge_candidature_proposal_response(
+      where: {
+        user: { users_relations: { manager: { _eq: 2 } }, id: { _eq: 1 } }
+        response_id: { _eq: 1 }
+      }
+      _set: { is_approved: false, disapproval_motivation: "R.I.P" }
+    ) {
+      returning {
+        disapproval_motivation
+        is_approved
+        proposal_id
+        response_id
+      }
+    }
+  }
+`;
+
 export const CREATE_PROPOSAL_MANAGER = gql`
   mutation createProposalManager {
     insert_manager_to_engineer_badge_candidature_proposals_one(
