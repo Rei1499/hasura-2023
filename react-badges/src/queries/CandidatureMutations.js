@@ -15,24 +15,29 @@ export const GET_CANDIDATURE_VIEW = gql`
   }
 `;
 
-export const CANDIDATURE_APPROVED = gql`
-  mutation candidatureAppoved {
-    update_badge_candidature_request(
-      where: {
-        engineer_id: { _eq: 2 }
-        badge_id: { _eq: 1 }
-        badge_version: { _eq: "2023-07-11T13:41:48.914754" }
-      }
-      _set: { is_issued: true }
+export const GET_PROPOSALS_WITH_STATUS = gql`
+  query getProposalsWithStatus {
+    manager_to_engineer_badge_candidature_proposals(
+      where: { user: { id: { _eq: 2 } } }
     ) {
-      returning {
-        badge_id
-        badge_version
-        candidature_evidences
-        engineer_id
-        is_issued
-        manager_id
+      id
+      proposal_description
+      badge_id
+      badge_version
+      engineer
+      engineer_badge_candidature_proposal_responses {
+        is_approved
       }
+    }
+    engineer_to_manager_badge_candidature_proposals(
+      where: { manager: { _eq: 1 } }
+    ) {
+      id
+      badge_id
+      badge_version
+      created_at
+      created_by
+      manager
     }
   }
 `;
