@@ -1,6 +1,7 @@
 import React from "react";
 import BadgeCard from "../../components/reUsable/BadgeCard";
-import EngineerTable from "../../components/reUsable/EngineerTable";
+import Table from "../../components/reUsable/Table";
+
 const Badges = () => {
   const row1 = [
     {

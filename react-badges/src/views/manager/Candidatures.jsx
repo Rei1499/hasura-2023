@@ -1,5 +1,9 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import { candidatureColumns } from "../../components/reUsable/DataTable";
+import Table from "../../components/reUsable/Table";
+
+
 
 const Candidatures = () => {
   return (
@@ -12,8 +16,7 @@ const Candidatures = () => {
           Inside the following page you will find the full list of candidatures
           that include you as the manager
         </Typography>
-
-
+        <Table columns={candidatureColumns} />
       </Box>
     </>
   );
