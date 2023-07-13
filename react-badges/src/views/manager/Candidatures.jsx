@@ -8,8 +8,11 @@ import {
   APPROVE_CANDIDATURE_PROPOSAL,
   DISAPPROVE_CANDIDATURE_PROPOSAL
 } from "../../queries/CandidatureMutations";
+import { useAuth } from "../../state/with-auth";
 
-const Candidatures = ({ managerId }) => {
+const Candidatures = () => {
+  const { managerId } = useAuth();
+
   const { loading, error, data } = useQuery(GET_CANDIDATURE_VIEW, {
     variables: { managerId }
   });
@@ -38,7 +41,7 @@ const Candidatures = ({ managerId }) => {
           Inside the following page you will find the full list of candidatures
           that include you as the manager
         </Typography>
-        <Table columns={candidatureColumns} />
+        <Table rows={data} columns={candidatureColumns} />
       </Box>
     </>
   );
