@@ -1,4 +1,4 @@
-# Hasura Project Setup - March 2023
+github# Hasura Project Setup - March 2023
 
 [![Open in GitPod](https://img.shields.io/badge/Open%20in-GitPod.io-orange)](https://gitpod.io/from-referrer/)
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
