@@ -10,7 +10,7 @@ import {
 export {
   AdminPanelSettings as BackofficeIcon,
   SupervisorAccount as ManagerIcon,
-  LocalPolice as EngineerIcon
+  LocalPolice as EngineerIcon,
 } from "@mui/icons-material";
 
 import { removeLoadable } from "../../state/with-loadable";

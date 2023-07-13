@@ -41,15 +41,3 @@ select_permissions:
       query_root_fields:
         - select
       subscription_root_fields: []
-  - role: manager
-    permission:
-      columns:
-        - description
-        - id
-        - requirements
-        - title
-      filter: {}
-      limit: 10
-      query_root_fields:
-        - select
-      subscription_root_fields: []
