@@ -1,26 +1,14 @@
 import React from "react";
 import IssuingRequests from "./Issues/IssuingRequest";
-import { gql, useQuery } from "@apollo/client";
+import { useAuth } from "../../state/with-auth";
 
 const IssueComponent = () => {
-  const GET_MANAGERS = gql`
-    query getManagersAndEngineers {
-      manager {
-        id
-        name
-      }
-      engineers {
-        id
-        name
-      }
-    }
-  `;
+  const auth = useAuth();
 
-  const r1 = useQuery(GET_MANAGERS);
-  const managerId = r1.data.manager.id;
+  const role = auth.role.id;
   return (
     <>
-      <IssuingRequests managerId={managerId} />
+      <IssuingRequests managerId={role} />
     </>
   );
 };

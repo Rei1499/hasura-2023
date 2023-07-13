@@ -48,18 +48,16 @@ const IssuingRequests = ({ managerId }) => {
   return (
     <div>
       <Typography variant="h2">Issuing Requests</Typography>
-      {data.issuing_requests.map((request) => (
+      {data.issuing_requests_view.map((request) => (
         <div key={request.id}>
           <Typography variant="body1">
-            Badge Title:{" "}
-            {request.badge_candidature_request?.badges_definition?.title}
+            Badge Title: {request.badge_title}
           </Typography>
           <Typography variant="body1">
-            Badge Description:{" "}
-            {request.badge_candidature_request?.badges_definition?.description}
+            Badge Description: {request.badge_description}
           </Typography>
           <Typography variant="body1">
-            Engineer ID: {request.badge_candidature_request?.engineer_id}
+            Engineer Name: {request.engineer_name}
           </Typography>
           <Button onClick={() => handleApproveIssuingRequest(request.id)}>
             Approve
