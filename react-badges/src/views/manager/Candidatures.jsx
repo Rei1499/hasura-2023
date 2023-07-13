@@ -31,6 +31,14 @@ const Candidatures = () => {
   if (error) {
     return <Box>Error loading candidatures: {error.message}</Box>;
   }
+
+  const rows =
+    data &&
+    data.badge_candidature_view &&
+    data.badge_candidature_view.length > 0
+      ? data.badge_candidature_view
+      : [];
+
   return (
     <>
       <Box>
@@ -41,7 +49,7 @@ const Candidatures = () => {
           Inside the following page you will find the full list of candidatures
           that include you as the manager
         </Typography>
-        <Table rows={data} columns={candidatureColumns} />
+        <Table rows={rows} columns={candidatureColumns} />
       </Box>
     </>
   );
