@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { candidatureColumns } from "../../components/reUsable/DataTable";
 import Table from "../../components/reUsable/Table";
 import { useQuery, useMutation } from "@apollo/client";
@@ -49,6 +49,9 @@ const Candidatures = () => {
         ) : (
           <Box>No candidatures found.</Box>
         )}
+        <Box>
+          <Button>Proposals</Button>
+        </Box>
       </Box>
     </>
   );
