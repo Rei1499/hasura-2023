@@ -5,7 +5,7 @@ const Table = ({ row, columns }) => {
   return (
     <div>
       <DataGrid rows={row} columns={columns} />
-    </div>
+    </div> 
   );
 };
 
