@@ -18,7 +18,7 @@ const BadgeQuery = gql`
 `;
 const Badges = () => {
   const auth = useAuth();
-  console.log(auth);
+  console.log(auth, "auth");
   const { loading, error, data } = useQuery(BadgeQuery, {
     context: {
       headers: {
