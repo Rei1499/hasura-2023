@@ -9,9 +9,11 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useNavigate } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,6 +32,7 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -75,6 +78,13 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
                 </>
               ))}
           </CardContent>
+          <Button
+            onClick={() => {
+              navigate("/proposalform");
+            }}
+          >
+            Assign Badge to Engineer
+          </Button>
         </Collapse>
       </Card>
     </div>
