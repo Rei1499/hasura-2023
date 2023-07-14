@@ -1,4 +1,6 @@
 import React from "react";
+import Proposals from "./Proposals";
+import { useNavigate } from "react-router-dom";
 import { Box, Typography, Button } from "@mui/material";
 import { candidatureColumns } from "../../components/reUsable/DataTable";
 import Table from "../../components/reUsable/Table";
@@ -11,6 +13,7 @@ import {
 import { useAuth } from "../../state/with-auth";
 
 const Candidatures = () => {
+  const navigate = useNavigate();
   const { managerId } = useAuth();
 
   const { loading, error, data } = useQuery(GET_CANDIDATURE_VIEW, {
@@ -50,7 +53,7 @@ const Candidatures = () => {
           <Box>No candidatures found.</Box>
         )}
         <Box>
-          <Button>Proposals</Button>
+          <Button onClick={()=>{navigate(<Proposals />)}}>Proposals</Button>
         </Box>
       </Box>
     </>
