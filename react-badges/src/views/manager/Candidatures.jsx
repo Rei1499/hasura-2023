@@ -53,7 +53,13 @@ const Candidatures = () => {
           <Box>No candidatures found.</Box>
         )}
         <Box>
-          <Button onClick={()=>{navigate(<Proposals />)}}>Proposals</Button>
+          <Button
+            onClick={() => {
+              navigate("/proposals");
+            }}
+          >
+            Proposals
+          </Button>
         </Box>
       </Box>
     </>
