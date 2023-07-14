@@ -19,7 +19,21 @@ const ProposalForm = () => {
     GET_ENGINEERS_BY_MANAGER
   );
 
-  useEffect();
+  const fetchData = async () => {
+    try {
+      const { data } = await getEngineersByManager();
+      // Access the fetched data from the 'data' variable
+      console.log(data);
+      // Handle the data as needed
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchData();
+  },[]);
 
   const [
     createProposalManager,

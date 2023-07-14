@@ -53,3 +53,5 @@ export const candidatureColumns = [
     width: 100
   }
 ];
+
+export const proposalColumns = []

@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import Table from "../../components/reUsable/Table";
+import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
 
 const Proposals = () => {
   return (
