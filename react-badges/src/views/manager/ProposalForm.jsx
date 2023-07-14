@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { Box, TextField, Button, Typography } from "@mui/material";
@@ -15,9 +15,11 @@ const ProposalForm = () => {
     formState: { errors }
   } = useForm();
 
-  const { loading, error, data } = useMutation(GET_ENGINEERS_BY_MANAGER, {
-    variables: { manager_id: 4 }
-  });
+  const [getEngineersByManager, { loading, error, data }] = useMutation(
+    GET_ENGINEERS_BY_MANAGER
+  );
+
+  useEffect();
 
   const [
     createProposalManager,
