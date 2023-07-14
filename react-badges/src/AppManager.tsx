@@ -35,6 +35,7 @@ import Badges from "./views/manager/Badges";
 import Proposals from "./views/manager/Proposals";
 
 import { DrawerMenu } from "./layouts/BasicLayout";
+import ProposalForm from "./views/manager/ProposalForm";
 
 const menuItems = [
   {
@@ -87,8 +88,12 @@ const AppManager: React.FC = () => (
         {
           path: "proposals",
           element: <Proposals />
+        },
+        {
+          path: "proposalform",
+          element: <ProposalForm />
         }
-        ] as RouteProps[]
+      ] as RouteProps[]
     }
   />
 );
