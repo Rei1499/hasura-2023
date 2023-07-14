@@ -7,8 +7,6 @@ import Table from "../../components/reUsable/Table";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_CANDIDATURE_VIEW,
-  APPROVE_CANDIDATURE_PROPOSAL,
-  DISAPPROVE_CANDIDATURE_PROPOSAL
 } from "../../queries/CandidatureMutations";
 import { useAuth } from "../../state/with-auth";
 
@@ -19,13 +17,6 @@ const Candidatures = () => {
   const { loading, error, data } = useQuery(GET_CANDIDATURE_VIEW, {
     variables: { managerId }
   });
-
-  // const [approveCandidatureProposal] = useMutation(
-  //   UPDATE_ISSUING_REQUEST_APPROVAL
-  // );
-  // const [rejectCandidatureProposal] = useMutation(
-  //   UPDATE_ISSUING_REQUEST_REJECTION
-  // );
 
   if (loading) {
     return <Box>Loading candidatures...</Box>;

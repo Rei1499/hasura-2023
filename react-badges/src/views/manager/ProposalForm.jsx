@@ -1,20 +1,33 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/ProposalMutations";
+import { useNavigate } from "react-router-dom";
+import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
+import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
 
 const ProposalForm = () => {
-  const { handleSubmit, register, formState: { errors } } = useForm();
+  const navigate = useNavigate();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm();
 
-  const [createProposalManager, { loading, error }] = useMutation(
-    CREATE_PROPOSAL_MANAGER
-  );
+  const { loading, error, data } = useMutation(GET_ENGINEERS_BY_MANAGER, {
+    variables: { manager_id: 4 }
+  });
+
+  const [
+    createProposalManager,
+    { loading: submitLoading, error: submitError }
+  ] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const onSubmit = async (data) => {
     try {
       await createProposalManager({ variables: data });
-      // Handle success (e.g., show a success message, redirect, etc.)
+      navigate("/proposals");
     } catch (error) {
       // Handle error (e.g., show an error message)
     }
@@ -22,6 +35,23 @@ const ProposalForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Box>
+        <Typography>Create a new proposal</Typography>
+        <Select label="Engineer" {...register("engineer", { required: true })}>
+          {loading ? (
+            <MenuItem value="">Loading...</MenuItem>
+          ) : error ? (
+            <MenuItem value="">Error loading engineers</MenuItem>
+          ) : (
+            data?.get_engineers_by_manager?.map((engineer) => (
+              <MenuItem key={engineer.id} value={engineer.id}>
+                {engineer.name}
+              </MenuItem>
+            ))
+          )}
+        </Select>
+        {errors.engineer && <span>Engineer is required</span>}
+      </Box>
       <Box>
         <TextField
           label="Badge ID"
@@ -45,7 +75,9 @@ const ProposalForm = () => {
           minRows={4}
           {...register("proposal_description", { required: true })}
         />
-        {errors.proposal_description && <span>Proposal Description is required</span>}
+        {errors.proposal_description && (
+          <span>Proposal Description is required</span>
+        )}
       </Box>
       <Button type="submit" disabled={loading}>
         Submit
