@@ -11,6 +11,7 @@ export const GET_CANDIDATURE_VIEW = gql`
       created_at
       engineer_name
       is_issued
+      id
     }
   }
 `;
