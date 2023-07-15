@@ -6,36 +6,41 @@ import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
 
 const Proposals = () => {
-  
-  const [proposalsFromManager, setProposalsFromManager ] = useState([])
+  const [proposalsFromManager, setProposalsFromManager] = useState([]);
   const [proposalsToManager, setProposalsToManager] = useState([]);
   const [managerId, setManagerId] = useState();
   const navigate = useNavigate();
 
-  const auth = useAuth()
-  useEffect(()=>{
+  const auth = useAuth();
+  useEffect(() => {
     setManagerId(auth.hasura["x-hasura-tenant-id"]);
   }, []);
 
-  const [getProposalsWithStatus, {loading, error, data}] = useMutation(GET_PROPOSALS_WITH_STATUS)
+  const [getProposalsWithStatus, { loading, error, data }] = useMutation(
+    GET_PROPOSALS_WITH_STATUS
+  );
 
   const fetchProposalsFromDB = async () => {
-    try{
-      if (managerId !== null && managerId !== undefined ){
-      const result = await getProposalsWithStatus({
-        variables: { managerId }
-      });
-      setProposalsFromManager(result.data.)
-    }
-
+    try {
+      if (managerId !== null && managerId !== undefined) {
+        const result = await getProposalsWithStatus({
+          variables: { managerId }
+        });
+        setProposalsFromManager(
+          result.data.manager_to_engineer_badge_candidature_proposals
+        );
+        setProposalsToManager(
+          result.data.engineer_to_manager_badge_candidature_proposals
+        );
+      }
     } catch (error) {
       console.error("Error fetching proposals: ", error);
     }
-  }
+  };
 
-  useEffect(()=>{
-
-  })
+  useEffect(() => {
+    fetchProposalsFromDB;
+  }, [managerId, getProposalsWithStatus]);
 
   return (
     <>
