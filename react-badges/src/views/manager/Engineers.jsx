@@ -23,7 +23,7 @@ const Engineers = () => {
           color="primary"
           onClick={() => handleButtonClick(params.row.id)}
         >
-          Button
+          Propose
         </Button>
       )
     }

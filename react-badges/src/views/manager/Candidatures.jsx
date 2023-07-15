@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, Button } from "@mui/material";
 import { candidatureColumns } from "../../components/reUsable/DataTable";
 import Table from "../../components/reUsable/Table";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_CANDIDATURE_VIEW } from "../../queries/CandidatureMutations";
 import { useAuth } from "../../state/with-auth";
 
