@@ -81,4 +81,30 @@ export const proposalColumnsFromManager = [
     width: 200
   }
 ];
-export const proposalColumnsToManager = [];
+export const proposalColumnsToManager = [
+  {
+    field: "proposal_description",
+    headerName: "Proposal Description",
+    width: 400
+  },
+  {
+    field: "badge_id",
+    headerName: "Badge ID",
+    width: 100
+  },
+  {
+    field: "badge_version",
+    headerName: "Badge Version",
+    width: 200
+  },
+  {
+    field: "manager",
+    headerName: "Manager",
+    width: 200
+  },
+  {
+    field: "manager_badge_candidature_proposal_responses.is_approved",
+    headerName: "Approval Status",
+    width: 200
+  }
+];
