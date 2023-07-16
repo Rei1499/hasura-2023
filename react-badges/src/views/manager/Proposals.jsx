@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Table from "../../components/reUsable/Table";
+import { useAuth } from "../../state/with-auth";
 import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
+import { proposalColumnsFromManager } from "../../components/reUsable/DataTable";
 
 const Proposals = () => {
-  const [proposalsFromManager, setProposalsFromManager] = useState([]);
-  const [proposalsToManager, setProposalsToManager] = useState([]);
+  // const [proposalsFromManager, setProposalsFromManager] = useState([]);
+  // const [proposalsToManager, setProposalsToManager] = useState([]);
   const [managerId, setManagerId] = useState();
   const navigate = useNavigate();
 
@@ -16,31 +18,39 @@ const Proposals = () => {
     setManagerId(auth.hasura["x-hasura-tenant-id"]);
   }, []);
 
-  const [getProposalsWithStatus, { loading, error, data }] = useMutation(
-    GET_PROPOSALS_WITH_STATUS
-  );
+  const { loading, error, data } = useQuery(GET_PROPOSALS_WITH_STATUS);
 
-  const fetchProposalsFromDB = async () => {
-    try {
-      if (managerId !== null && managerId !== undefined) {
-        const result = await getProposalsWithStatus({
-          variables: { managerId }
-        });
-        setProposalsFromManager(
-          result.data.manager_to_engineer_badge_candidature_proposals
-        );
-        setProposalsToManager(
-          result.data.engineer_to_manager_badge_candidature_proposals
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching proposals: ", error);
-    }
-  };
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
 
-  useEffect(() => {
-    fetchProposalsFromDB;
-  }, [managerId, getProposalsWithStatus]);
+  if (error) {
+    return <Typography>Error: {error.message}</Typography>;
+  }
+
+  const { proposalsFromManager, proposalsToManager } = data;
+
+  // const fetchProposalsFromDB = async () => {
+  //   try {
+  //     if (managerId !== null && managerId !== undefined) {
+  //       const result = await getProposalsWithStatus({
+  //         variables: { managerId }
+  //       });
+  //       setProposalsFromManager(
+  //         result.data.manager_to_engineer_badge_candidature_proposals
+  //       );
+  //       setProposalsToManager(
+  //         result.data.engineer_to_manager_badge_candidature_proposals
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching proposals: ", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchProposalsFromDB;
+  // }, [managerId]);
 
   return (
     <>
@@ -50,7 +60,11 @@ const Proposals = () => {
           Inside the following page you will find all the proposal created from
           you as well as the proposals that have asked your approval.
         </Typography>
-        {/* <Table rows></Table> */}
+        <Table
+          rows={proposalsFromManager}
+          columns={proposalColumnsFromManager}
+        ></Table>
+        {/* <Table rows = {proposalsToManager} columns={}></Table>  */}
         <Button
           onClick={() => {
             navigate("/proposalform");
