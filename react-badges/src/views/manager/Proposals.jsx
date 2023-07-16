@@ -11,8 +11,6 @@ import {
 } from "../../components/reUsable/DataTable";
 
 const Proposals = () => {
-  // const [proposalsFromManager, setProposalsFromManager] = useState([]);
-  // const [proposalsToManager, setProposalsToManager] = useState([]);
   const [managerId, setManagerId] = useState();
   const navigate = useNavigate();
 
@@ -36,29 +34,42 @@ const Proposals = () => {
   const rowsToManager =
     data?.engineer_to_manager_badge_candidature_proposals || [];
 
-  // const fetchProposalsFromDB = async () => {
-  //   try {
-  //     if (managerId !== null && managerId !== undefined) {
-  //       const result = await getProposalsWithStatus({
-  //         variables: { managerId }
-  //       });
-  //       setProposalsFromManager(
-  //         result.data.manager_to_engineer_badge_candidature_proposals
-  //       );
-  //       setProposalsToManager(
-  //         result.data.engineer_to_manager_badge_candidature_proposals
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching proposals: ", error);
-  //   }
-  // };
+  const updatedColumnsToManager = [
+    ...proposalColumnsToManager,
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 150,
+      renderCell: (params) => (
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleAcceptClick(params.row.id)}
+          >
+            Accept
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleRejectClick(params.row.id)}
+          >
+            Reject
+          </Button>
+        </Box>
+      )
+    }
+  ];
 
-  // useEffect(() => {
-  //   fetchProposalsFromDB;
-  // }, [managerId]);
+  const handleAcceptClick = (id) => {
+    // Handle accept button click based on the row ID
+    console.log(`Accept button clicked for row with ID: ${id}`);
+  };
 
-  console.log(rowsFromManager);
+  const handleRejectClick = (id) => {
+    // Handle reject button click based on the row ID
+    console.log(`Reject button clicked for row with ID: ${id}`);
+  };
 
   return (
     <>
@@ -74,7 +85,7 @@ const Proposals = () => {
           <Box>No Proposals Found.</Box>
         )}
         {rowsToManager.length > 0 ? (
-          <Table row={rowsToManager} columns={proposalColumnsToManager} />
+          <Table row={rowsToManager} columns={updatedColumnsToManager} />
         ) : (
           <Box>No Proposals Found.</Box>
         )}
