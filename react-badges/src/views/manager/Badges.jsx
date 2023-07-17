@@ -3,7 +3,19 @@ import { gql, useQuery } from "@apollo/client";
 import withApollo from "../../state/with-apollo";
 import { useAuth } from "../../state/with-auth";
 import BadgeCard from "../../components/reUsable/BadgeCard";
+import Box from "@mui/material/Box";
 
+const BadgeQuery = gql`
+  query MyQuery {
+    badges_versions_last {
+      description
+      id
+      requirements
+      title
+      created_at
+    }
+  }
+`;
 const Badges = () => {
   const auth = useAuth();
   console.log(auth, "auth");
