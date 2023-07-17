@@ -47,16 +47,16 @@ const IssuingRequests = ({ managerId }) => {
 
   return (
     <div>
+      <Typography
+        variant="h2"
+        sx={{ fontSize: 24 }}
+        color="text.primary"
+        gutterBottom
+      >
+        Issuing Request
+      </Typography>
       <Card variant="outlined">
         <CardContent>
-          <Typography
-            variant="h2"
-            sx={{ fontSize: 14 }}
-            color="text.secondary"
-            gutterBottom
-          >
-            Issuing Request
-          </Typography>
           {data.issuing_requests_view.map((request) => (
             <div key={request.id}>
               <Typography variant="h5" component="div">
