@@ -14,9 +14,7 @@ import {
   APPROVE_CANDIDATURE_PROPOSAL
 } from "../../queries/CandidatureMutations";
 
-const ProposalActionButtons = ({
-  rowId
-}) => {
+const ProposalActionButtons = ({ rowId }) => {
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
   const [disapproveCandidatureProposal] = useMutation(
@@ -34,7 +32,7 @@ const ProposalActionButtons = ({
     // Perform the mutation for approval
     approveCandidatureProposal({
       variables: {
-        proposalId: rowId,
+        proposalId: rowId
       }
       // Handle success and error cases if needed
     });
@@ -49,7 +47,7 @@ const ProposalActionButtons = ({
     // Perform the mutation with the disapprovalMotivation
     disapproveCandidatureProposal({
       variables: {
-        id: rowId,
+        proposalId: rowId,
         disapprovalMotivation: disapprovalMotivation
       }
       // Handle success and error cases if needed
