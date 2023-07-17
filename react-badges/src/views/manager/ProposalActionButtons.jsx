@@ -9,11 +9,12 @@ import {
   TextField
 } from "@mui/material";
 import { useMutation } from "@apollo/client";
-import { DISAPPROVE_CANDIDATURE_PROPOSAL } from "../../queries/CandidatureMutations";
+import {
+  DISAPPROVE_CANDIDATURE_PROPOSAL,
+  APPROVE_CANDIDATURE_PROPOSAL
+} from "../../queries/CandidatureMutations";
 
 const ProposalActionButtons = ({
-  handleAcceptClick,
-  handleRejectClick,
   rowId
 }) => {
   const [open, setOpen] = useState(false);
@@ -25,11 +26,11 @@ const ProposalActionButtons = ({
     APPROVE_CANDIDATURE_PROPOSAL
   );
 
-  const handleRejectClick = () => {
+  const handleRejectButtonClick = () => {
     setOpen(true);
   };
 
-  const handleAcceptClick = () => {
+  const handleAcceptButtonClick = () => {
     // Perform the mutation for approval
     approveCandidatureProposal({
       variables: {
@@ -38,10 +39,6 @@ const ProposalActionButtons = ({
       }
       // Handle success and error cases if needed
     });
-  };
-
-  const handleRejectClick = () => {
-    setOpen(true);
   };
 
   const handleClose = () => {
@@ -65,10 +62,18 @@ const ProposalActionButtons = ({
 
   return (
     <Box>
-      <Button variant="contained" color="primary" onClick={handleAcceptClick}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleAcceptButtonClick}
+      >
         Accept
       </Button>
-      <Button variant="contained" color="secondary" onClick={handleRejectClick}>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleRejectButtonClick}
+      >
         Reject
       </Button>
       <Dialog open={open} onClose={handleClose}>

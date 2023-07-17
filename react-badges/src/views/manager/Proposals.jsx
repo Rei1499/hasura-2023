@@ -41,13 +41,7 @@ const Proposals = () => {
       field: "actions",
       headerName: "Actions",
       width: 150,
-      renderCell: (params) => (
-        <ActionsColumn
-          handleAcceptClick={handleAcceptClick}
-          handleRejectClick={handleRejectClick}
-          rowId={params.row.id}
-        />
-      )
+      renderCell: (params) => <ProposalActionButtons rowId={params.row.id} />
     }
   ];
 
