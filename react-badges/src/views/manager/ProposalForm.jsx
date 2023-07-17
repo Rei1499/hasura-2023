@@ -27,25 +27,25 @@ const ProposalForm = () => {
 
   const [managerId, setManagerId] = useState();
   const [engineers, setEngineers] = useState([]);
+  const [getEngineersByManager, { loading, error, data }] = useMutation(
+    GET_ENGINEERS_BY_MANAGER
+  );
+  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const auth = useAuth();
   useEffect(() => {
     setManagerId(auth.hasura["x-hasura-tenant-id"]);
   }, []);
 
-  const [getEngineersByManager, { loading, error, data }] = useMutation(
-    GET_ENGINEERS_BY_MANAGER
-  );
-
   const fetchData = async () => {
     try {
       if (managerId !== null && managerId !== undefined) {
         const result = await getEngineersByManager({
-          variables: { managerId }
+          variables: { managerId: managerId }
         });
         setEngineers(result.data.get_engineers_by_manager);
         // Access the fetched data from the 'data' variable
-        console.log(data);
+        console.log(result.data);
       }
     } catch (error) {
       // Handle the error
@@ -55,12 +55,7 @@ const ProposalForm = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  const [
-    createProposalManager,
-    { loading: submitLoading, error: submitError }
-  ] = useMutation(CREATE_PROPOSAL_MANAGER);
+  }, [managerId, getEngineersByManager]);
 
   const onSubmit = async (data) => {
     try {
@@ -69,7 +64,7 @@ const ProposalForm = () => {
           badgeId: data.badge_id,
           badgeVersion: data.badge_version,
           proposalDescription: data.proposal_description,
-          engineer: data.engineer
+          engineerId: data.engineer
         }
       });
       navigate("/proposals");

@@ -106,7 +106,7 @@ export const CREATE_PROPOSAL_MANAGER = gql`
     $badgeId: Int!
     $badgeVersion: String!
     $proposalDescription: String!
-    $engineer: Int!
+    $engineerId: Int!
   ) {
     insert_manager_to_engineer_badge_candidature_proposals_one(
       on_conflict: {
@@ -117,7 +117,7 @@ export const CREATE_PROPOSAL_MANAGER = gql`
         badge_id: $badgeId
         badge_version: $badgeVersion
         proposal_description: $proposalDescription
-        engineer: $engineer
+        engineer: $engineerId
       }
     ) {
       id
