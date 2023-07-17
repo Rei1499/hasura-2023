@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import {
@@ -8,8 +8,9 @@ import {
 } from "../../../queries/IssueMutations";
 
 const IssuingRequests = ({ managerId }) => {
+  console.log(managerId, "ManagerId");
   const { loading, error, data } = useQuery(GET_ISSUING_REQUESTS_FOR_MANAGER, {
-    variables: { managerId }
+    variables: { managerId: { _eq: managerId } }
   });
 
   const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL);
