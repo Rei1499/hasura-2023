@@ -51,16 +51,25 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
 `;
 
 export const APPROVE_CANDIDATURE_PROPOSAL = gql`
-  mutation approveCandidatureProposal($id: Int!) {
-    update_manager_to_engineer_badge_candidature_proposals(
-       columns: { id: $id }
-      _set: { is_approved: true, disapproval_motivation: "" }
+  mutation approveCandidatureProposal($proposalId: Int!) {
+    insert_manager_badge_candidature_proposal_response(
+      objects: {
+        is_approved: true
+        created_at: "now()"
+        created_by: 2
+        disapproval_motivation: ""
+        proposal_id: $proposalId
+      }
+      on_conflict: {
+        constraint: manager_badge_candidature_proposal_response_pkey
+      }
     ) {
-      id
-      proposal_description
-      badge_id
-      badge_version
-      engineer
+      returning {
+        disapproval_motivation
+        is_approved
+        proposal_id
+        response_id
+      }
     }
   }
 `;
@@ -69,13 +78,10 @@ export const DISAPPROVE_CANDIDATURE_PROPOSAL = gql`
   mutation disapproveCandidatureProposal($userId: Int!, $responseId: Int!) {
     update_manager_to_engineer_badge_candidature_proposals_response(
       where: {
-        user: { id: { _eq: $userId } },
+        user: { id: { _eq: $userId } }
         response_id: { _eq: $responseId }
-      },
-      _set: {
-        is_approved: false,
-        disapproval_motivation: "R.I.P"
       }
+      _set: { is_approved: false, disapproval_motivation: "R.I.P" }
     ) {
       affected_rows
     }

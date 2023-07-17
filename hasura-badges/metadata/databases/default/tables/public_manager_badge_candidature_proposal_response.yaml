@@ -8,10 +8,23 @@ object_relationships:
   - name: user
     using:
       foreign_key_constraint_on: created_by
+insert_permissions:
+  - role: manager
+    permission:
+      check: {}
+      columns:
+        - created_at
+        - created_by
+        - disapproval_motivation
+        - is_approved
+        - proposal_id
+        - response_id
 select_permissions:
   - role: manager
     permission:
       columns:
+        - created_at
+        - created_by
         - disapproval_motivation
         - is_approved
         - proposal_id

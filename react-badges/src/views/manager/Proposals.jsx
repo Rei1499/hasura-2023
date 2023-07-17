@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import Table from "../../components/reUsable/Table";
 import { useAuth } from "../../state/with-auth";
 import {
@@ -18,38 +18,6 @@ import ProposalActionButtons from "./ProposalActionButtons";
 const Proposals = () => {
   const [managerId, setManagerId] = useState();
   const navigate = useNavigate();
-
-  const [disapproveCandidatureProposal] = useMutation(
-    DISAPPROVE_CANDIDATURE_PROPOSAL
-  );
-  const [approveCandidatureProposal] = useMutation(
-    APPROVE_CANDIDATURE_PROPOSAL
-  );
-
-  const handleAcceptButtonClick = () => {
-    // Perform the mutation for approval
-    approveCandidatureProposal({
-      variables: {
-        id: rowId,
-        disapprovalMotivation: ""
-      }
-      // Handle success and error cases if needed
-    });
-  };
-
-  const handleSubmit = () => {
-    // Perform the mutation with the disapprovalMotivation
-    disapproveCandidatureProposal({
-      variables: {
-        id: rowId,
-        disapprovalMotivation: disapprovalMotivation
-      }
-      // Handle success and error cases if needed
-    });
-
-    setOpen(false);
-    setDisapprovalMotivation("");
-  };
 
   const auth = useAuth();
   useEffect(() => {
@@ -80,8 +48,6 @@ const Proposals = () => {
       renderCell: (params) => (
         <ProposalActionButtons
           rowId={params.row.id}
-          handleAcceptButtonClick={handleAcceptButtonClick}
-          handleSubmit={handleSubmit}
         />
       )
     }

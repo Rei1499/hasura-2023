@@ -15,8 +15,6 @@ import {
 } from "../../queries/CandidatureMutations";
 
 const ProposalActionButtons = ({
-  handleAcceptButtonClick,
-  handleSubmit,
   rowId
 }) => {
   const [open, setOpen] = useState(false);
@@ -32,35 +30,34 @@ const ProposalActionButtons = ({
     setOpen(true);
   };
 
-  // const handleAcceptButtonClick = () => {
-  //   // Perform the mutation for approval
-  //   approveCandidatureProposal({
-  //     variables: {
-  //       id: rowId,
-  //       disapprovalMotivation: ""
-  //     }
-  //     // Handle success and error cases if needed
-  //   });
-  // };
+  const handleAcceptButtonClick = () => {
+    // Perform the mutation for approval
+    approveCandidatureProposal({
+      variables: {
+        proposalId: rowId,
+      }
+      // Handle success and error cases if needed
+    });
+  };
 
   const handleClose = () => {
     setOpen(false);
     setDisapprovalMotivation("");
   };
 
-  // const handleSubmit = () => {
-  //   // Perform the mutation with the disapprovalMotivation
-  //   disapproveCandidatureProposal({
-  //     variables: {
-  //       id: rowId,
-  //       disapprovalMotivation: disapprovalMotivation
-  //     }
-  //     // Handle success and error cases if needed
-  //   });
+  const handleSubmit = () => {
+    // Perform the mutation with the disapprovalMotivation
+    disapproveCandidatureProposal({
+      variables: {
+        id: rowId,
+        disapprovalMotivation: disapprovalMotivation
+      }
+      // Handle success and error cases if needed
+    });
 
-  //   setOpen(false);
-  //   setDisapprovalMotivation("");
-  // };
+    setOpen(false);
+    setDisapprovalMotivation("");
+  };
 
   return (
     <Box>
