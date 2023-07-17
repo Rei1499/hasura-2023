@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
+import { useAuth } from "../../state/with-auth";
 import {
   Box,
   TextField,
@@ -21,13 +22,22 @@ const ProposalForm = () => {
     formState: { errors }
   } = useForm();
 
+  const [managerId, setManagerId] = useState();
+
+  const auth = useAuth();
+  useEffect(() => {
+    setManagerId(auth.hasura["x-hasura-tenant-id"]);
+  }, []);
+
   const [getEngineersByManager, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
 
   const fetchData = async () => {
     try {
-      const { data } = await getEngineersByManager();
+      const { data } = await getEngineersByManager({
+        variables: { managerId }
+      });
       // Access the fetched data from the 'data' variable
       console.log(data);
       // Handle the data as needed
@@ -101,7 +111,7 @@ const ProposalForm = () => {
           <span>Proposal Description is required</span>
         )}
       </Box>
-      <Button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading} onClick={navigate("/proposals")}>
         Submit
       </Button>
       {error && <span>Error: {error.message}</span>}
