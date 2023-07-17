@@ -3,7 +3,11 @@ import { Box, Typography, Button } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import Table from "../../components/reUsable/Table";
 import { useAuth } from "../../state/with-auth";
-import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
+import {
+  GET_PROPOSALS_WITH_STATUS,
+  APPROVE_CANDIDATURE_PROPOSAL,
+  DISAPPROVE_CANDIDATURE_PROPOSAL
+} from "../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
 import {
   proposalColumnsFromManager,
@@ -14,6 +18,38 @@ import ProposalActionButtons from "./ProposalActionButtons";
 const Proposals = () => {
   const [managerId, setManagerId] = useState();
   const navigate = useNavigate();
+
+  const [disapproveCandidatureProposal] = useMutation(
+    DISAPPROVE_CANDIDATURE_PROPOSAL
+  );
+  const [approveCandidatureProposal] = useMutation(
+    APPROVE_CANDIDATURE_PROPOSAL
+  );
+
+  const handleAcceptButtonClick = () => {
+    // Perform the mutation for approval
+    approveCandidatureProposal({
+      variables: {
+        id: rowId,
+        disapprovalMotivation: ""
+      }
+      // Handle success and error cases if needed
+    });
+  };
+
+  const handleSubmit = () => {
+    // Perform the mutation with the disapprovalMotivation
+    disapproveCandidatureProposal({
+      variables: {
+        id: rowId,
+        disapprovalMotivation: disapprovalMotivation
+      }
+      // Handle success and error cases if needed
+    });
+
+    setOpen(false);
+    setDisapprovalMotivation("");
+  };
 
   const auth = useAuth();
   useEffect(() => {
@@ -41,19 +77,15 @@ const Proposals = () => {
       field: "actions",
       headerName: "Actions",
       width: 150,
-      renderCell: (params) => <ProposalActionButtons rowId={params.row.id} />
+      renderCell: (params) => (
+        <ProposalActionButtons
+          rowId={params.row.id}
+          handleAcceptButtonClick={handleAcceptButtonClick}
+          handleSubmit={handleSubmit}
+        />
+      )
     }
   ];
-
-  const handleAcceptClick = (id) => {
-    // Handle accept button click based on the row ID
-    console.log(`Accept button clicked for row with ID: ${id}`);
-  };
-
-  const handleRejectClick = (id) => {
-    // Handle reject button click based on the row ID
-    console.log(`Reject button clicked for row with ID: ${id}`);
-  };
 
   return (
     <>
