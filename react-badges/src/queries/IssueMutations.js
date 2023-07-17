@@ -1,23 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const GET_ISSUING_REQUESTS_FOR_MANAGER = gql`
-  query getIssueRequest {
-    issuing_requests {
-      disapproval_motivation
+  query getIssueRequests {
+    issuing_requests_view {
+      badge_description
+      badge_title
+      engineer_id
+      engineer_name
+      manager_id
       id
-      is_approved
-      badge_candidature_request {
-        badge_version
-        manager_id
-        is_issued
-        badge_id
-        engineer_id
-        candidature_evidences
-        badges_definition {
-          title
-          description
-        }
-      }
     }
   }
 `;
