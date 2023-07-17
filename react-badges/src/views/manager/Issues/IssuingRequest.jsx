@@ -55,9 +55,9 @@ const IssuingRequests = ({ managerId }) => {
       >
         Issuing Request
       </Typography>
-      <Card variant="outlined">
-        <CardContent>
-          {data.issuing_requests_view.map((request) => (
+      {data.issuing_requests_view.map((request) => (
+        <Card variant="outlined">
+          <CardContent>
             <div key={request.id}>
               <Typography variant="h5" component="div">
                 Badge Title: {request.badge_title}
@@ -81,9 +81,9 @@ const IssuingRequests = ({ managerId }) => {
                 Reject
               </Button>
             </div>
-          ))}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };
