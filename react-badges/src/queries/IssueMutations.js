@@ -1,16 +1,17 @@
 import { gql } from "@apollo/client";
 
 export const GET_ISSUING_REQUESTS_FOR_MANAGER = gql`
-  query getIssueRequests {
-    issuing_requests_view {
-      badge_description
-      badge_title
-      engineer_id
-      engineer_name
-      manager_id
-      id
-    }
+query getIssueRequests {
+  issuing_requests_view(where: {is_issued: {_eq: true}}) {
+    badge_description
+    badge_title
+    engineer_id
+    engineer_name
+    manager_id
+    id
   }
+}
+
 `;
 
 export const UPDATE_ISSUING_REQUEST_REJECTION = gql`

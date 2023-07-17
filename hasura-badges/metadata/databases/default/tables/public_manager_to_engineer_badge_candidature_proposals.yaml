@@ -45,7 +45,6 @@ select_permissions:
         - id
         - proposal_description
       filter: {}
-      limit: 10
       query_root_fields:
         - select
         - select_by_pk
