@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "../../state/with-auth";
+import { Controller } from "react-hook-form";
 import {
   Box,
   TextField,
   Button,
   Typography,
   Select,
-  MenuItem
+  MenuItem,
+  FormHelperText
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
@@ -19,10 +21,12 @@ const ProposalForm = () => {
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors }
   } = useForm();
 
   const [managerId, setManagerId] = useState();
+  const [engineers, setEngineers] = useState([]);
 
   const auth = useAuth();
   useEffect(() => {
@@ -35,12 +39,14 @@ const ProposalForm = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await getEngineersByManager({
-        variables: { managerId }
-      });
-      // Access the fetched data from the 'data' variable
-      console.log(data);
-      // Handle the data as needed
+      if (managerId !== null && managerId !== undefined) {
+        const result = await getEngineersByManager({
+          variables: { managerId }
+        });
+        setEngineers(result.data.get_engineers_by_manager);
+        // Access the fetched data from the 'data' variable
+        console.log(data);
+      }
     } catch (error) {
       // Handle the error
       console.error(error);
@@ -58,8 +64,16 @@ const ProposalForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      await createProposalManager({ variables: data });
+      await createProposalManager({
+        variables: {
+          badgeId: data.badge_id,
+          badgeVersion: data.badge_version,
+          proposalDescription: data.proposal_description,
+          engineer: data.engineer
+        }
+      });
       navigate("/proposals");
+      console.log(data);
     } catch (error) {
       // Handle error (e.g., show an error message)
     }
@@ -69,20 +83,29 @@ const ProposalForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box>
         <Typography>Create a new proposal</Typography>
-        <Select label="Engineer" {...register("engineer", { required: true })}>
-          {loading ? (
-            <MenuItem value="">Loading...</MenuItem>
-          ) : error ? (
-            <MenuItem value="">Error loading engineers</MenuItem>
-          ) : (
-            data?.get_engineers_by_manager?.map((engineer) => (
-              <MenuItem key={engineer.id} value={engineer.id}>
-                {engineer.name}
-              </MenuItem>
-            ))
+        <Controller
+          name="engineer"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select label="Engineer" {...field}>
+              {loading ? (
+                <MenuItem value="">Loading...</MenuItem>
+              ) : error ? (
+                <MenuItem value="">Error loading engineers</MenuItem>
+              ) : (
+                engineers?.map((engineer) => (
+                  <MenuItem key={engineer.id} value={engineer.id}>
+                    {engineer.name}
+                  </MenuItem>
+                ))
+              )}
+            </Select>
           )}
-        </Select>
-        {errors.engineer && <span>Engineer is required</span>}
+        />
+        {errors.engineer && (
+          <FormHelperText>Engineer is required</FormHelperText>
+        )}
       </Box>
       <Box>
         <TextField
@@ -90,7 +113,9 @@ const ProposalForm = () => {
           type="number"
           {...register("badge_id", { required: true })}
         />
-        {errors.badge_id && <span>Badge ID is required</span>}
+        {errors.badge_id && (
+          <FormHelperText>Badge ID is required</FormHelperText>
+        )}
       </Box>
       <Box>
         <TextField
@@ -98,7 +123,9 @@ const ProposalForm = () => {
           type="text"
           {...register("badge_version", { required: true })}
         />
-        {errors.badge_version && <span>Badge Version is required</span>}
+        {errors.badge_version && (
+          <FormHelperText>Badge Version is required</FormHelperText>
+        )}
       </Box>
       <Box>
         <TextField
@@ -108,13 +135,13 @@ const ProposalForm = () => {
           {...register("proposal_description", { required: true })}
         />
         {errors.proposal_description && (
-          <span>Proposal Description is required</span>
+          <FormHelperText>Proposal Description is required</FormHelperText>
         )}
       </Box>
-      <Button type="submit" disabled={loading} onClick={navigate("/proposals")}>
+      <Button type="submit" disabled={loading}>
         Submit
       </Button>
-      {error && <span>Error: {error.message}</span>}
+      {error && <FormHelperText>Error: {error.message}</FormHelperText>}
     </form>
   );
 };
