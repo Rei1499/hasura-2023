@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Button } from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import {
   GET_ISSUING_REQUESTS_FOR_MANAGER,
   UPDATE_ISSUING_REQUEST_APPROVAL,
@@ -34,40 +34,56 @@ const IssuingRequests = ({ managerId }) => {
   };
 
   if (loading) {
-    return <div>Loading issuing requests...</div>;
+    return <Typography>Loading issuing requests...</Typography>;
   }
 
   if (error) {
-    return <div>Error loading issuing requests: {error.message}</div>;
+    return (
+      <Typography variant="body1" color="error">
+        Error loading issuing requests: {error.message}
+      </Typography>
+    );
   }
 
   return (
     <div>
-      <h2>Issuing Requests</h2>
-      {data.issuing_requests.map((request) => (
-        <div key={request.id}>
-          <p>
-            Badge Title:{" "}
-            {request.badge_candidature_request?.badges_definition?.title}
-          </p>
-          <p>
-            Badge Description:{" "}
-            {request.badge_candidature_request?.badges_definition?.description}
-          </p>
-          <p>Engineer ID: {request.badge_candidature_request?.engineer_id}</p>
-          <p>
-            Badge Description:{" "}
-            {request.badge_candidature_request?.badges_definition?.description}
-          </p>
-
-          <Button onClick={() => handleApproveIssuingRequest(request.id)}>
-            Approve
-          </Button>
-          <Button onClick={() => handleRejectIssuingRequest(request.id)}>
-            Reject
-          </Button>
-        </div>
-      ))}
+      <Card variant="outlined">
+        <CardContent>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: 14 }}
+            color="text.secondary"
+            gutterBottom
+          >
+            Issuing Request
+          </Typography>
+          {data.issuing_requests_view.map((request) => (
+            <div key={request.id}>
+              <Typography variant="h5" component="div">
+                Badge Title: {request.badge_title}
+              </Typography>
+              <Typography variant="body2">
+                Badge Description: {request.badge_description}
+              </Typography>
+              <Typography variant="body1">
+                Engineer Name: {request.engineer_name}
+              </Typography>
+              <Button
+                size="small"
+                onClick={() => handleApproveIssuingRequest(request.id)}
+              >
+                Approve
+              </Button>
+              <Button
+                size="small"
+                onClick={() => handleRejectIssuingRequest(request.id)}
+              >
+                Reject
+              </Button>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 };
