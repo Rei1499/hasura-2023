@@ -34,8 +34,7 @@ const ProposalActionButtons = ({
     // Perform the mutation for approval
     approveCandidatureProposal({
       variables: {
-        id: rowId,
-        disapprovalMotivation: ""
+        proposalId: rowId,
       }
       // Handle success and error cases if needed
     });

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import Table from "../../components/reUsable/Table";
 import { useAuth } from "../../state/with-auth";
-import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
+import {
+  GET_PROPOSALS_WITH_STATUS,
+  APPROVE_CANDIDATURE_PROPOSAL,
+  DISAPPROVE_CANDIDATURE_PROPOSAL
+} from "../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
 import {
   proposalColumnsFromManager,
@@ -41,19 +45,13 @@ const Proposals = () => {
       field: "actions",
       headerName: "Actions",
       width: 150,
-      renderCell: (params) => <ProposalActionButtons rowId={params.row.id} />
+      renderCell: (params) => (
+        <ProposalActionButtons
+          rowId={params.row.id}
+        />
+      )
     }
   ];
-
-  const handleAcceptClick = (id) => {
-    // Handle accept button click based on the row ID
-    console.log(`Accept button clicked for row with ID: ${id}`);
-  };
-
-  const handleRejectClick = (id) => {
-    // Handle reject button click based on the row ID
-    console.log(`Reject button clicked for row with ID: ${id}`);
-  };
 
   return (
     <>
