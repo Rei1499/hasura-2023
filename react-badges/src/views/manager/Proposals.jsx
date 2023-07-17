@@ -9,6 +9,7 @@ import {
   proposalColumnsFromManager,
   proposalColumnsToManager
 } from "../../components/reUsable/DataTable";
+import ProposalActionButtons from "./ProposalActionButtons";
 
 const Proposals = () => {
   const [managerId, setManagerId] = useState();
@@ -41,22 +42,11 @@ const Proposals = () => {
       headerName: "Actions",
       width: 150,
       renderCell: (params) => (
-        <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleAcceptClick(params.row.id)}
-          >
-            Accept
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => handleRejectClick(params.row.id)}
-          >
-            Reject
-          </Button>
-        </Box>
+        <ActionsColumn
+          handleAcceptClick={handleAcceptClick}
+          handleRejectClick={handleRejectClick}
+          rowId={params.row.id}
+        />
       )
     }
   ];
