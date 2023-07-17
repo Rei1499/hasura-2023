@@ -104,7 +104,7 @@ export const DISAPPROVE_CANDIDATURE_PROPOSAL = gql`
 export const CREATE_PROPOSAL_MANAGER = gql`
   mutation createProposalManager(
     $badgeId: Int!
-    $badgeVersion: String!
+    $badgeVersion: Timestamp!
     $proposalDescription: String!
     $engineerId: Int!
   ) {

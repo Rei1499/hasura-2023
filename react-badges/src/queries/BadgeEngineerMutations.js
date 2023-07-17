@@ -11,3 +11,15 @@ export const GET_ENGINEERS_BY_MANAGER = gql`
     }
   }
 `;
+
+export const GET_BADGES_LAST = gql`
+  query getLastVersionBadges {
+    badges_versions_last {
+      description
+      id
+      requirements
+      title
+      created_at
+    }
+  }
+`;

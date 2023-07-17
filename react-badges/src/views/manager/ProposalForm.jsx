@@ -30,9 +30,7 @@ const ProposalForm = () => {
   const [getEngineersByManager, { loading, error }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
-  const [createProposalManager, { data }] = useMutation(
-    CREATE_PROPOSAL_MANAGER
-  );
+  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const auth = useAuth();
   useEffect(() => {
@@ -50,7 +48,6 @@ const ProposalForm = () => {
         console.log(result.data);
       }
     } catch (error) {
-      // Handle the error
       console.error(error);
     }
   };
@@ -63,16 +60,16 @@ const ProposalForm = () => {
     try {
       await createProposalManager({
         variables: {
-          badgeId: badge_id,
-          badgeVersion: badge_version,
-          proposalDescription: proposal_description,
-          engineerId: engineer
+          badgeId: data.badge_id,
+          badgeVersion: data.badge_version,
+          proposalDescription: data.proposal_description,
+          engineerId: data.engineer
         }
       });
       navigate("/proposals");
       console.log(data);
     } catch (error) {
-      // Handle error (e.g., show an error message)
+      console.log(error)
     }
   };
 
