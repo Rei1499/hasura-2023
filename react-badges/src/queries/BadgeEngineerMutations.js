@@ -1,10 +1,13 @@
 import { gql } from "@apollo/client";
 
-export const GET_ENGINEER_BY_MANAGER = gql`
-  mutation getEngineerByManager {
-    get_engineers_by_manager(args: { manager_id: 4 }) {
+export const GET_ENGINEERS_BY_MANAGER = gql`
+  mutation MyMutation($managerId: Int!) {
+    get_engineers_by_manager(args: { manager_id: $managerId }) {
+      created_at
       id
+      modified_at
       name
+      roles
     }
   }
 `;

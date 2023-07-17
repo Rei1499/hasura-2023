@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { Box, TextField, Button, Typography } from "@mui/material";
-import { CREATE_PROPOSAL_MANAGER } from "../../queries/ProposalMutations";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Select,
+  MenuItem
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
 import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
@@ -31,9 +37,9 @@ const ProposalForm = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[]);
+  }, []);
 
   const [
     createProposalManager,
