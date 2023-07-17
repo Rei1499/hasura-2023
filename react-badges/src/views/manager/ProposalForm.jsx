@@ -27,10 +27,12 @@ const ProposalForm = () => {
 
   const [managerId, setManagerId] = useState();
   const [engineers, setEngineers] = useState([]);
-  const [getEngineersByManager, { loading, error, data }] = useMutation(
+  const [getEngineersByManager, { loading, error }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
-  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
+  const [createProposalManager, { data }] = useMutation(
+    CREATE_PROPOSAL_MANAGER
+  );
 
   const auth = useAuth();
   useEffect(() => {
@@ -61,10 +63,10 @@ const ProposalForm = () => {
     try {
       await createProposalManager({
         variables: {
-          badgeId: data.badge_id,
-          badgeVersion: data.badge_version,
-          proposalDescription: data.proposal_description,
-          engineerId: data.engineer
+          badgeId: badge_id,
+          badgeVersion: badge_version,
+          proposalDescription: proposal_description,
+          engineerId: engineer
         }
       });
       navigate("/proposals");
