@@ -16,7 +16,6 @@ const IssuingRequests = ({ managerId }) => {
   const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
 
   const handleApproveIssuingRequest = (requestId) => {
-    
     approveIssuingRequest({
       variables: { id: requestId }
     });
@@ -41,7 +40,7 @@ const IssuingRequests = ({ managerId }) => {
   }
 
   return (
-    <div>
+    <>
       <Typography
         variant="h2"
         sx={{ fontSize: 24 }}
@@ -51,9 +50,9 @@ const IssuingRequests = ({ managerId }) => {
         Issuing Request
       </Typography>
       {data.issuing_requests_view.map((request) => (
-        <Card variant="outlined">
+        <Card key={request.id} variant="outlined">
           <CardContent>
-            <div key={request.id}>
+            <div>
               <Typography variant="h5" component="div">
                 Badge Title: {request.badge_title}
               </Typography>
@@ -79,7 +78,7 @@ const IssuingRequests = ({ managerId }) => {
           </CardContent>
         </Card>
       ))}
-    </div>
+    </>
   );
 };
 
