@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useAuth } from "../../state/with-auth";
 import { Controller } from "react-hook-form";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
-import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
+import { GET_ENGINEERS_BY_MANAGER, GET_BADGES_LAST } from "../../queries/BadgeEngineerMutations";
 
 const ProposalForm = () => {
   const navigate = useNavigate();
@@ -26,10 +26,12 @@ const ProposalForm = () => {
   } = useForm();
 
   const [managerId, setManagerId] = useState();
-  const [engineers, setEngineers] = useState([]);
-  const [getEngineersByManager, { loading, error }] = useMutation(
+  // const [engineers, setEngineers] = useState([]);
+  const [getEngineersByManager, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
+
+  const {loading: loadingBadges, error:errorBadges , data: badgesData} = useQuery(GET_BADGES_LAST)
   const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const auth = useAuth();
@@ -37,23 +39,29 @@ const ProposalForm = () => {
     setManagerId(auth.hasura["x-hasura-tenant-id"]);
   }, []);
 
-  const fetchData = async () => {
+  const fetchDataEngineers = async () => {
     try {
       if (managerId !== null && managerId !== undefined) {
-        const result = await getEngineersByManager({
+        const { data } = await getEngineersByManager({
           variables: { managerId: managerId }
         });
-        setEngineers(result.data.get_engineers_by_manager);
+        // setEngineers(result.data.get_engineers_by_manager);
         // Access the fetched data from the 'data' variable
-        console.log(result.data);
+        console.log(data);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+  const fetchDataBadges = async () =>{
+    
+    const {dataBadtges} = await getBadges
+
+  }
+
   useEffect(() => {
-    fetchData();
+    fetchDataEngineers();
   }, [managerId, getEngineersByManager]);
 
   const onSubmit = async (data) => {
@@ -69,7 +77,7 @@ const ProposalForm = () => {
       navigate("/proposals");
       console.log(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -88,8 +96,33 @@ const ProposalForm = () => {
               ) : error ? (
                 <MenuItem value="">Error loading engineers</MenuItem>
               ) : (
-                engineers?.map((engineer) => (
+                data?.get_engineers_by_manager?.map((engineer) => (
                   <MenuItem key={engineer.id} value={engineer.id}>
+                    {engineer.name}
+                  </MenuItem>
+                ))
+              )}
+            </Select>
+          )}
+        />
+        {errors.engineer && (
+          <FormHelperText>Engineer is required</FormHelperText>
+        )}
+      </Box>
+      <Box>
+        <Controller
+          name="badge"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select label="Badge" {...field}>
+              {loading ? (
+                <MenuItem value="">Loading...</MenuItem>
+              ) : error ? (
+                <MenuItem value="">Error loading engineers</MenuItem>
+              ) : (
+                engineers?.map((badge) => (
+                  <MenuItem key={badge.id} value={badge.created_at}>
                     {engineer.name}
                   </MenuItem>
                 ))
