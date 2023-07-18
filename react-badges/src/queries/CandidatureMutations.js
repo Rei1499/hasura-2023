@@ -75,31 +75,49 @@ export const APPROVE_CANDIDATURE_PROPOSAL = gql`
 `;
 
 export const DISAPPROVE_CANDIDATURE_PROPOSAL = gql`
-  mutation disapproveCandidatureProposal($userId: Int!, $responseId: Int!) {
-    update_manager_to_engineer_badge_candidature_proposals_response(
-      where: {
-        user: { id: { _eq: $userId } }
-        response_id: { _eq: $responseId }
+  mutation disapproveCandidatureProposal(
+    $proposalId: Int!
+    $disapprovalMotivation: String!
+  ) {
+    insert_manager_badge_candidature_proposal_response(
+      objects: {
+        is_approved: false
+        created_at: "now()"
+        created_by: 2
+        disapproval_motivation: $disapprovalMotivation
+        proposal_id: $proposalId
       }
-      _set: { is_approved: false, disapproval_motivation: "R.I.P" }
+      on_conflict: {
+        constraint: manager_badge_candidature_proposal_response_pkey
+      }
     ) {
-      affected_rows
+      returning {
+        disapproval_motivation
+        is_approved
+        proposal_id
+        response_id
+      }
     }
   }
 `;
 
 export const CREATE_PROPOSAL_MANAGER = gql`
-  mutation createProposalManager {
+  mutation createProposalManager(
+    $badgeId: Int!
+    $badgeVersion: Timestamp!
+    $proposalDescription: String!
+    $engineerId: Int!
+  ) {
     insert_manager_to_engineer_badge_candidature_proposals_one(
       on_conflict: {
         constraint: manager_to_engineer_badge_candidature_proposals_pkey
         where: {}
       }
       object: {
-        badge_id: 1
-        badge_version: "2023-07-11T14:40:02.292438"
-        proposal_description: "TestTest123"
-        engineer: 1
+        badge_id: $badgeId
+        badge_version: $badgeVersion
+        proposal_description: $proposalDescription
+        engineer: $engineerId
       }
     ) {
       id

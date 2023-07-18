@@ -4,9 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import Table from "../../components/reUsable/Table";
 import { useAuth } from "../../state/with-auth";
 import {
-  GET_PROPOSALS_WITH_STATUS,
-  APPROVE_CANDIDATURE_PROPOSAL,
-  DISAPPROVE_CANDIDATURE_PROPOSAL
+  GET_PROPOSALS_WITH_STATUS
 } from "../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
 import {
