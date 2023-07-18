@@ -9,27 +9,22 @@ import {
 
 const IssuingRequests = ({ managerId }) => {
   const { loading, error, data } = useQuery(GET_ISSUING_REQUESTS_FOR_MANAGER, {
-    variables: { managerId }
+    variables: { managerId: { _eq: managerId } }
   });
 
   const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL);
   const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
 
   const handleApproveIssuingRequest = (requestId) => {
+    
     approveIssuingRequest({
-      variables: { id: requestId },
-      update: (cache) => {
-        // Update cache logic here
-      }
+      variables: { id: requestId }
     });
   };
 
   const handleRejectIssuingRequest = (requestId) => {
     rejectIssuingRequest({
-      variables: { id: requestId },
-      update: (cache) => {
-        // Update cache logic here
-      }
+      variables: { id: requestId }
     });
   };
 
