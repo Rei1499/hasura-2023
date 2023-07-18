@@ -6,6 +6,7 @@ export const GET_ISSUING_REQUESTS_FOR_MANAGER = gql`
       badge_id
       badge_title
       badge_version
+      badge_description
       candidature_evidences
       engineer_id
       engineer_name
@@ -40,7 +41,7 @@ export const UPDATE_ISSUING_REQUEST_APPROVAL = gql`
   mutation IssueApproved($id: Int!) {
     update_issuing_requests(
       _set: { is_approved: true }
-      where: { id: { _eq: $id } }
+      where: { request_id: { _eq: $id } }
     ) {
       returning {
         disapproval_motivation

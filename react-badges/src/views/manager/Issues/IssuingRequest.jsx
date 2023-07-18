@@ -40,6 +40,14 @@ const IssuingRequests = ({ managerId }) => {
   const handleRejectIssuingRequest = (requestId) => {
     setOpen(true);
   };
+  const handleSubmit = () => {
+    rejectIssuingRequest({
+      variables: { id: requestId }
+    });
+
+    setOpen(false);
+    setDisapprovalMotivation("");
+  };
 
   if (loading) {
     return <Typography>Loading issuing requests...</Typography>;
@@ -53,14 +61,7 @@ const IssuingRequests = ({ managerId }) => {
     );
   }
   console.log(data);
-  const handleSubmit = () => {
-    rejectIssuingRequest({
-      variables: { id: requestId }
-    });
 
-    setOpen(false);
-    setDisapprovalMotivation("");
-  };
   return (
     <div>
       <Typography

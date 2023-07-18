@@ -78,6 +78,8 @@ WHERE
     SELECT *
     FROM issuing_requests ir
     WHERE ir.request_id = bcr.id
+    AND (ir.is_approved = FALSE OR ir.is_approved IS NULL)
+
   );
 
 
