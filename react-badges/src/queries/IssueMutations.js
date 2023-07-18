@@ -11,6 +11,7 @@ export const GET_ISSUING_REQUESTS_FOR_MANAGER = gql`
       engineer_name
       is_issued
       manager_id
+      id
     }
   }
 `;
@@ -38,7 +39,7 @@ export const UPDATE_ISSUING_REQUEST_REJECTION = gql`
 export const UPDATE_ISSUING_REQUEST_APPROVAL = gql`
   mutation IssueApproved($id: Int!) {
     update_issuing_requests(
-      _set: { disapproval_motivation: "Well Done", is_approved: true }
+      _set: { is_approved: true }
       where: { id: { _eq: $id } }
     ) {
       returning {

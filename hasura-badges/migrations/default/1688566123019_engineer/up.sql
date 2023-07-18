@@ -75,7 +75,7 @@ FROM
   JOIN badges_definitions bd ON bcr.badge_id = bd.id AND bcr.badge_version = bd.created_at
 WHERE
   EXISTS (
-    SELECT 1
+    SELECT *
     FROM issuing_requests ir
     WHERE ir.request_id = bcr.id
   );
