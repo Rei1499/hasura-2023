@@ -14,7 +14,7 @@ import {
 import ProposalActionButtons from "./ProposalActionButtons";
 
 const Proposals = () => {
-  const [managerId, setManagerId] = useState();
+  
   const navigate = useNavigate();
 
   const auth = useAuth();

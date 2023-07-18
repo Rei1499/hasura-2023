@@ -17,9 +17,9 @@ export const GET_CANDIDATURE_VIEW = gql`
 `;
 
 export const GET_PROPOSALS_WITH_STATUS = gql`
-  query getProposalsWithStatus {
+  query getProposalsWithStatus($managerId: Int!) {
     manager_to_engineer_badge_candidature_proposals(
-      where: { user: { id: { _eq: 2 } } }
+      where: { user: { id: { _eq: $managerId } } }
     ) {
       id
       proposal_description
@@ -31,10 +31,7 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
       }
     }
     engineer_to_manager_badge_candidature_proposals(
-      where: {
-        manager: { _eq: 1 }
-        manager_badge_candidature_proposal_responses: {}
-      }
+      where: { manager: { _eq: $managerId } }
     ) {
       id
       badge_id
