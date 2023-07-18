@@ -14,7 +14,10 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
-import { GET_ENGINEERS_BY_MANAGER, GET_BADGES_LAST } from "../../queries/BadgeEngineerMutations";
+import {
+  GET_ENGINEERS_BY_MANAGER,
+  GET_BADGES_LAST
+} from "../../queries/BadgeEngineerMutations";
 
 const ProposalForm = () => {
   const navigate = useNavigate();
@@ -31,7 +34,14 @@ const ProposalForm = () => {
     GET_ENGINEERS_BY_MANAGER
   );
 
-  const {loading: loadingBadges, error:errorBadges , data: badgesData} = useQuery(GET_BADGES_LAST)
+  const {
+    loading: loadingBadges,
+    error: errorBadges,
+    data: badgesData
+  } = useQuery(GET_BADGES_LAST);
+
+  console.log(badgesData);
+
   const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const auth = useAuth();
@@ -53,12 +63,6 @@ const ProposalForm = () => {
       console.error(error);
     }
   };
-
-  const fetchDataBadges = async () =>{
-    
-    const {dataBadtges} = await getBadges
-
-  }
 
   useEffect(() => {
     fetchDataEngineers();
@@ -116,25 +120,23 @@ const ProposalForm = () => {
           rules={{ required: true }}
           render={({ field }) => (
             <Select label="Badge" {...field}>
-              {loading ? (
+              {loadingBadges ? (
                 <MenuItem value="">Loading...</MenuItem>
-              ) : error ? (
-                <MenuItem value="">Error loading engineers</MenuItem>
+              ) : errorBadges ? (
+                <MenuItem value="">Error loading badges</MenuItem>
               ) : (
-                engineers?.map((badge) => (
+                badgesData?.badges_versions_last?.map((badge) => (
                   <MenuItem key={badge.id} value={badge.created_at}>
-                    {engineer.name}
+                    {badge.title}
                   </MenuItem>
                 ))
               )}
             </Select>
           )}
         />
-        {errors.engineer && (
-          <FormHelperText>Engineer is required</FormHelperText>
-        )}
+        {errors.badge && <FormHelperText>Badge is required</FormHelperText>}
       </Box>
-      <Box>
+      {/* <Box>
         <TextField
           label="Badge ID"
           type="number"
@@ -153,7 +155,7 @@ const ProposalForm = () => {
         {errors.badge_version && (
           <FormHelperText>Badge Version is required</FormHelperText>
         )}
-      </Box>
+      </Box> */}
       <Box>
         <TextField
           label="Proposal Description"
