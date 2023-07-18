@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_CANDIDATURE_VIEW = gql`
-  query getCandidatureView {
-    badge_candidature_view(where: { manager_id: { _eq: 1 } }) {
+  query getCandidatureView($managerId: Int!) {
+    badge_candidature_view(where: { manager_id: { _eq: $managerId } }) {
       badge_description
       badge_title
       badge_requirements

@@ -28,8 +28,8 @@ const ProposalForm = () => {
     formState: { errors }
   } = useForm();
 
-  const [managerId, setManagerId] = useState();
-  // const [engineers, setEngineers] = useState([]);
+  const auth = useAuth();
+
   const [getEngineersByManager, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
@@ -44,16 +44,11 @@ const ProposalForm = () => {
 
   const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
 
-  const auth = useAuth();
-  useEffect(() => {
-    setManagerId(auth.hasura["x-hasura-tenant-id"]);
-  }, []);
-
   const fetchDataEngineers = async () => {
     try {
       if (managerId !== null && managerId !== undefined) {
         const { data } = await getEngineersByManager({
-          variables: { managerId: managerId }
+          variables: { managerId: auth.userId }
         });
         // setEngineers(result.data.get_engineers_by_manager);
         // Access the fetched data from the 'data' variable
@@ -66,7 +61,7 @@ const ProposalForm = () => {
 
   useEffect(() => {
     fetchDataEngineers();
-  }, [managerId, getEngineersByManager]);
+  }, [auth.userId, getEngineersByManager]);
 
   const onSubmit = async (data) => {
     try {
