@@ -70,10 +70,15 @@ const ProposalForm = () => {
 
   const onSubmit = async (data) => {
     try {
+      const selectedBadge = badgesData?.badges_versions_last?.find(
+        (badge) => badge.id === data.badge
+      );
+      const badgeCreatedAt = selectedBadge?.created_at || null;
+
       await createProposalManager({
         variables: {
-          badgeId: data.badge_id,
-          badgeCreatedAt: data.badge_created_at,
+          badgeId: data.badge,
+          badgeCreatedAt,
           proposalDescription: data.proposal_description,
           engineerId: data.engineer
         }
@@ -82,6 +87,7 @@ const ProposalForm = () => {
       console.log(data);
     } catch (error) {
       console.log(error);
+      console.log(data);
     }
   };
 
@@ -126,7 +132,7 @@ const ProposalForm = () => {
                 <MenuItem value="">Error loading badges</MenuItem>
               ) : (
                 badgesData?.badges_versions_last?.map((badge) => (
-                  <MenuItem key={badge.id} value={badge.created_at}>
+                  <MenuItem key={badge.id} value={badge.id}>
                     {badge.title}
                   </MenuItem>
                 ))

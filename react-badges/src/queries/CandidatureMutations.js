@@ -103,10 +103,10 @@ export const DISAPPROVE_CANDIDATURE_PROPOSAL = gql`
 
 export const CREATE_PROPOSAL_MANAGER = gql`
   mutation createProposalManager(
-    $engineerId
-    $badgeId
-    $badgeCreatedAt
-    $proposalDescription
+    $engineerId: Int!
+    $badgeId: Int!
+    $badgeCreatedAt: timestamp!
+    $proposalDescription: String!
   ) {
     insert_manager_to_engineer_badge_candidature_proposals_one(
       on_conflict: {
