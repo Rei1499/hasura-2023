@@ -3,9 +3,7 @@ import { Box, Typography, Button } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
 import Table from "../../components/reUsable/Table";
 import { useAuth } from "../../state/with-auth";
-import {
-  GET_PROPOSALS_WITH_STATUS
-} from "../../queries/CandidatureMutations";
+import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
 import {
   proposalColumnsFromManager,
@@ -14,15 +12,13 @@ import {
 import ProposalActionButtons from "./ProposalActionButtons";
 
 const Proposals = () => {
-  const [managerId, setManagerId] = useState();
   const navigate = useNavigate();
 
   const auth = useAuth();
-  useEffect(() => {
-    setManagerId(auth.hasura["x-hasura-tenant-id"]);
-  }, []);
 
-  const { loading, error, data } = useQuery(GET_PROPOSALS_WITH_STATUS);
+  const { loading, error, data } = useQuery(GET_PROPOSALS_WITH_STATUS, {
+    variables: { managerId: auth.userId }
+  });
 
   if (loading) {
     return <Box>Loading...</Box>;
@@ -43,11 +39,7 @@ const Proposals = () => {
       field: "actions",
       headerName: "Actions",
       width: 150,
-      renderCell: (params) => (
-        <ProposalActionButtons
-          rowId={params.row.id}
-        />
-      )
+      renderCell: (params) => <ProposalActionButtons rowId={params.row.id} />
     }
   ];
 

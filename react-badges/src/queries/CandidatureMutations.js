@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_CANDIDATURE_VIEW = gql`
-  query getCandidatureView {
-    badge_candidature_view(where: { manager_id: { _eq: 1 } }) {
+  query getCandidatureView($managerId: Int!) {
+    badge_candidature_view(where: { manager_id: { _eq: $managerId } }) {
       badge_description
       badge_title
       badge_requirements
@@ -17,9 +17,9 @@ export const GET_CANDIDATURE_VIEW = gql`
 `;
 
 export const GET_PROPOSALS_WITH_STATUS = gql`
-  query getProposalsWithStatus {
+  query getProposalsWithStatus($managerId: Int!) {
     manager_to_engineer_badge_candidature_proposals(
-      where: { user: { id: { _eq: 2 } } }
+      where: { user: { id: { _eq: $managerId } } }
     ) {
       id
       proposal_description
@@ -31,10 +31,7 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
       }
     }
     engineer_to_manager_badge_candidature_proposals(
-      where: {
-        manager: { _eq: 1 }
-        manager_badge_candidature_proposal_responses: {}
-      }
+      where: { manager: { _eq: $managerId } }
     ) {
       id
       badge_id
@@ -103,25 +100,23 @@ export const DISAPPROVE_CANDIDATURE_PROPOSAL = gql`
 
 export const CREATE_PROPOSAL_MANAGER = gql`
   mutation createProposalManager(
-    $badgeId: Int!
-    $badgeVersion: Timestamp!
-    $proposalDescription: String!
     $engineerId: Int!
+    $badgeId: Int!
+    $badgeCreatedAt: timestamp!
+    $proposalDescription: String!
   ) {
     insert_manager_to_engineer_badge_candidature_proposals_one(
       on_conflict: {
         constraint: manager_to_engineer_badge_candidature_proposals_pkey
-        where: {}
       }
       object: {
-        badge_id: $badgeId
-        badge_version: $badgeVersion
-        proposal_description: $proposalDescription
         engineer: $engineerId
+        badge_id: $badgeId
+        badge_version: $badgeCreatedAt
+        proposal_description: $proposalDescription
       }
     ) {
       id
-      badge_id
       badge_version
       engineer
       proposal_description

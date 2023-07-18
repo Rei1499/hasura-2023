@@ -10,10 +10,10 @@ import { useAuth } from "../../state/with-auth";
 
 const Candidatures = () => {
   const navigate = useNavigate();
-  const { managerId } = useAuth();
+  const auth = useAuth();
 
   const { loading, error, data } = useQuery(GET_CANDIDATURE_VIEW, {
-    variables: { managerId }
+    variables: { managerId: auth.userId }
   });
 
   if (loading) {

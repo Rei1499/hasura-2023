@@ -14,7 +14,10 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
-import { GET_ENGINEERS_BY_MANAGER, GET_BADGES_LAST } from "../../queries/BadgeEngineerMutations";
+import {
+  GET_ENGINEERS_BY_MANAGER,
+  GET_BADGES_LAST
+} from "../../queries/BadgeEngineerMutations";
 
 const ProposalForm = () => {
   const navigate = useNavigate();
@@ -25,25 +28,27 @@ const ProposalForm = () => {
     formState: { errors }
   } = useForm();
 
-  const [managerId, setManagerId] = useState();
-  // const [engineers, setEngineers] = useState([]);
+  const auth = useAuth();
+
   const [getEngineersByManager, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
 
-  const {loading: loadingBadges, error:errorBadges , data: badgesData} = useQuery(GET_BADGES_LAST)
-  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
+  const {
+    loading: loadingBadges,
+    error: errorBadges,
+    data: badgesData
+  } = useQuery(GET_BADGES_LAST);
 
-  const auth = useAuth();
-  useEffect(() => {
-    setManagerId(auth.hasura["x-hasura-tenant-id"]);
-  }, []);
+  console.log(badgesData);
+
+  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const fetchDataEngineers = async () => {
     try {
       if (managerId !== null && managerId !== undefined) {
         const { data } = await getEngineersByManager({
-          variables: { managerId: managerId }
+          variables: { managerId: auth.userId }
         });
         // setEngineers(result.data.get_engineers_by_manager);
         // Access the fetched data from the 'data' variable
@@ -54,22 +59,21 @@ const ProposalForm = () => {
     }
   };
 
-  const fetchDataBadges = async () =>{
-    
-    const {dataBadtges} = await getBadges
-
-  }
-
   useEffect(() => {
     fetchDataEngineers();
-  }, [managerId, getEngineersByManager]);
+  }, [auth.userId, getEngineersByManager]);
 
   const onSubmit = async (data) => {
     try {
+      const selectedBadge = badgesData?.badges_versions_last?.find(
+        (badge) => badge.id === data.badge
+      );
+      const badgeCreatedAt = selectedBadge?.created_at || null;
+
       await createProposalManager({
         variables: {
-          badgeId: data.badge_id,
-          badgeVersion: data.badge_version,
+          badgeId: data.badge,
+          badgeCreatedAt,
           proposalDescription: data.proposal_description,
           engineerId: data.engineer
         }
@@ -78,6 +82,7 @@ const ProposalForm = () => {
       console.log(data);
     } catch (error) {
       console.log(error);
+      console.log(data);
     }
   };
 
@@ -116,25 +121,23 @@ const ProposalForm = () => {
           rules={{ required: true }}
           render={({ field }) => (
             <Select label="Badge" {...field}>
-              {loading ? (
+              {loadingBadges ? (
                 <MenuItem value="">Loading...</MenuItem>
-              ) : error ? (
-                <MenuItem value="">Error loading engineers</MenuItem>
+              ) : errorBadges ? (
+                <MenuItem value="">Error loading badges</MenuItem>
               ) : (
-                engineers?.map((badge) => (
-                  <MenuItem key={badge.id} value={badge.created_at}>
-                    {engineer.name}
+                badgesData?.badges_versions_last?.map((badge) => (
+                  <MenuItem key={badge.id} value={badge.id}>
+                    {badge.title}
                   </MenuItem>
                 ))
               )}
             </Select>
           )}
         />
-        {errors.engineer && (
-          <FormHelperText>Engineer is required</FormHelperText>
-        )}
+        {errors.badge && <FormHelperText>Badge is required</FormHelperText>}
       </Box>
-      <Box>
+      {/* <Box>
         <TextField
           label="Badge ID"
           type="number"
@@ -153,7 +156,7 @@ const ProposalForm = () => {
         {errors.badge_version && (
           <FormHelperText>Badge Version is required</FormHelperText>
         )}
-      </Box>
+      </Box> */}
       <Box>
         <TextField
           label="Proposal Description"

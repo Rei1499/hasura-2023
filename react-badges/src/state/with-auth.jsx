@@ -25,9 +25,9 @@ const withAuth = (Component) => (props) => {
     const _payload = jwtDecode(_token);
     const _hasura = _payload["https://hasura.io/jwt/claims"];
     const _roles = _hasura["x-hasura-allowed-roles"];
+    const _id = _hasura["x-hasura-tenant-id"];
     setHasura(_hasura);
     setRoles(_roles);
-
     // Apply the role from localStorage with a default on the JWT contents:
     const _role = localStorage.getItem("hasura-role");
     setRole(_roles.includes(_role) ? _role : _hasura["x-hasura-default-role"]);
@@ -50,7 +50,7 @@ const withAuth = (Component) => (props) => {
     }
   }, []);
 
-  const login = (_token) => {
+  const login = ({ _token, _id }) => {
     try {
       emitter.pub("loadable::show");
       localStorage.setItem("hasura-token", _token);
@@ -112,7 +112,8 @@ export const useAuth = () => {
     ...data,
     isLoading: data.loading,
     hasError: data.error !== null,
-    needLogin: data.token === null
+    needLogin: data.token === null,
+    userId: data.hasura ? data.hasura["x-hasura-tenant-id"] : null
   };
 };
 
