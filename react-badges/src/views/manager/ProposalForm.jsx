@@ -73,7 +73,7 @@ const ProposalForm = () => {
       await createProposalManager({
         variables: {
           badgeId: data.badge_id,
-          badgeVersion: data.badge_version,
+          badgeCreatedAt: data.badge_created_at,
           proposalDescription: data.proposal_description,
           engineerId: data.engineer
         }
