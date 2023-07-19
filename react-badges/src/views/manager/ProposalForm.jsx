@@ -75,7 +75,8 @@ const ProposalForm = () => {
           badgeId: data.badge,
           badgeCreatedAt,
           proposalDescription: data.proposal_description,
-          engineerId: data.engineer
+          engineerId: data.engineer,
+          createdBy: auth.userId
         }
       });
       navigate("/proposals");
