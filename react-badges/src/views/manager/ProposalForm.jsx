@@ -44,7 +44,6 @@ const ProposalForm = () => {
 
   const [
     createProposalManager,
-    { loading: loadingProposal, error: errorProposal }
   ] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const fetchDataEngineers = async () => {
@@ -52,8 +51,6 @@ const ProposalForm = () => {
       const { data } = await getEngineersByManager({
         variables: { managerId: auth.userId }
       });
-      // setEngineers(result.data.get_engineers_by_manager);
-      // Access the fetched data from the 'data' variable
       console.log(data);
     } catch (error) {
       console.error(error);
@@ -62,8 +59,6 @@ const ProposalForm = () => {
 
   useEffect(() => {
     fetchDataEngineers();
-    console.log(errorProposal);
-    console.log(errorBadges);
   }, [getEngineersByManager]);
 
   const onSubmit = async (data) => {
@@ -72,8 +67,6 @@ const ProposalForm = () => {
         (badge) => badge.id === data.badge
       );
       const badgeCreatedAt = selectedBadge?.created_at || null;
-      console.log(errorProposal);
-      console.log(errorBadges);
       await createProposalManager({
         variables: {
           badgeId: data.badge,
@@ -145,26 +138,6 @@ const ProposalForm = () => {
         />
         {errors.badge && <FormHelperText>Badge is required</FormHelperText>}
       </Box>
-      {/* <Box>
-        <TextField
-          label="Badge ID"
-          type="number"
-          {...register("badge_id", { required: true })}
-        />
-        {errors.badge_id && (
-          <FormHelperText>Badge ID is required</FormHelperText>
-        )}
-      </Box>
-      <Box>
-        <TextField
-          label="Badge Version"
-          type="text"
-          {...register("badge_version", { required: true })}
-        />
-        {errors.badge_version && (
-          <FormHelperText>Badge Version is required</FormHelperText>
-        )}
-      </Box> */}
       <Box>
         <TextField
           label="Proposal Description"
