@@ -58,13 +58,19 @@ const users: User[] = [
 
 const LoginView = () => {
   const { login } = useAuth();
+
   return (
     <CenteredLayout>
       <Typography variant="h1">Badges App</Typography>
       <List>
         {users.map((user) => (
           <ListItem key={user.id}>
-            <ListItemButton onClick={() => login(user.token)}>
+            <ListItemButton
+              onClick={() => {
+                console.log("onclick", user.token);
+                login(user);
+              }}
+            >
               <ListItemText
                 primary={user.name}
                 secondary={user.roles.join(", ")}
