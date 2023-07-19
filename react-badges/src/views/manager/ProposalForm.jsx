@@ -42,18 +42,19 @@ const ProposalForm = () => {
 
   console.log(badgesData);
 
-  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
+  const [
+    createProposalManager,
+    { loading: loadingProposal, error: errorProposal }
+  ] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const fetchDataEngineers = async () => {
     try {
-      if (managerId !== null && managerId !== undefined) {
-        const { data } = await getEngineersByManager({
-          variables: { managerId: auth.userId }
-        });
-        // setEngineers(result.data.get_engineers_by_manager);
-        // Access the fetched data from the 'data' variable
-        console.log(data);
-      }
+      const { data } = await getEngineersByManager({
+        variables: { managerId: auth.userId }
+      });
+      // setEngineers(result.data.get_engineers_by_manager);
+      // Access the fetched data from the 'data' variable
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -61,7 +62,9 @@ const ProposalForm = () => {
 
   useEffect(() => {
     fetchDataEngineers();
-  }, [auth.userId, getEngineersByManager]);
+    console.log(errorProposal);
+    console.log(errorBadges);
+  }, [getEngineersByManager]);
 
   const onSubmit = async (data) => {
     try {
@@ -69,7 +72,8 @@ const ProposalForm = () => {
         (badge) => badge.id === data.badge
       );
       const badgeCreatedAt = selectedBadge?.created_at || null;
-
+      console.log(errorProposal);
+      console.log(errorBadges);
       await createProposalManager({
         variables: {
           badgeId: data.badge,
@@ -86,6 +90,9 @@ const ProposalForm = () => {
       console.log(data);
     }
   };
+
+  if (loading) return <Box>Loading...</Box>;
+  if (error) return <Box>Error: {error.message}</Box>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
