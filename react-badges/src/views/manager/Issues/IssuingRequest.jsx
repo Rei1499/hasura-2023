@@ -20,12 +20,17 @@ import {
 
 const IssuingRequests = ({ managerId }) => {
   console.log(managerId, "ManagerId");
-  const { loading, error, data } = useQuery(GET_ISSUING_REQUESTS_FOR_MANAGER, {
-    variables: { managerId: { _eq: managerId } }
-  });
+  const { loading, error, data, refetch } = useQuery(
+    GET_ISSUING_REQUESTS_FOR_MANAGER,
+    {
+      variables: { managerId: { _eq: managerId } }
+    }
+  );
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
-  const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL);
+  const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL, {
+    onCompleted: () => refetch()
+  });
   const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
 
   const handleApproveIssuingRequest = (requestId) => {
