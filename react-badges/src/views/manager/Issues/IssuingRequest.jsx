@@ -53,6 +53,7 @@ const IssuingRequests = ({ managerId }) => {
         id: requestedId,
         disapprovalMotivation: disapprovalMotivation
       }
+
     });
 
     setOpen(false);
@@ -73,7 +74,7 @@ const IssuingRequests = ({ managerId }) => {
   console.log(data);
 
   return (
-    <div>
+    <>
       <Typography
         variant="h2"
         sx={{ fontSize: 24 }}
@@ -82,10 +83,10 @@ const IssuingRequests = ({ managerId }) => {
       >
         Issuing Request
       </Typography>
-      <Card variant="outlined">
-        <CardContent>
-          {data.issuing_requests_view.map((request) => (
-            <div key={request.id}>
+      {data.issuing_requests_view.map((request) => (
+        <Card key={request.id} variant="outlined">
+          <CardContent>
+            <div>
               <Typography variant="h5" component="div">
                 Badge Title: {request.badge_title}
               </Typography>
@@ -128,6 +129,7 @@ const IssuingRequests = ({ managerId }) => {
         </DialogActions>
       </Dialog>
     </div>
+
   );
 };
 

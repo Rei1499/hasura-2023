@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import Table from "../../components/reUsable/Table";
 import { useAuth } from "../../state/with-auth";
 import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
@@ -12,15 +12,13 @@ import {
 import ProposalActionButtons from "./ProposalActionButtons";
 
 const Proposals = () => {
-  const [managerId, setManagerId] = useState();
   const navigate = useNavigate();
 
   const auth = useAuth();
-  useEffect(() => {
-    setManagerId(auth.hasura["x-hasura-tenant-id"]);
-  }, []);
 
-  const { loading, error, data } = useQuery(GET_PROPOSALS_WITH_STATUS);
+  const { loading, error, data } = useQuery(GET_PROPOSALS_WITH_STATUS, {
+    variables: { managerId: auth.userId }
+  });
 
   if (loading) {
     return <Box>Loading...</Box>;
@@ -44,16 +42,6 @@ const Proposals = () => {
       renderCell: (params) => <ProposalActionButtons rowId={params.row.id} />
     }
   ];
-
-  const handleAcceptClick = (id) => {
-    // Handle accept button click based on the row ID
-    console.log(`Accept button clicked for row with ID: ${id}`);
-  };
-
-  const handleRejectClick = (id) => {
-    // Handle reject button click based on the row ID
-    console.log(`Reject button clicked for row with ID: ${id}`);
-  };
 
   return (
     <>

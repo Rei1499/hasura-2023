@@ -31,10 +31,13 @@ insert_permissions:
     permission:
       check: {}
       columns:
-        - badge_id
-        - badge_version
-        - engineer
         - proposal_description
+        - badge_id
+        - created_by
+        - engineer
+        - id
+        - badge_version
+        - created_at
 select_permissions:
   - role: manager
     permission:
