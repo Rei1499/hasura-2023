@@ -5,7 +5,7 @@ import { useAuth } from "../../state/with-auth";
 const IssueComponent = () => {
   const auth = useAuth();
 
-  const role = auth.hasura["x-hasura-tenant-id"];
+  const role = Number(auth.hasura["x-hasura-tenant-id"]);
   return (
     <>
       <IssuingRequests managerId={role} />

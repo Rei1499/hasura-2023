@@ -72,8 +72,9 @@ const Engineers = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  console.log(engineers);
-  console.log(managerId, "managerId");
+  if (data && data.get_engineers_by_manager.length < 1)
+  return <p>No Data to show</p>;
+  console.log(data, "data");
 
   return (
     <>

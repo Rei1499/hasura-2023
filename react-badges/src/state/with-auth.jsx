@@ -34,7 +34,7 @@ const withAuth = (Component) => (props) => {
 
     setToken(_token);
   };
-
+  console.log(hasura, "hasura");
   useEffect(() => {
     try {
       // Fetch the token:

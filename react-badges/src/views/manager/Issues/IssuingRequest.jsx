@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Box, Button, Card, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  DialogTitle,
+  TextField
+} from "@mui/material";
 import {
   GET_ISSUING_REQUESTS_FOR_MANAGER,
   UPDATE_ISSUING_REQUEST_APPROVAL,
@@ -8,11 +19,19 @@ import {
 } from "../../../queries/IssueMutations";
 
 const IssuingRequests = ({ managerId }) => {
-  const { loading, error, data } = useQuery(GET_ISSUING_REQUESTS_FOR_MANAGER, {
-    variables: { managerId: { _eq: managerId } }
+  console.log(managerId, "ManagerId");
+  const { loading, error, data, refetch } = useQuery(
+    GET_ISSUING_REQUESTS_FOR_MANAGER,
+    {
+      variables: { managerId: { _eq: managerId } }
+    }
+  );
+  const [requestedId, setRequestedId] = useState();
+  const [open, setOpen] = useState(false);
+  const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
+  const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL, {
+    onCompleted: () => refetch()
   });
-
-  const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL);
   const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
 
   const handleApproveIssuingRequest = (requestId) => {
@@ -20,11 +39,25 @@ const IssuingRequests = ({ managerId }) => {
       variables: { id: requestId }
     });
   };
-
+  const handleClose = () => {
+    setOpen(false);
+    setDisapprovalMotivation("");
+  };
   const handleRejectIssuingRequest = (requestId) => {
+    setOpen(true);
+    setRequestedId(requestId);
+  };
+  const handleSubmit = () => {
     rejectIssuingRequest({
-      variables: { id: requestId }
+      variables: {
+        id: requestedId,
+        disapprovalMotivation: disapprovalMotivation
+      }
+
     });
+
+    setOpen(false);
+    setDisapprovalMotivation("");
   };
 
   if (loading) {
@@ -38,6 +71,7 @@ const IssuingRequests = ({ managerId }) => {
       </Typography>
     );
   }
+  console.log(data);
 
   return (
     <>
@@ -75,10 +109,27 @@ const IssuingRequests = ({ managerId }) => {
                 Reject
               </Button>
             </div>
-          </CardContent>
-        </Card>
-      ))}
-    </>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Rejection</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Disapproval Motivation"
+            value={disapprovalMotivation}
+            onChange={(e) => setDisapprovalMotivation(e.target.value)}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>Submit Rejection</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+
   );
 };
 
