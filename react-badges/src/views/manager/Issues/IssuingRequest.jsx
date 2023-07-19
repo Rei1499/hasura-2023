@@ -26,6 +26,7 @@ const IssuingRequests = ({ managerId }) => {
       variables: { managerId: { _eq: managerId } }
     }
   );
+  const [requestedId, setRequestedId] = useState();
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
   const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL, {
@@ -44,10 +45,14 @@ const IssuingRequests = ({ managerId }) => {
   };
   const handleRejectIssuingRequest = (requestId) => {
     setOpen(true);
+    setRequestedId(requestId);
   };
   const handleSubmit = () => {
     rejectIssuingRequest({
-      variables: { id: requestId }
+      variables: {
+        id: requestedId,
+        disapprovalMotivation: disapprovalMotivation
+      }
     });
 
     setOpen(false);
