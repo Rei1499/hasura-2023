@@ -74,7 +74,7 @@ const IssuingRequests = ({ managerId }) => {
   console.log(data);
 
   return (
-    <>
+    <div>
       <Typography
         variant="h2"
         sx={{ fontSize: 24 }}
@@ -109,10 +109,10 @@ const IssuingRequests = ({ managerId }) => {
                 Reject
               </Button>
             </div>
-          ))}
+          
         </CardContent>
       </Card>
-
+      ))}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Rejection</DialogTitle>
         <DialogContent>
