@@ -27,7 +27,12 @@ const ProposalForm = () => {
     register,
     control,
     formState: { errors }
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      engineer: location.state?.engineerId || null,
+      badge: location.state?.badgeId || null
+    }
+  });
 
   const auth = useAuth();
 
@@ -96,11 +101,7 @@ const ProposalForm = () => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <Select
-              label="Engineer"
-              defaultValue={location.state?.engineerId || null}
-              {...field}
-            >
+            <Select label="Engineer" {...field}>
               {loading ? (
                 <MenuItem value="">Loading...</MenuItem>
               ) : error ? (
@@ -125,11 +126,7 @@ const ProposalForm = () => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <Select
-              label="Badge"
-              defaultValue={location.state?.badgeId || null}
-              {...field}
-            >
+            <Select label="Badge" {...field}>
               {loadingBadges ? (
                 <MenuItem value="">Loading...</MenuItem>
               ) : errorBadges ? (
