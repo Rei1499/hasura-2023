@@ -106,8 +106,9 @@ export const proposalColumnsToManager = [
     width: 200
   },
   {
-    field: "manager_badge_candidature_proposal_responses.is_approved",
+    field: "manager_badge_candidature_proposal_responses",
     headerName: "Approval Status",
-    width: 200
+    width: 200,
+    renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
 ];

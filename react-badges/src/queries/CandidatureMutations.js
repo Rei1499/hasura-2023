@@ -35,6 +35,7 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
     ) {
       id
       badge_id
+      proposal_description
       badge_version
       created_at
       created_by
