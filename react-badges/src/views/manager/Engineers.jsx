@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
-import withApollo from "../../state/with-apollo";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { userColumns } from "../../components/reUsable/DataTable";
 import Table from "../../components/reUsable/Table";
 import Button from "@mui/material/Button";
 import { useAuth } from "../../state/with-auth";
 import { useNavigate } from "react-router-dom";
 import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
+import { Box, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
 const Engineers = () => {
   const [engineers, setEngineers] = useState([]);
-  const [managerId, setManagerId] = useState();
-
+  const [executeMutation, { loading, error, data }] = useMutation(
+    GET_ENGINEERS_BY_MANAGER
+  );
   const updatedColumns = [
     ...userColumns,
     {
       field: "actions",
       headerName: "Propose Badge",
-      width: 100,
+      width: 150,
       renderCell: (params) => (
         <Button
           variant="contained"
@@ -30,13 +33,6 @@ const Engineers = () => {
   ];
 
   const auth = useAuth();
-  useEffect(() => {
-    setManagerId(auth.hasura["x-hasura-tenant-id"]);
-  }, []);
-
-  const [executeMutation, { loading, error, data }] = useMutation(GET_ENGINEERS_BY_MANAGER,{
-
-  });
 
   const navigate = useNavigate();
 
@@ -48,33 +44,58 @@ const Engineers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (managerId !== null && managerId !== undefined) {
-          const result = await executeMutation({
-            variables: { managerId }
-          });
-          setEngineers(result.data.get_engineers_by_manager);
-        }
+        const result = await executeMutation({
+          variables: { managerId: auth.userId }
+        });
+        setEngineers(result.data.get_engineers_by_manager);
       } catch (error) {
         console.error("Error fetching engineers:", error);
       }
     };
 
     fetchData();
-  }, [managerId, executeMutation]);
+  }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (data && data.get_engineers_by_manager.length < 1)
-  return <p>No Data to show</p>;
+  const LoadingMessage = styled("p")({
+    fontSize: "18px",
+    color: "#666",
+    textAlign: "center",
+    padding: "20px"
+  });
+
+  const ErrorMessage = styled("p")({
+    fontSize: "18px",
+    color: "#ff0000",
+    textAlign: "center",
+    padding: "20px"
+  });
+
+  const NoDataMessage = styled("p")({
+    fontSize: "18px",
+    color: "#666",
+    textAlign: "center",
+    padding: "20px"
+  });
+  if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
+  if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
+  if (!data || data.get_engineers_by_manager.length < 1)
+    return <NoDataMessage>No Data to show</NoDataMessage>;
   console.log(data, "data");
 
   return (
     <>
-      <div>
+      <Typography
+        variant="h4" // Use the desired heading variant (h1, h2, h3, h4, etc.)
+        align="center" // Align the title to the center
+        sx={{ margin: "20px 0", fontWeight: "bold", color: "#333" }} // Apply custom styles
+      >
+        List of Engineers
+      </Typography>
+      <Box sx={{ width: "75%", margin: "20px auto 0" }}>
         <Table row={engineers} columns={updatedColumns} />
-      </div>
+      </Box>
     </>
   );
 };
 
-export default withApollo(Engineers);
+export default Engineers;

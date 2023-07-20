@@ -1,32 +1,12 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
-import withApollo from "../../state/with-apollo";
-import { useAuth } from "../../state/with-auth";
+import { useQuery } from "@apollo/client";
 import BadgeCard from "../../components/reUsable/BadgeCard";
 import Box from "@mui/material/Box";
+import { GET_BADGES_LAST } from "../../queries/BadgeEngineerMutations";
 
-const BadgeQuery = gql`
-  query MyQuery {
-    badges_versions_last {
-      description
-      id
-      requirements
-      title
-      created_at
-    }
-  }
-`;
 const Badges = () => {
-  const auth = useAuth();
-  console.log(auth, "auth");
-  const { loading, error, data } = useQuery(BadgeQuery, {
-    context: {
-      headers: {
-        authorization: `Bearer ${auth.token}`,
-        "x-hasura-role": auth.role
-      }
-    }
-  });
+
+  const { loading, error, data } = useQuery(GET_BADGES_LAST);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
