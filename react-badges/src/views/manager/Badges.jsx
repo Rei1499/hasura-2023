@@ -37,6 +37,7 @@ const Badges = () => {
     <div>
       <Box
         sx={{
+          margin: "20px",
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "space-around"

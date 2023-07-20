@@ -32,7 +32,9 @@ const IssuingRequests = ({ managerId }) => {
   const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL, {
     onCompleted: () => refetch()
   });
-  const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
+  const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION, {
+    onCompleted: () => refetch()
+  });
 
   const handleApproveIssuingRequest = (requestId) => {
     approveIssuingRequest({

@@ -6,7 +6,7 @@ import Table from "../../components/reUsable/Table";
 import Button from "@mui/material/Button";
 import { useAuth } from "../../state/with-auth";
 import { useNavigate } from "react-router-dom";
-
+import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
 const Engineers = () => {
   const [engineers, setEngineers] = useState([]);
   const [managerId, setManagerId] = useState();
@@ -28,23 +28,15 @@ const Engineers = () => {
       )
     }
   ];
-  const MY_MUTATION = gql`
-    mutation MyMutation($managerId: Int!) {
-      get_engineers_by_manager(args: { manager_id: $managerId }) {
-        created_at
-        id
-        modified_at
-        name
-        roles
-      }
-    }
-  `;
+
   const auth = useAuth();
   useEffect(() => {
     setManagerId(auth.hasura["x-hasura-tenant-id"]);
   }, []);
 
-  const [executeMutation, { loading, error, data }] = useMutation(MY_MUTATION);
+  const [executeMutation, { loading, error, data }] = useMutation(GET_ENGINEERS_BY_MANAGER,{
+
+  });
 
   const navigate = useNavigate();
 
