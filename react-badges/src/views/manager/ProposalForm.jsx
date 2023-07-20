@@ -95,79 +95,92 @@ const ProposalForm = () => {
     return <Box>Error: {error?.message || errorBadges?.message}</Box>;
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h4" gutterBottom>
-          Create a new proposal
-        </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box>
-            <Typography>Create a new proposal</Typography>
-            <Controller
-              name="engineer"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select label="Engineer" {...field}>
-                  {loading ? (
-                    <MenuItem value="">Loading...</MenuItem>
-                  ) : error ? (
-                    <MenuItem value="">Error loading engineers</MenuItem>
-                  ) : (
-                    data?.get_engineers_by_manager?.map((engineer) => (
-                      <MenuItem key={engineer.id} value={engineer.id}>
-                        {engineer.name}
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      marginTop={6}
+    >
+      <Card sx={{ width: 500, height: 800 }}>
+        <CardContent>
+          <Typography variant="h2" gutterBottom>
+            Create a new proposal
+          </Typography>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box>
+              <Typography>Create a new proposal</Typography>
+              <Controller
+                name="engineer"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select label="Engineer" sx={{ width: "300px" }} {...field}>
+                    {loading ? (
+                      <MenuItem value="">Loading...</MenuItem>
+                    ) : error ? (
+                      <MenuItem value="">Error loading engineers</MenuItem>
+                    ) : (
+                      data?.get_engineers_by_manager?.map((engineer) => (
+                        <MenuItem key={engineer.id} value={engineer.id}>
+                          {engineer.name}
+                        </MenuItem>
+                      ))
+                    )}
+                  </Select>
+                )}
+              />
+              {errors.engineer && (
+                <FormHelperText>Engineer is required</FormHelperText>
               )}
-            />
-            {errors.engineer && (
-              <FormHelperText>Engineer is required</FormHelperText>
-            )}
-          </Box>
-          <Box>
-            <Controller
-              name="badge"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select label="Badge" {...field}>
-                  {loadingBadges ? (
-                    <MenuItem value="">Loading...</MenuItem>
-                  ) : errorBadges ? (
-                    <MenuItem value="">Error loading badges</MenuItem>
-                  ) : (
-                    badgesData?.badges_versions_last?.map((badge) => (
-                      <MenuItem key={badge.id} value={badge.id}>
-                        {badge.title}
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
+            </Box>
+            <Box>
+              <Controller
+                name="badge"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select label="Badge" sx={{ width: "300px" }} {...field}>
+                    {loadingBadges ? (
+                      <MenuItem value="">Loading...</MenuItem>
+                    ) : errorBadges ? (
+                      <MenuItem value="">Error loading badges</MenuItem>
+                    ) : (
+                      badgesData?.badges_versions_last?.map((badge) => (
+                        <MenuItem key={badge.id} value={badge.id}>
+                          {badge.title}
+                        </MenuItem>
+                      ))
+                    )}
+                  </Select>
+                )}
+              />
+              {errors.badge && (
+                <FormHelperText>Badge is required</FormHelperText>
               )}
-            />
-            {errors.badge && <FormHelperText>Badge is required</FormHelperText>}
-          </Box>
-          <Box>
-            <TextField
-              label="Proposal Description"
-              multiline
-              minRows={4}
-              {...register("proposal_description", { required: true })}
-            />
-            {errors.proposal_description && (
-              <FormHelperText>Proposal Description is required</FormHelperText>
-            )}
-          </Box>
-          <Button type="submit" disabled={loading}>
-            Submit
-          </Button>
-          {error && <FormHelperText>Error: {error.message}</FormHelperText>}
-        </form>
-      </CardContent>
-    </Card>
+            </Box>
+            <Box>
+              <TextField
+                label="Proposal Description"
+                multiline
+                minRows={4}
+                {...register("proposal_description", { required: true })}
+              />
+              {errors.proposal_description && (
+                <FormHelperText>
+                  Proposal Description is required
+                </FormHelperText>
+              )}
+            </Box>
+            <Button type="submit" disabled={loading}>
+              Submit
+            </Button>
+            {error && <FormHelperText>Error: {error.message}</FormHelperText>}
+          </form>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
