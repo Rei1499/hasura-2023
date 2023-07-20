@@ -111,6 +111,7 @@ const IssuingRequests = ({ managerId }) => {
             </div>
           </CardContent>
         </Card>
+
       ))}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Rejection</DialogTitle>

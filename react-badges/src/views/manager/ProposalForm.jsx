@@ -46,13 +46,12 @@ const ProposalForm = () => {
 
   const fetchDataEngineers = async () => {
     try {
-      if (managerId !== null && managerId !== undefined) {
-        const { data } = await getEngineersByManager({
-          variables: { managerId: auth.userId }
-        });
 
-        console.log(data);
-      }
+      const { data } = await getEngineersByManager({
+        variables: { managerId: auth.userId }
+      });
+
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
