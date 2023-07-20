@@ -10,7 +10,9 @@ import {
   Typography,
   Select,
   MenuItem,
-  FormHelperText
+  FormHelperText,
+  Card,
+  CardContent
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
@@ -52,7 +54,6 @@ const ProposalForm = () => {
 
   const fetchDataEngineers = async () => {
     try {
-
       const { data } = await getEngineersByManager({
         variables: { managerId: auth.userId }
       });
@@ -89,77 +90,84 @@ const ProposalForm = () => {
     }
   };
 
-  console.log(location.state.badgeId);
-  if (loading) return <Box>Loading...</Box>;
-  if (error) return <Box>Error: {error.message}</Box>;
+  if (loading || loadingBadges) return <Box>Loading...</Box>;
+  if (error || errorBadges)
+    return <Box>Error: {error?.message || errorBadges?.message}</Box>;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box>
-        <Typography>Create a new proposal</Typography>
-        <Controller
-          name="engineer"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Select label="Engineer" {...field}>
-              {loading ? (
-                <MenuItem value="">Loading...</MenuItem>
-              ) : error ? (
-                <MenuItem value="">Error loading engineers</MenuItem>
-              ) : (
-                data?.get_engineers_by_manager?.map((engineer) => (
-                  <MenuItem key={engineer.id} value={engineer.id}>
-                    {engineer.name}
-                  </MenuItem>
-                ))
+    <Card>
+      <CardContent>
+        <Typography variant="h4" gutterBottom>
+          Create a new proposal
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box>
+            <Typography>Create a new proposal</Typography>
+            <Controller
+              name="engineer"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select label="Engineer" {...field}>
+                  {loading ? (
+                    <MenuItem value="">Loading...</MenuItem>
+                  ) : error ? (
+                    <MenuItem value="">Error loading engineers</MenuItem>
+                  ) : (
+                    data?.get_engineers_by_manager?.map((engineer) => (
+                      <MenuItem key={engineer.id} value={engineer.id}>
+                        {engineer.name}
+                      </MenuItem>
+                    ))
+                  )}
+                </Select>
               )}
-            </Select>
-          )}
-        />
-        {errors.engineer && (
-          <FormHelperText>Engineer is required</FormHelperText>
-        )}
-      </Box>
-      <Box>
-        <Controller
-          name="badge"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Select label="Badge" {...field}>
-              {loadingBadges ? (
-                <MenuItem value="">Loading...</MenuItem>
-              ) : errorBadges ? (
-                <MenuItem value="">Error loading badges</MenuItem>
-              ) : (
-                badgesData?.badges_versions_last?.map((badge) => (
-                  <MenuItem key={badge.id} value={badge.id}>
-                    {badge.title}
-                  </MenuItem>
-                ))
+            />
+            {errors.engineer && (
+              <FormHelperText>Engineer is required</FormHelperText>
+            )}
+          </Box>
+          <Box>
+            <Controller
+              name="badge"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select label="Badge" {...field}>
+                  {loadingBadges ? (
+                    <MenuItem value="">Loading...</MenuItem>
+                  ) : errorBadges ? (
+                    <MenuItem value="">Error loading badges</MenuItem>
+                  ) : (
+                    badgesData?.badges_versions_last?.map((badge) => (
+                      <MenuItem key={badge.id} value={badge.id}>
+                        {badge.title}
+                      </MenuItem>
+                    ))
+                  )}
+                </Select>
               )}
-            </Select>
-          )}
-        />
-        {errors.badge && <FormHelperText>Badge is required</FormHelperText>}
-      </Box>
-      <Box>
-        <TextField
-          label="Proposal Description"
-          multiline
-          minRows={4}
-          {...register("proposal_description", { required: true })}
-        />
-        {errors.proposal_description && (
-          <FormHelperText>Proposal Description is required</FormHelperText>
-        )}
-      </Box>
-      <Button type="submit" disabled={loading}>
-        Submit
-      </Button>
-      {error && <FormHelperText>Error: {error.message}</FormHelperText>}
-    </form>
+            />
+            {errors.badge && <FormHelperText>Badge is required</FormHelperText>}
+          </Box>
+          <Box>
+            <TextField
+              label="Proposal Description"
+              multiline
+              minRows={4}
+              {...register("proposal_description", { required: true })}
+            />
+            {errors.proposal_description && (
+              <FormHelperText>Proposal Description is required</FormHelperText>
+            )}
+          </Box>
+          <Button type="submit" disabled={loading}>
+            Submit
+          </Button>
+          {error && <FormHelperText>Error: {error.message}</FormHelperText>}
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

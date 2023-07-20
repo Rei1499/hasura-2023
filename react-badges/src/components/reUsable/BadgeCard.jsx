@@ -100,14 +100,6 @@ const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
                 </RequirementItem>
               ))}
           </CardContent>
-
-          <Button
-            onClick={() => {
-              navigate(`/proposalform`, { state: { badgeId: id } });
-            }}
-          >
-            Assign Badge to Engineer
-          </Button>
         </Collapse>
       </Card>
     </div>
