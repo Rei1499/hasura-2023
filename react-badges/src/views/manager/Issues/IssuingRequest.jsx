@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
+import { useAuth } from "../../../state/with-auth";
 import {
-  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,13 +12,17 @@ import {
   DialogTitle,
   TextField
 } from "@mui/material";
+
 import {
   GET_ISSUING_REQUESTS_FOR_MANAGER,
   UPDATE_ISSUING_REQUEST_APPROVAL,
   UPDATE_ISSUING_REQUEST_REJECTION
 } from "../../../queries/IssueMutations";
 
-const IssuingRequests = ({ managerId }) => {
+const IssuingRequests = () => {
+  const auth = useAuth();
+
+  const managerId = Number(auth.hasura["x-hasura-tenant-id"]);
   console.log(managerId, "ManagerId");
   const { loading, error, data, refetch } = useQuery(
     GET_ISSUING_REQUESTS_FOR_MANAGER,
@@ -97,6 +101,10 @@ const IssuingRequests = ({ managerId }) => {
               Engineer Name: {request.engineer_name}
             </Typography>
 
+            <Typography variant="body1">
+              Badge Version: {request.badge_version}
+            </Typography>
+
             {Object.values(request.candidature_evidences).map(
               (evidence, index) => (
                 <Typography key={index} variant="body1">
@@ -104,19 +112,23 @@ const IssuingRequests = ({ managerId }) => {
                 </Typography>
               )
             )}
-            <Button
-              size="small"
-              onClick={() => handleApproveIssuingRequest(request.id)}
-            >
-              Approve
-            </Button>
-            <Button
-              size="small"
-              onClick={() => handleRejectIssuingRequest(request.id)}
-            >
-              Reject
-            </Button>
           </CardContent>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={() => handleApproveIssuingRequest(request.id)}
+          >
+            Approve
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={() => handleRejectIssuingRequest(request.id)}
+          >
+            Reject
+          </Button>
         </Card>
       ))}
       <Dialog open={open} onClose={handleClose}>
