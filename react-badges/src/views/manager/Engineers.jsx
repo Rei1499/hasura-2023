@@ -4,8 +4,10 @@ import { userColumns } from "../../components/reUsable/DataTable";
 import Table from "../../components/reUsable/Table";
 import Button from "@mui/material/Button";
 import { useAuth } from "../../state/with-auth";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, useLocation } from "react-router-dom";
 import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
+
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -14,6 +16,7 @@ const Engineers = () => {
   const [executeMutation, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
+
   const updatedColumns = [
     ...userColumns,
     {
@@ -33,12 +36,12 @@ const Engineers = () => {
   ];
 
   const auth = useAuth();
-
+    const location = useLocation();
   const navigate = useNavigate();
 
-  const handleButtonClick = (id) => {
-    navigate("/proposalform");
-    console.log(`Button clicked for row with ID: ${id}`);
+  const handleButtonClick = (engineerId) => {
+    navigate(`/proposalform`,{ state: {engineerId}});
+    console.log(`Button clicked for row with ID: ${engineerId}`);
   };
 
   useEffect(() => {
@@ -54,6 +57,7 @@ const Engineers = () => {
     };
 
     fetchData();
+
   }, []);
 
   const LoadingMessage = styled("p")({
@@ -80,6 +84,7 @@ const Engineers = () => {
   if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
   if (!data || data.get_engineers_by_manager.length < 1)
     return <NoDataMessage>No Data to show</NoDataMessage>;
+
   console.log(data, "data");
 
   return (

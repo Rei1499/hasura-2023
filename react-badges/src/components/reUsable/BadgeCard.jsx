@@ -26,13 +26,14 @@ const ExpandMore = styled((props) => {
   })
 }));
 
-const BadgeCard = ({ created, title, photo, description, requirement }) => {
+const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
   const navigate = useNavigate();
+
   const RequirementItem = styled("div")(({ theme }) => ({
     backgroundColor: teal[200], // Use a lively color for the background
     padding: "16px",
@@ -47,6 +48,7 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
       backgroundColor: teal[300] // Change to a slightly darker color on hover
     }
   }));
+
   return (
     <div>
       <Card sx={{ maxWidth: 345 }}>
@@ -98,6 +100,15 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
                 </RequirementItem>
               ))}
           </CardContent>
+
+          <Button
+            onClick={() => {
+              navigate(`/proposalform`, { state: { badgeId: id } });
+            }}
+          >
+            Assign Badge to Engineer
+          </Button>
+
         </Collapse>
       </Card>
     </div>

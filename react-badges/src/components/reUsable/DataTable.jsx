@@ -1,3 +1,5 @@
+import ProposalStatusCell from "../../views/manager/ProposalStatusButtons";
+
 export const userColumns = [
   { field: "id", headerName: "ID", width: 40 },
   { field: "name", headerName: "Name", width: 170 },
@@ -76,9 +78,10 @@ export const proposalColumnsFromManager = [
     width: 200
   },
   {
-    field: "engineer_badge_candidature_proposal_responses.is_approved",
+    field: "engineer_badge_candidature_proposal_responses",
     headerName: "Approval Status",
-    width: 200
+    width: 200,
+    renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
 ];
 export const proposalColumnsToManager = [
@@ -103,8 +106,9 @@ export const proposalColumnsToManager = [
     width: 200
   },
   {
-    field: "manager_badge_candidature_proposal_responses.is_approved",
+    field: "manager_badge_candidature_proposal_responses",
     headerName: "Approval Status",
-    width: 200
+    width: 200,
+    renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
 ];

@@ -6,7 +6,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField
+  TextField,
+  CircularProgress
 } from "@mui/material";
 import { useMutation } from "@apollo/client";
 import {
@@ -17,24 +18,24 @@ import {
 const ProposalActionButtons = ({ rowId }) => {
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
-  const [disapproveCandidatureProposal] = useMutation(
-    DISAPPROVE_CANDIDATURE_PROPOSAL
-  );
-  const [approveCandidatureProposal] = useMutation(
-    APPROVE_CANDIDATURE_PROPOSAL
-  );
+  const [
+    disapproveCandidatureProposal,
+    { loading: loadingDisapprove, error: errorDisapprove }
+  ] = useMutation(DISAPPROVE_CANDIDATURE_PROPOSAL);
+  const [
+    approveCandidatureProposal,
+    { loading: loadingApprove, error: errorApprove }
+  ] = useMutation(APPROVE_CANDIDATURE_PROPOSAL);
 
   const handleRejectButtonClick = () => {
     setOpen(true);
   };
 
   const handleAcceptButtonClick = () => {
-    // Perform the mutation for approval
     approveCandidatureProposal({
       variables: {
         proposalId: rowId
       }
-      // Handle success and error cases if needed
     });
   };
 
@@ -44,13 +45,11 @@ const ProposalActionButtons = ({ rowId }) => {
   };
 
   const handleSubmit = () => {
-    // Perform the mutation with the disapprovalMotivation
     disapproveCandidatureProposal({
       variables: {
         proposalId: rowId,
         disapprovalMotivation: disapprovalMotivation
       }
-      // Handle success and error cases if needed
     });
 
     setOpen(false);
@@ -63,15 +62,17 @@ const ProposalActionButtons = ({ rowId }) => {
         variant="contained"
         color="primary"
         onClick={handleAcceptButtonClick}
+        disable={loadingApprove}
       >
-        Accept
+        {loadingApprove ? <CircularProgress size={20} /> : "Accept"}
       </Button>
       <Button
         variant="contained"
         color="secondary"
         onClick={handleRejectButtonClick}
+        loading={loadingDisapprove}
       >
-        Reject
+        {loadingDisapprove ? <CircularProgress size={20} /> : "Reject"}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Rejection</DialogTitle>
@@ -82,12 +83,26 @@ const ProposalActionButtons = ({ rowId }) => {
             onChange={(e) => setDisapprovalMotivation(e.target.value)}
             fullWidth
           />
+          {errorDisapprove && (
+            <FormHelperText error>{errorDisapprove.message}</FormHelperText>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit Rejection</Button>
+          <Button onClick={handleClose} disabled={loadingDisapprove}>
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit}>
+            {loadingDisapprove ? (
+              <CircularProgress size={20} />
+            ) : (
+              "Submit Rejection"
+            )}
+          </Button>
         </DialogActions>
       </Dialog>
+      {errorApprove && (
+        <FormHelperText error>{errorApprove.message}</FormHelperText>
+      )}
     </Box>
   );
 };
