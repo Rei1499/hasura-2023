@@ -26,7 +26,7 @@ const ExpandMore = styled((props) => {
   })
 }));
 
-const BadgeCard = ({ created, title, photo, description, requirement }) => {
+const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -34,6 +34,7 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
   };
   const navigate = useNavigate();
 
+  console.log(id);
   return (
     <div>
       <Card sx={{ maxWidth: 345 }}>
@@ -80,7 +81,7 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
           </CardContent>
           <Button
             onClick={() => {
-              navigate(`/proposalform`,{ state: {engineerId}});
+              navigate(`/proposalform`, { state: { badgeId: id } });
             }}
           >
             Assign Badge to Engineer

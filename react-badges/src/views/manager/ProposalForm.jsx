@@ -83,6 +83,7 @@ const ProposalForm = () => {
     }
   };
 
+  console.log(location.state.badgeId);
   if (loading) return <Box>Loading...</Box>;
   if (error) return <Box>Error: {error.message}</Box>;
 
@@ -124,7 +125,11 @@ const ProposalForm = () => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <Select label="Badge" {...field}>
+            <Select
+              label="Badge"
+              defaultValue={location.state?.badgeId || null}
+              {...field}
+            >
               {loadingBadges ? (
                 <MenuItem value="">Loading...</MenuItem>
               ) : errorBadges ? (

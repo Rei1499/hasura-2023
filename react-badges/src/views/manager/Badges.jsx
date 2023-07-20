@@ -46,6 +46,7 @@ const Badges = () => {
           badges_versions_last.map((item, index) => (
             <BadgeCard
               key={index}
+              id={item.id}
               created={item.created_at}
               title={item.title}
               description={item.description}
