@@ -10,7 +10,6 @@ import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
 
 const Engineers = () => {
   const [engineers, setEngineers] = useState([]);
-  const [managerId, setManagerId] = useState();
 
   const updatedColumns = [
     ...userColumns,
@@ -31,9 +30,6 @@ const Engineers = () => {
   ];
 
   const auth = useAuth();
-  useEffect(() => {
-    setManagerId(auth.hasura["x-hasura-tenant-id"]);
-  }, []);
 
   const [getEngineersByManager, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
@@ -42,19 +38,17 @@ const Engineers = () => {
   const navigate = useNavigate();
 
   const handleButtonClick = (id) => {
-    navigate("/proposalform");
+    navigate(`/proposalform?id=${id}`);
     console.log(`Button clicked for row with ID: ${id}`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (managerId !== null && managerId !== undefined) {
-          const result = await getEngineersByManager({
-            variables: { managerId }
-          });
-          setEngineers(result.data.get_engineers_by_manager);
-        }
+        const result = await getEngineersByManager({
+          variables: { managerId: auth.userId }
+        });
+        setEngineers(result.data.get_engineers_by_manager);
       } catch (error) {
         console.error("Error fetching engineers:", error);
       }
