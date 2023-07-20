@@ -74,44 +74,50 @@ const IssuingRequests = ({ managerId }) => {
   }
 
   return (
-    <div>
+    <>
       <Typography
         variant="h2"
-        sx={{ fontSize: 24 }}
         color="text.primary"
         gutterBottom
+        marginLeft={6}
+        fontWeight="bold"
       >
-        Issuing Request
+        Issuing Requests
       </Typography>
       {data.issuing_requests_view.map((request) => (
         <Card key={request.id} variant="outlined">
           <CardContent>
-            <div>
-              <Typography variant="h5" component="div">
-                Badge Title: {request.badge_title}
-              </Typography>
-              <Typography variant="body2">
-                Badge Description: {request.badge_description}
-              </Typography>
-              <Typography variant="body1">
-                Engineer Name: {request.engineer_name}
-              </Typography>
-              <Button
-                size="small"
-                onClick={() => handleApproveIssuingRequest(request.id)}
-              >
-                Approve
-              </Button>
-              <Button
-                size="small"
-                onClick={() => handleRejectIssuingRequest(request.id)}
-              >
-                Reject
-              </Button>
-            </div>
+            <Typography variant="h5" component="div">
+              Badge Title: {request.badge_title}
+            </Typography>
+            <Typography variant="body2">
+              Badge Description: {request.badge_description}
+            </Typography>
+            <Typography variant="body1">
+              Engineer Name: {request.engineer_name}
+            </Typography>
+
+            {Object.values(request.candidature_evidences).map(
+              (evidence, index) => (
+                <Typography key={index} variant="body1">
+                  Candidature evidence number {index + 1}: {evidence}
+                </Typography>
+              )
+            )}
+            <Button
+              size="small"
+              onClick={() => handleApproveIssuingRequest(request.id)}
+            >
+              Approve
+            </Button>
+            <Button
+              size="small"
+              onClick={() => handleRejectIssuingRequest(request.id)}
+            >
+              Reject
+            </Button>
           </CardContent>
         </Card>
-
       ))}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Rejection</DialogTitle>
@@ -128,7 +134,7 @@ const IssuingRequests = ({ managerId }) => {
           <Button onClick={handleSubmit}>Submit Rejection</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
