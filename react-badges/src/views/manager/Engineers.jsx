@@ -5,7 +5,7 @@ import { userColumns } from "../../components/reUsable/DataTable";
 import Table from "../../components/reUsable/Table";
 import Button from "@mui/material/Button";
 import { useAuth } from "../../state/with-auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
 
 const Engineers = () => {
@@ -34,12 +34,12 @@ const Engineers = () => {
   const [getEngineersByManager, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
-
+    const location = useLocation();
   const navigate = useNavigate();
 
-  const handleButtonClick = (id) => {
-    navigate(`/proposalform?id=${id}`);
-    console.log(`Button clicked for row with ID: ${id}`);
+  const handleButtonClick = (engineerId) => {
+    navigate(`/proposalform`,{ state: {engineerId}});
+    console.log(`Button clicked for row with ID: ${engineerId}`);
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Engineers = () => {
     };
 
     fetchData();
-  }, [managerId, getEngineersByManager]);
+  }, [getEngineersByManager]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

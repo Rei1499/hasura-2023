@@ -12,7 +12,7 @@ import {
   MenuItem,
   FormHelperText
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
 import {
   GET_ENGINEERS_BY_MANAGER,
@@ -21,6 +21,7 @@ import {
 
 const ProposalForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     handleSubmit,
     register,
@@ -42,9 +43,7 @@ const ProposalForm = () => {
 
   console.log(badgesData);
 
-  const [
-    createProposalManager,
-  ] = useMutation(CREATE_PROPOSAL_MANAGER);
+  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const fetchDataEngineers = async () => {
     try {
@@ -96,7 +95,11 @@ const ProposalForm = () => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <Select label="Engineer" {...field}>
+            <Select
+              label="Engineer"
+              defaultValue={location.state?.engineerId || null}
+              {...field}
+            >
               {loading ? (
                 <MenuItem value="">Loading...</MenuItem>
               ) : error ? (
