@@ -71,7 +71,6 @@ const IssuingRequests = ({ managerId }) => {
       </Typography>
     );
   }
-  console.log(data);
 
   return (
     <>
