@@ -32,7 +32,9 @@ const IssuingRequests = ({ managerId }) => {
   const [approveIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_APPROVAL, {
     onCompleted: () => refetch()
   });
-  const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION);
+  const [rejectIssuingRequest] = useMutation(UPDATE_ISSUING_REQUEST_REJECTION, {
+    onCompleted: () => refetch()
+  });
 
   const handleApproveIssuingRequest = (requestId) => {
     approveIssuingRequest({
@@ -53,7 +55,6 @@ const IssuingRequests = ({ managerId }) => {
         id: requestedId,
         disapprovalMotivation: disapprovalMotivation
       }
-
     });
 
     setOpen(false);
@@ -71,7 +72,6 @@ const IssuingRequests = ({ managerId }) => {
       </Typography>
     );
   }
-  console.log(data);
 
   return (
     <div>
@@ -109,9 +109,9 @@ const IssuingRequests = ({ managerId }) => {
                 Reject
               </Button>
             </div>
-          
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
       ))}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Rejection</DialogTitle>
@@ -129,7 +129,6 @@ const IssuingRequests = ({ managerId }) => {
         </DialogActions>
       </Dialog>
     </div>
-
   );
 };
 
