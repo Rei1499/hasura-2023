@@ -53,7 +53,6 @@ const IssuingRequests = ({ managerId }) => {
         id: requestedId,
         disapprovalMotivation: disapprovalMotivation
       }
-
     });
 
     setOpen(false);
@@ -73,7 +72,7 @@ const IssuingRequests = ({ managerId }) => {
   }
 
   return (
-    <>
+    <div>
       <Typography
         variant="h2"
         sx={{ fontSize: 24 }}
@@ -108,10 +107,9 @@ const IssuingRequests = ({ managerId }) => {
                 Reject
               </Button>
             </div>
-          ))}
-        </CardContent>
-      </Card>
-
+          </CardContent>
+        </Card>
+      ))}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Rejection</DialogTitle>
         <DialogContent>
@@ -128,7 +126,6 @@ const IssuingRequests = ({ managerId }) => {
         </DialogActions>
       </Dialog>
     </div>
-
   );
 };
 

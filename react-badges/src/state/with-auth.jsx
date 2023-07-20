@@ -50,7 +50,7 @@ const withAuth = (Component) => (props) => {
     }
   }, []);
 
-  const login = ({ _token, _id }) => {
+  const login = (_token) => {
     try {
       emitter.pub("loadable::show");
       localStorage.setItem("hasura-token", _token);
