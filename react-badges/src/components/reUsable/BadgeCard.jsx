@@ -10,10 +10,10 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
+import { red, teal } from "@mui/material/colors";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -33,7 +33,20 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
     setExpanded(!expanded);
   };
   const navigate = useNavigate();
-
+  const RequirementItem = styled("div")(({ theme }) => ({
+    backgroundColor: teal[200], // Use a lively color for the background
+    padding: "16px",
+    borderRadius: "8px",
+    marginBottom: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    transition: "background-color 0.2s ease-in-out",
+    "&:hover": {
+      backgroundColor: teal[300] // Change to a slightly darker color on hover
+    }
+  }));
   return (
     <div>
       <Card sx={{ maxWidth: 345 }}>
@@ -58,6 +71,14 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigate("/proposalform");
+            }}
+          >
+            Assign Badge to Engineer
+          </Button>
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}
@@ -71,20 +92,12 @@ const BadgeCard = ({ created, title, photo, description, requirement }) => {
           <CardContent>
             {requirement &&
               requirement.map((item, index) => (
-                <>
-                  <Typography paragraph>{item.id}</Typography>
+                <RequirementItem key={index}>
                   <Typography paragraph>{item.title}</Typography>
                   <Typography paragraph>{item.description}</Typography>
-                </>
+                </RequirementItem>
               ))}
           </CardContent>
-          <Button
-            onClick={() => {
-              navigate("/proposalform");
-            }}
-          >
-            Assign Badge to Engineer
-          </Button>
         </Collapse>
       </Card>
     </div>

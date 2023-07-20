@@ -46,11 +46,11 @@ const ProposalForm = () => {
 
   const fetchDataEngineers = async () => {
     try {
+
       const { data } = await getEngineersByManager({
         variables: { managerId: auth.userId }
       });
-      // setEngineers(result.data.get_engineers_by_manager);
-      // Access the fetched data from the 'data' variable
+
       console.log(data);
     } catch (error) {
       console.error(error);
