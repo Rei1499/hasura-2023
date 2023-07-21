@@ -7,7 +7,8 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  CircularProgress
+  CircularProgress,
+  FormHelperText
 } from "@mui/material";
 import { useMutation } from "@apollo/client";
 import {
@@ -15,7 +16,7 @@ import {
   APPROVE_CANDIDATURE_PROPOSAL
 } from "../../queries/CandidatureMutations";
 
-const ProposalActionButtons = ({ rowId }) => {
+const ProposalActionButtons = ({ rowId, approvalStatus }) => {
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
   const [
@@ -30,7 +31,7 @@ const ProposalActionButtons = ({ rowId }) => {
   const handleRejectButtonClick = () => {
     setOpen(true);
   };
-
+  console.log(rowId, "rowId");
   const handleAcceptButtonClick = () => {
     approveCandidatureProposal({
       variables: {
@@ -55,6 +56,10 @@ const ProposalActionButtons = ({ rowId }) => {
     setOpen(false);
     setDisapprovalMotivation("");
   };
+  console.log(approvalStatus);
+  if (approvalStatus === "Approved" || approvalStatus === "Rejected") {
+    return null;
+  }
 
   return (
     <Box>
