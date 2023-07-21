@@ -27,7 +27,23 @@ export const candidatureColumns = [
   {
     field: "badge_requirements",
     headerName: "Badge Requirements",
-    width: 970
+    width: 970,
+    renderCell: (params) => {
+      const badgeRequirements = params.value;
+
+      if (!Array.isArray(badgeRequirements) || badgeRequirements.length === 0) {
+        return "No requirements"; // Provide a default message for missing data.
+      }
+
+      // Render titles and descriptions of badge requirements as a comma-separated string.
+      const requirementList = badgeRequirements
+        .map(
+          (requirement) => `${requirement.title}: ${requirement.description}`
+        )
+        .join(", ");
+
+      return requirementList;
+    }
   },
   {
     field: "badge_version",
