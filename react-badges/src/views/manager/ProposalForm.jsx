@@ -12,7 +12,7 @@ import {
   MenuItem,
   FormHelperText
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
 import {
   GET_ENGINEERS_BY_MANAGER,
@@ -21,12 +21,18 @@ import {
 
 const ProposalForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     handleSubmit,
     register,
     control,
     formState: { errors }
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      engineer: location.state?.engineerId || null,
+      badge: location.state?.badgeId || null
+    }
+  });
 
   const auth = useAuth();
 
@@ -50,7 +56,6 @@ const ProposalForm = () => {
       const { data } = await getEngineersByManager({
         variables: { managerId: auth.userId }
       });
-
       console.log(data);
     } catch (error) {
       console.error(error);
@@ -59,7 +64,7 @@ const ProposalForm = () => {
 
   useEffect(() => {
     fetchDataEngineers();
-  }, [auth.userId, getEngineersByManager]);
+  }, [getEngineersByManager]);
 
   const onSubmit = async (data) => {
     try {
@@ -67,7 +72,6 @@ const ProposalForm = () => {
         (badge) => badge.id === data.badge
       );
       const badgeCreatedAt = selectedBadge?.created_at || null;
-
       await createProposalManager({
         variables: {
           badgeId: data.badge,
@@ -84,6 +88,10 @@ const ProposalForm = () => {
       console.log(data);
     }
   };
+
+  console.log(location.state.badgeId);
+  if (loading) return <Box>Loading...</Box>;
+  if (error) return <Box>Error: {error.message}</Box>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -136,26 +144,6 @@ const ProposalForm = () => {
         />
         {errors.badge && <FormHelperText>Badge is required</FormHelperText>}
       </Box>
-      {/* <Box>
-        <TextField
-          label="Badge ID"
-          type="number"
-          {...register("badge_id", { required: true })}
-        />
-        {errors.badge_id && (
-          <FormHelperText>Badge ID is required</FormHelperText>
-        )}
-      </Box>
-      <Box>
-        <TextField
-          label="Badge Version"
-          type="text"
-          {...register("badge_version", { required: true })}
-        />
-        {errors.badge_version && (
-          <FormHelperText>Badge Version is required</FormHelperText>
-        )}
-      </Box> */}
       <Box>
         <TextField
           label="Proposal Description"

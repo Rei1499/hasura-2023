@@ -16,9 +16,16 @@ const Proposals = () => {
 
   const auth = useAuth();
 
-  const { loading, error, data } = useQuery(GET_PROPOSALS_WITH_STATUS, {
-    variables: { managerId: auth.userId }
-  });
+  const { loading, error, data, refetch } = useQuery(
+    GET_PROPOSALS_WITH_STATUS,
+    {
+      variables: { managerId: auth.userId }
+    }
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   if (loading) {
     return <Box>Loading...</Box>;
