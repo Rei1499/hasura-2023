@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     minHeight: "100vh",
-    marginTop: theme.spacing(6),
-    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(0.5),
     textAlign: "center",
     backgroundColor: theme.palette.primary.secondary
   },
@@ -42,13 +42,11 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
     backgroundColor: theme.palette.primary.secondary
   },
-  header: {
-    backgroundColor: theme.palette.primary.main,
-    color: "#ffffff",
-    padding: theme.spacing(2),
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    textAlign: "center"
+  cardContent: {
+    margin: theme.spacing(2),
+    "& .MuiFormControl-root": {
+      marginBottom: theme.spacing(2)
+    }
   },
   formContent: {
     display: "flex",
@@ -149,10 +147,9 @@ const ProposalForm = () => {
     <Box className={classes.root}>
       <Card className={classes.card}>
         <CardHeader
-          classeName={classes.header}
           title={<Typography variant="h2">Create a new proposal</Typography>}
         />
-        <CardContent>
+        <CardContent className={classes.cardContent}>
           <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <Box className={classes.inputField}>
               <InputLabel>Select Engineer</InputLabel>
