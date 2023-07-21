@@ -1,5 +1,4 @@
-import React from "react";
-import Proposals from "./Proposals";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, Button } from "@mui/material";
 import { candidatureColumns } from "../../components/reUsable/DataTable";
