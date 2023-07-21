@@ -5,7 +5,7 @@ import Table from "../../components/reUsable/Table";
 import Button from "@mui/material/Button";
 import { useAuth } from "../../state/with-auth";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
 
 import { Box, Typography } from "@mui/material";
@@ -36,11 +36,10 @@ const Engineers = () => {
   ];
 
   const auth = useAuth();
-    const location = useLocation();
   const navigate = useNavigate();
 
   const handleButtonClick = (engineerId) => {
-    navigate(`/proposalform`,{ state: {engineerId}});
+    navigate(`/proposalform`, { state: { engineerId } });
     console.log(`Button clicked for row with ID: ${engineerId}`);
   };
 
@@ -57,7 +56,6 @@ const Engineers = () => {
     };
 
     fetchData();
-
   }, []);
 
   const LoadingMessage = styled("p")({
