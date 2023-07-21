@@ -12,7 +12,8 @@ import {
   MenuItem,
   FormHelperText,
   Card,
-  CardContent
+  CardContent,
+  CardHeader
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
@@ -101,16 +102,17 @@ const ProposalForm = () => {
       alignItems="center"
       justifyContent="center"
       minHeight="100vh"
-      marginTop={6}
+      marginTop={0.25}
+      marginBottom={3}
+      textAlign={"center"}
     >
-      <Card sx={{ width: 500, height: 800 }}>
+      <Card sx={{ width: 500, height: 500 }}>
+        <CardHeader
+          title={<Typography variant="h2">Create a new proposal</Typography>}
+        />
         <CardContent>
-          <Typography variant="h2" gutterBottom>
-            Create a new proposal
-          </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
-              <Typography>Create a new proposal</Typography>
               <Controller
                 name="engineer"
                 control={control}
