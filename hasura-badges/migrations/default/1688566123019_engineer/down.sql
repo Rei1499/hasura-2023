@@ -1,5 +1,8 @@
-DROP FUNCTION IF EXISTS "update_reselect_flags_on_issue_request_change";
-DROP FUNCTION IF EXISTS "update_reselect_flags_on_responses_change";
+DROP FUNCTION IF EXISTS "check_reselect_flags";
+DROP FUNCTION IF EXISTS "update_can_reselect_flag";
+DROP FUNCTION IF EXISTS "update_reselect_flags_on_issuing_request_insert";
+DROP FUNCTION IF EXISTS "update_reselect_flags_on_response_insert";
+DROP FUNCTION IF EXISTS "set_default_reselect_flags";
 DROP FUNCTION IF EXISTS "get_issuing_requests_for_manager";
 DROP FUNCTION IF EXISTS "insert_issuing_request";
 DROP FUNCTION IF EXISTS "insert_badge_candidature_request";

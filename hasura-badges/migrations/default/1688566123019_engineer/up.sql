@@ -222,65 +222,134 @@ AFTER UPDATE ON badge_candidature_request
 FOR EACH ROW
 EXECUTE FUNCTION insert_issuing_request();
 
-CREATE TYPE proposal_duplicate_result AS (
-  is_duplicate_1 BOOLEAN,
-  is_duplicate_2 BOOLEAN,
-  is_duplicate_3 BOOLEAN,
-  is_duplicate_4 BOOLEAN
-);
-
 CREATE TABLE reselect_flags (
-  id SERIAL PRIMARY KEY, -- Add a unique ID column as the primary key
+  id SERIAL PRIMARY KEY,
   engineer_id INTEGER,
-  badge_version TIMESTAMP,
-  is_approved_responses BOOLEAN,
-  is_approved_issue_request BOOLEAN,
-  created_by INTEGER
+  badge_id INTEGER,
+  is_approved_responses BOOLEAN DEFAULT FALSE,
+  is_approved_issue_request BOOLEAN DEFAULT FALSE,
+  created_by INTEGER,
+  can_reselect BOOLEAN NOT NULL DEFAULT FALSE,
+   CONSTRAINT engineer_badge_unique_constraint UNIQUE (engineer_id, badge_id),
+   CONSTRAINT check_approval_flags CHECK (
+    is_approved_responses OR is_approved_issue_request
+  )
 );
 
-CREATE OR REPLACE FUNCTION update_reselect_flags_on_responses_change()
+CREATE OR REPLACE FUNCTION set_default_reselect_flags()
 RETURNS TRIGGER AS $$
 BEGIN
-  IF NEW.is_approved IS NOT NULL THEN
-    UPDATE reselect_flags
-    SET is_approved_responses = NEW.is_approved
-    WHERE engineer_id = (
-      SELECT engineer
-      FROM manager_to_engineer_badge_candidature_proposals
-      WHERE id = NEW.proposal_id
-    )
-    AND badge_version = (
-      SELECT badge_version
-      FROM manager_to_engineer_badge_candidature_proposals
-      WHERE id = NEW.proposal_id
-    );
-  END IF;
+  INSERT INTO reselect_flags (engineer_id, badge_id, is_approved_responses, is_approved_issue_request, created_by)
+  VALUES (NEW.engineer, NEW.badge_id, NULL, NULL, NEW.created_by)
+  ON CONFLICT (engineer_id, badge_id)
+  DO NOTHING;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger to execute the function on INSERT or UPDATE in engineer_badge_candidature_proposal_responses
-CREATE TRIGGER trigger_update_reselect_flags_on_responses_change
-AFTER INSERT OR UPDATE ON engineer_badge_candidature_proposal_response
+CREATE TRIGGER trigger_set_default_reselect_flags
+AFTER INSERT ON manager_to_engineer_badge_candidature_proposals
 FOR EACH ROW
-EXECUTE FUNCTION update_reselect_flags_on_responses_change();
+EXECUTE FUNCTION set_default_reselect_flags();
 
--- Trigger function to update reselect_flags when issuing_requests table changes
-CREATE OR REPLACE FUNCTION update_reselect_flags_on_issue_request_change()
+CREATE OR REPLACE FUNCTION update_reselect_flags_on_response_insert()
 RETURNS TRIGGER AS $$
 BEGIN
-  IF NEW.is_approved IS NOT NULL THEN
-    UPDATE reselect_flags
-    SET is_approved_issue_request = NEW.is_approved
-    WHERE engineer_id = NEW.engineer_id
-    AND badge_version = NEW.badge_version;
-  END IF;
+  UPDATE reselect_flags
+  SET is_approved_responses = NEW.is_approved
+  WHERE engineer_id = (
+    SELECT engineer
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  );
+
+  -- Update can_reselect to true if is_approved_responses is false
+  UPDATE reselect_flags
+  SET can_reselect = TRUE
+  WHERE engineer_id = (
+    SELECT engineer
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  )
+  AND NEW.is_approved IS FALSE;
+
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger to execute the function on INSERT or UPDATE in issuing_requests
-CREATE TRIGGER trigger_update_reselect_flags_on_issue_request_change
-AFTER INSERT OR UPDATE ON issuing_requests
+
+CREATE TRIGGER trigger_update_reselect_flags_on_response_insert
+AFTER INSERT ON engineer_badge_candidature_proposal_response
 FOR EACH ROW
-EXECUTE FUNCTION update_reselect_flags_on_issue_request_change();
+EXECUTE FUNCTION update_reselect_flags_on_response_insert();
+
+
+CREATE OR REPLACE FUNCTION update_reselect_flags_on_issuing_request_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE reselect_flags
+  SET is_approved_issue_request = NEW.is_approved
+  WHERE engineer_id = (
+    SELECT engineer_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  );
+
+  -- Update can_reselect to true if is_approved_issue_request is false
+  UPDATE reselect_flags
+  SET can_reselect = TRUE
+  WHERE engineer_id = (
+    SELECT engineer_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  )
+  AND NEW.is_approved IS FALSE;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trigger_update_reselect_flags_on_issuing_request_insert
+AFTER INSERT ON issuing_requests
+FOR EACH ROW
+EXECUTE FUNCTION update_reselect_flags_on_issuing_request_insert();
+
+CREATE OR REPLACE FUNCTION update_can_reselect_flag()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.is_approved_responses IS TRUE AND NEW.is_approved_issue_request IS TRUE THEN
+    UPDATE reselect_flags
+    SET can_reselect = FALSE
+    WHERE engineer_id = NEW.engineer_id AND badge_id = NEW.badge_id;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_can_reselect_flag
+AFTER UPDATE ON reselect_flags
+FOR EACH ROW
+EXECUTE FUNCTION update_can_reselect_flag();
+
