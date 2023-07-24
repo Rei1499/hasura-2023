@@ -28,7 +28,6 @@ import {
 
 import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
 
-import IssueComponenet from "./views/manager/IssueComponent";
 import Candidatures from "./views/manager/Candidatures";
 import Engineers from "./views/manager/Engineers";
 import Badges from "./views/manager/Badges";
@@ -36,6 +35,7 @@ import Proposals from "./views/manager/Proposals";
 
 import { DrawerMenu } from "./layouts/BasicLayout";
 import ProposalForm from "./views/manager/ProposalForm";
+import IssuingRequests from "./views/manager/Issues/IssuingRequest";
 
 const menuItems = [
   {
@@ -83,7 +83,7 @@ const AppManager: React.FC = () => (
         },
         {
           path: "issues",
-          element: <IssueComponenet />
+          element: <IssuingRequests />
         },
         {
           path: "proposals",

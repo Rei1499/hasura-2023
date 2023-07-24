@@ -18,7 +18,7 @@ const ProposalStatusCell = ({ value }) => {
       );
     } else {
       return (
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="error">
           Rejected
         </Button>
       );
