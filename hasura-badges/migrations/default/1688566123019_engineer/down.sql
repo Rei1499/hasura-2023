@@ -17,7 +17,7 @@ DROP TRIGGER IF EXISTS "engineer_badge_candidature_proposal_response_trigger" ON
 DROP VIEW IF EXISTS "issuing_requests_view"  
 DROP VIEW IF EXISTS "badge_candidature_view"  
 
-DROP TABLE IF EXISTS "reselect_flags"
+-- DROP TABLE IF EXISTS "reselect_flags"
 DROP TABLE IF EXISTS "issuing_requests";
 DROP TABLE IF EXISTS "badge_candidature_request";
 DROP TABLE IF EXISTS "manager_badge_candidature_proposal_response";
