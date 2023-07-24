@@ -1,0 +1,3 @@
+table:
+  name: reselect_flags
+  schema: public

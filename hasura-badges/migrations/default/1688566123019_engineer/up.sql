@@ -222,3 +222,170 @@ AFTER UPDATE ON badge_candidature_request
 FOR EACH ROW
 EXECUTE FUNCTION insert_issuing_request();
 
+CREATE TABLE reselect_flags (
+  id SERIAL PRIMARY KEY,
+  engineer_id INTEGER,
+  badge_id INTEGER,
+  is_approved_responses BOOLEAN DEFAULT FALSE,
+  is_approved_issue_request BOOLEAN DEFAULT FALSE,
+  created_by INTEGER,
+  can_reselect BOOLEAN NOT NULL DEFAULT FALSE,
+   CONSTRAINT engineer_badge_unique_constraint UNIQUE (engineer_id, badge_id),
+   CONSTRAINT check_approval_flags CHECK (
+    is_approved_responses OR is_approved_issue_request
+  )
+);
+
+CREATE OR REPLACE FUNCTION set_default_reselect_flags()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO reselect_flags (engineer_id, badge_id, is_approved_responses, is_approved_issue_request, created_by)
+  VALUES (NEW.engineer, NEW.badge_id, NULL, NULL, NEW.created_by)
+  ON CONFLICT (engineer_id, badge_id) DO NOTHING;
+  
+  -- Set can_reselect to false for the corresponding engineer and badge for new proposals
+  UPDATE reselect_flags
+  SET can_reselect = FALSE
+  WHERE engineer_id = NEW.engineer AND badge_id = NEW.badge_id;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trigger_set_default_reselect_flags
+AFTER INSERT ON manager_to_engineer_badge_candidature_proposals
+FOR EACH ROW
+EXECUTE FUNCTION set_default_reselect_flags();
+
+CREATE OR REPLACE FUNCTION update_reselect_flags_on_response_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE reselect_flags
+  SET is_approved_responses = NEW.is_approved
+  WHERE engineer_id = (
+    SELECT engineer
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  );
+
+  -- Update can_reselect to true if is_approved_responses is false
+  UPDATE reselect_flags
+  SET can_reselect = TRUE
+  WHERE engineer_id = (
+    SELECT engineer
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM manager_to_engineer_badge_candidature_proposals
+    WHERE id = NEW.proposal_id
+  )
+  AND NEW.is_approved IS FALSE;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trigger_update_reselect_flags_on_response_insert
+AFTER INSERT ON engineer_badge_candidature_proposal_response
+FOR EACH ROW
+EXECUTE FUNCTION update_reselect_flags_on_response_insert();
+
+
+CREATE OR REPLACE FUNCTION update_reselect_flags_on_issuing_request_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE reselect_flags
+  SET is_approved_issue_request = NEW.is_approved
+  WHERE engineer_id = (
+    SELECT engineer_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  );
+
+  -- Update can_reselect to true if is_approved_issue_request is false
+  UPDATE reselect_flags
+  SET can_reselect = TRUE
+  WHERE engineer_id = (
+    SELECT engineer_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  )
+  AND badge_id = (
+    SELECT badge_id
+    FROM badge_candidature_request
+    WHERE id = NEW.request_id
+  )
+  AND NEW.is_approved IS FALSE;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trigger_update_reselect_flags_on_issuing_request_insert
+AFTER INSERT ON issuing_requests
+FOR EACH ROW
+EXECUTE FUNCTION update_reselect_flags_on_issuing_request_insert();
+
+CREATE OR REPLACE FUNCTION update_can_reselect_flag()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.is_approved_responses IS TRUE AND NEW.is_approved_issue_request IS TRUE THEN
+    UPDATE reselect_flags
+    SET can_reselect = FALSE
+    WHERE engineer_id = NEW.engineer_id AND badge_id = NEW.badge_id;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_can_reselect_flag
+AFTER UPDATE ON reselect_flags
+FOR EACH ROW
+EXECUTE FUNCTION update_can_reselect_flag();
+
+CREATE OR REPLACE FUNCTION check_reselect_flags()
+RETURNS TRIGGER AS $$
+DECLARE
+  can_reselect_flag BOOLEAN;
+BEGIN
+  -- Fetch the can_reselect flag for the engineer_id and badge_id in the new row
+  SELECT can_reselect
+  INTO can_reselect_flag
+  FROM reselect_flags
+  WHERE engineer_id = NEW.engineer AND badge_id = NEW.badge_id;
+
+  -- If the can_reselect_flag is false, raise an exception indicating that reselection is not allowed.
+  IF NOT can_reselect_flag THEN
+    RAISE EXCEPTION 'Cannot insert into manager_to_engineer_badge_candidature_proposal. Reselection not allowed.';
+  END IF;
+
+  -- For new insertions (INSERT operation), allow the trigger to proceed and insert the data
+  IF TG_OP = 'INSERT' THEN
+    RETURN NEW;
+  END IF;
+
+  -- For other operations (e.g., UPDATE), allow the trigger to proceed without raising an exception
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_reselect_flags_trigger
+BEFORE INSERT ON manager_to_engineer_badge_candidature_proposals
+FOR EACH ROW
+EXECUTE FUNCTION check_reselect_flags();
