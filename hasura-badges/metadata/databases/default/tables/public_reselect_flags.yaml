@@ -1,0 +1,20 @@
+table:
+  name: reselect_flags
+  schema: public
+select_permissions:
+  - role: manager
+    permission:
+      columns:
+        - id
+        - engineer_id
+        - badge_version
+        - is_approved_responses
+        - is_approved_issue_request
+        - created_by
+      filter: {}
+      allow_aggregations: true
+      query_root_fields:
+        - select_aggregate
+        - select
+        - select_by_pk
+      subscription_root_fields: []

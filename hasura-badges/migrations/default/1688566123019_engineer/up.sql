@@ -222,3 +222,65 @@ AFTER UPDATE ON badge_candidature_request
 FOR EACH ROW
 EXECUTE FUNCTION insert_issuing_request();
 
+CREATE TYPE proposal_duplicate_result AS (
+  is_duplicate_1 BOOLEAN,
+  is_duplicate_2 BOOLEAN,
+  is_duplicate_3 BOOLEAN,
+  is_duplicate_4 BOOLEAN
+);
+
+CREATE TABLE reselect_flags (
+  id SERIAL PRIMARY KEY, -- Add a unique ID column as the primary key
+  engineer_id INTEGER,
+  badge_version TIMESTAMP,
+  is_approved_responses BOOLEAN,
+  is_approved_issue_request BOOLEAN,
+  created_by INTEGER
+);
+
+CREATE OR REPLACE FUNCTION update_reselect_flags_on_responses_change()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.is_approved IS NOT NULL THEN
+    UPDATE reselect_flags
+    SET is_approved_responses = NEW.is_approved
+    WHERE engineer_id = (
+      SELECT engineer
+      FROM manager_to_engineer_badge_candidature_proposals
+      WHERE id = NEW.proposal_id
+    )
+    AND badge_version = (
+      SELECT badge_version
+      FROM manager_to_engineer_badge_candidature_proposals
+      WHERE id = NEW.proposal_id
+    );
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to execute the function on INSERT or UPDATE in engineer_badge_candidature_proposal_responses
+CREATE TRIGGER trigger_update_reselect_flags_on_responses_change
+AFTER INSERT OR UPDATE ON engineer_badge_candidature_proposal_response
+FOR EACH ROW
+EXECUTE FUNCTION update_reselect_flags_on_responses_change();
+
+-- Trigger function to update reselect_flags when issuing_requests table changes
+CREATE OR REPLACE FUNCTION update_reselect_flags_on_issue_request_change()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.is_approved IS NOT NULL THEN
+    UPDATE reselect_flags
+    SET is_approved_issue_request = NEW.is_approved
+    WHERE engineer_id = NEW.engineer_id
+    AND badge_version = NEW.badge_version;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to execute the function on INSERT or UPDATE in issuing_requests
+CREATE TRIGGER trigger_update_reselect_flags_on_issue_request_change
+AFTER INSERT OR UPDATE ON issuing_requests
+FOR EACH ROW
+EXECUTE FUNCTION update_reselect_flags_on_issue_request_change();
