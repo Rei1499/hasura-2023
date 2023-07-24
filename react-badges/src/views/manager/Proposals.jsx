@@ -40,7 +40,6 @@ const Proposals = () => {
   const rowsToManager =
     data?.engineer_to_manager_badge_candidature_proposals || [];
 
-  console.log(proposalColumnsToManager);
   const updatedColumnsToManager = [
     ...proposalColumnsToManager,
     {
@@ -58,6 +57,7 @@ const Proposals = () => {
               ? "Approved"
               : "Rejected"
           }
+          refetch={refetch}
         />
       )
     }

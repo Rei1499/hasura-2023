@@ -16,17 +16,21 @@ import {
   APPROVE_CANDIDATURE_PROPOSAL
 } from "../../queries/CandidatureMutations";
 
-const ProposalActionButtons = ({ rowId, approvalStatus }) => {
+const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
   const [
     disapproveCandidatureProposal,
     { loading: loadingDisapprove, error: errorDisapprove }
-  ] = useMutation(DISAPPROVE_CANDIDATURE_PROPOSAL);
+  ] = useMutation(DISAPPROVE_CANDIDATURE_PROPOSAL, {
+    onCompleted: () => refetch()
+  });
   const [
     approveCandidatureProposal,
     { loading: loadingApprove, error: errorApprove }
-  ] = useMutation(APPROVE_CANDIDATURE_PROPOSAL);
+  ] = useMutation(APPROVE_CANDIDATURE_PROPOSAL, {
+    onCompleted: () => refetch()
+  });
 
   const handleRejectButtonClick = () => {
     setOpen(true);
@@ -73,7 +77,7 @@ const ProposalActionButtons = ({ rowId, approvalStatus }) => {
       </Button>
       <Button
         variant="contained"
-        color="secondary"
+        color="error"
         onClick={handleRejectButtonClick}
         loading={loadingDisapprove}
       >
