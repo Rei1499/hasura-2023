@@ -1,5 +1,5 @@
-import ProposalStatusCell from "../../views/manager/ProposalStatusButtons";
-
+import ProposalStatusCell from "../proposalComponents/ProposalStatusButtons";
+import ProposalActionButtons from "../proposalComponents/ProposalActionButtons";
 export const userColumns = [
   { field: "id", headerName: "ID", width: 40 },
   { field: "name", headerName: "Name", width: 170 },
@@ -32,10 +32,9 @@ export const candidatureColumns = [
       const badgeRequirements = params.value;
 
       if (!Array.isArray(badgeRequirements) || badgeRequirements.length === 0) {
-        return "No requirements"; // Provide a default message for missing data.
+        return "No requirements";
       }
 
-      // Render titles and descriptions of badge requirements as a comma-separated string.
       const requirementList = badgeRequirements
         .map(
           (requirement) => `${requirement.title}: ${requirement.description}`
@@ -126,5 +125,24 @@ export const proposalColumnsToManager = [
     headerName: "Approval Status",
     width: 200,
     renderCell: (params) => <ProposalStatusCell value={params.value} />
+  },
+  {
+    field: "actions",
+    headerName: "Actions",
+    width: 150,
+    renderCell: (params) => (
+      <ProposalActionButtons
+        rowId={params.row.id}
+        approvalStatus={
+          params.row.manager_badge_candidature_proposal_responses.length === 0
+            ? "Pending"
+            : params.row.manager_badge_candidature_proposal_responses[0]
+                .is_approved === true
+            ? "Approved"
+            : "Rejected"
+        }
+        refetch={refetch}
+      />
+    )
   }
 ];
