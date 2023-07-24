@@ -19,12 +19,7 @@ import {
 const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
-  const [
-    disapproveCandidatureProposal,
-    { loading: loadingDisapprove, error: errorDisapprove }
-  ] = useMutation(DISAPPROVE_CANDIDATURE_PROPOSAL, {
-    onCompleted: () => refetch()
-  });
+ 
   const [
     approveCandidatureProposal,
     { loading: loadingApprove, error: errorApprove }
