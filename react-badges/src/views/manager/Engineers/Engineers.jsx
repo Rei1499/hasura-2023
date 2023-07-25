@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { userColumns } from "../../components/reUsable/DataTable";
-import Table from "../../components/reUsable/Table";
+import { userColumns } from "../../../components/reUsable/DataTable";
+import Table from "../../../components/reUsable/Table";
 import Button from "@mui/material/Button";
-import { useAuth } from "../../state/with-auth";
+import { useAuth } from "../../../state/with-auth";
 import { useNavigate } from "react-router-dom";
-import { GET_ENGINEERS_BY_MANAGER } from "../../queries/BadgeEngineerMutations";
+import { GET_ENGINEERS_BY_MANAGER } from "../../../queries/BadgeEngineerMutations";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -14,6 +14,8 @@ const Engineers = () => {
   const [executeMutation, { loading, error, data }] = useMutation(
     GET_ENGINEERS_BY_MANAGER
   );
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const updatedColumns = [
     ...userColumns,
@@ -32,9 +34,6 @@ const Engineers = () => {
       )
     }
   ];
-
-  const auth = useAuth();
-  const navigate = useNavigate();
 
   const handleButtonClick = (engineerId) => {
     navigate(`/proposalform`, { state: { engineerId } });

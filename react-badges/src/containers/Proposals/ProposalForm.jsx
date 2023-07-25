@@ -16,58 +16,13 @@ import {
   CardHeader,
   InputLabel
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import useStyles from "../../components/proposalComponents/style.js";
 import { useNavigate, useLocation } from "react-router-dom";
-import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations";
+import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations.js";
 import {
   GET_ENGINEERS_BY_MANAGER,
   GET_BADGES_LAST
-} from "../../queries/BadgeEngineerMutations";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
-    textAlign: "center",
-    backgroundColor: theme.palette.primary.secondary
-  },
-  card: {
-    width: 500,
-    borderRadius: 16,
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-    backgroundColor: theme.palette.primary.secondary
-  },
-  cardContent: {
-    margin: theme.spacing(2),
-    "& .MuiFormControl-root": {
-      marginBottom: theme.spacing(2)
-    }
-  },
-  formContent: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: theme.spacing(2)
-  },
-  inputField: {
-    width: "100%",
-    marginBottom: theme.spacing(2)
-  },
-  submitButton: {
-    marginTop: theme.spacing(2),
-    backgroundColor: theme.palette.primary.main,
-    color: "#ffffff",
-    "&:hover": {
-      backgroundColor: theme.palette.primary.dark
-    }
-  }
-}));
+} from "../../queries/BadgeEngineerMutations.js";
 
 const ProposalForm = () => {
   const classes = useStyles();

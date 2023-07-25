@@ -1,4 +1,4 @@
-import ProposalStatusCell from "../../views/manager/ProposalStatusButtons";
+import ProposalStatusCell from "../proposalComponents/ProposalStatusButtons";
 
 export const userColumns = [
   { field: "id", headerName: "ID", width: 40 },
@@ -32,10 +32,9 @@ export const candidatureColumns = [
       const badgeRequirements = params.value;
 
       if (!Array.isArray(badgeRequirements) || badgeRequirements.length === 0) {
-        return "No requirements"; // Provide a default message for missing data.
+        return "No requirements";
       }
 
-      // Render titles and descriptions of badge requirements as a comma-separated string.
       const requirementList = badgeRequirements
         .map(
           (requirement) => `${requirement.title}: ${requirement.description}`
