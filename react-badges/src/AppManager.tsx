@@ -6,13 +6,12 @@ import {
 } from "@mui/icons-material";
 import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
 import Candidatures from "./views/manager/Candidatures";
-import Engineers from "./containers/Engineers/Engineers";
-import Badges from "./containers/Badges/Badges";
+import Engineers from "./views/manager/Engineers/Engineers";
+import Badges from "./views/manager/Badges/Badges";
 import Proposals from "./views/manager/Proposals";
 import { DrawerMenu } from "./layouts/BasicLayout";
 import ProposalForm from "./components/proposalComponents/ProposalForm";
-import IssuingRequests from "./views/manager/Issues/IssuingRequest";
-
+import IssuingRequests from "./views/manager/IssuingRequests";
 
 const menuItems = [
   {
