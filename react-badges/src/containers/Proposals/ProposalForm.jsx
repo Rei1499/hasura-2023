@@ -23,6 +23,7 @@ import {
   GET_ENGINEERS_BY_MANAGER,
   GET_BADGES_LAST
 } from "../../queries/BadgeEngineerMutations.js";
+import ErrorAlert from "../../components/proposalComponents/ProposalAlerts";
 
 const ProposalForm = () => {
   const classes = useStyles();
@@ -54,7 +55,10 @@ const ProposalForm = () => {
 
   console.log(badgesData);
 
-  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
+  const [
+    createProposalManager,
+    { loading: submitLoading, error: submitError }
+  ] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const fetchDataEngineers = async () => {
     try {
@@ -88,8 +92,8 @@ const ProposalForm = () => {
       });
       navigate("/proposals");
       console.log(data);
-    } catch (error) {
-      console.log(error);
+    } catch (submitError) {
+      console.log(submitError);
       console.log(data);
     }
   };
@@ -180,10 +184,16 @@ const ProposalForm = () => {
                 </FormHelperText>
               )}
             </Box>
-            <Button type="submit" className={classes.button} disabled={loading}>
+            <Button
+              type="submit"
+              className={classes.button}
+              disabled={submitLoading}
+            >
               Submit
             </Button>
-            {error && <FormHelperText>Error: {error.message}</FormHelperText>}
+            {submitError && (
+              <ErrorAlert message={`Error: ${submitError.message}`} />
+            )}
           </form>
         </CardContent>
       </Card>
