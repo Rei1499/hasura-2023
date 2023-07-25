@@ -28,6 +28,7 @@ const ProposalForm = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location, "location");
   const {
     handleSubmit,
     register,
