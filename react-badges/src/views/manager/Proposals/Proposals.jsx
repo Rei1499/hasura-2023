@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Button, Container } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
 import { DataGrid } from "@mui/x-data-grid";
-import { useAuth } from "../../state/with-auth";
-import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
+import { useAuth } from "../../../state/with-auth";
+import { GET_PROPOSALS_WITH_STATUS } from "../../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
 import {
   proposalColumnsFromManager,
   proposalColumnsToManager
-} from "../../components/reUsable/DataTable";
-import useStyles from "../../components/proposalComponents/style.js";
+} from "../../../components/reUsable/DataTable";
+import useStyles from "../../../components/proposalComponents/style.js";
 import ProposalActionButtons from "../../components/proposalComponents/ProposalActionButtons";
 
 const Proposals = () => {

@@ -16,7 +16,7 @@ import {
   CardHeader,
   InputLabel
 } from "@mui/material";
-import useStyles from "./style.js";
+import useStyles from "../../components/proposalComponents/style.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations.js";
 import {
