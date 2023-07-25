@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import {
+  Box,
+  CardMedia,
+  CardHeader,
+  Card,
+  Button,
+  Typography,
+  IconButton,
+  Avatar,
+  Collapse,
+  CardActions,
+  CardContent
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
@@ -35,22 +38,25 @@ const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
   const navigate = useNavigate();
 
   const RequirementItem = styled("div")(({ theme }) => ({
-    backgroundColor: teal[200], // Use a lively color for the background
+    backgroundColor: teal[50], 
     padding: "16px",
     borderRadius: "8px",
     marginBottom: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     transition: "background-color 0.2s ease-in-out",
     "&:hover": {
-      backgroundColor: teal[300] // Change to a slightly darker color on hover
+      backgroundColor: teal[100] 
+    },
+    "& > p": {
+      margin: 0 
     }
   }));
 
   return (
-    <div>
+    <Box>
       <Card sx={{ maxWidth: 345 }}>
         <CardHeader
           avatar={
@@ -102,7 +108,7 @@ const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
           </CardContent>
         </Collapse>
       </Card>
-    </div>
+    </Box>
   );
 };
 

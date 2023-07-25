@@ -10,6 +10,7 @@ import {
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
 import { makeStyles } from "@mui/styles";
+import { ErrorMessage, LoadingWithCircularProgress, NoDataMessage } from "../../../layouts/MessagesLayout/Messages";
 import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,12 +68,13 @@ const Proposals = () => {
   }, [refetch]);
 
   if (loading) {
-    return <Box>Loading...</Box>;
+    return <LoadingWithCircularProgress />;
   }
 
   if (error) {
-    return <Box>Error: {error.message}</Box>;
+    return <ErrorMessage />;
   }
+  if(!data) return <NoDataMessage />
 
   const rowsFromManager =
     data?.manager_to_engineer_badge_candidature_proposals || [];

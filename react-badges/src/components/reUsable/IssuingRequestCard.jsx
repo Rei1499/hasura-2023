@@ -44,7 +44,7 @@ const IssuingRequestCard = ({
 }) => {
   const classes = useStyles();
   return (
-    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+    <Box>
       <Card key={request.id} variant="outlined" className={classes.card}>
         <CardContent>
           <Typography variant="h5" component="div" className={classes.title}>
@@ -92,7 +92,14 @@ const IssuingRequestCard = ({
             </Button>
           )}
         </CardContent>
-        <ButtonGroup className={classes.buttonsContainer}>
+        <ButtonGroup
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-around",
+            margin: "10px"
+          }}
+        >
           <Button
             size="small"
             variant="contained"

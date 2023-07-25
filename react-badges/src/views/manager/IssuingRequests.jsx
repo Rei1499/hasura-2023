@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Box, Typography } from "@mui/material";
 import { useAuth } from "../../state/with-auth";
-
 import IssuingRequestCard from "../../components/reUsable/IssuingRequestCard";
 import RejectionDialog from "../../components/issueComponents/RejectionDialog";
-import LoadingError from "../../components/issueComponents/LoadingError";
 import {
   GET_ISSUING_REQUESTS_FOR_MANAGER,
   UPDATE_ISSUING_REQUEST_APPROVAL,
   UPDATE_ISSUING_REQUEST_REJECTION
 } from "../../queries/IssueMutations";
+import { ErrorMessage, LoadingWithCircularProgress, NoDataMessage } from "../../layouts/MessagesLayout/Messages";
 
 const IssuingRequests = () => {
   const auth = useAuth();
-
+  console.log(auth);
   const managerId = Number(auth.hasura["x-hasura-tenant-id"]);
   console.log(managerId, "ManagerId");
   const { loading, error, data, refetch } = useQuery(
@@ -62,9 +61,11 @@ const IssuingRequests = () => {
         disapprovalMotivation: disapprovalMotivation
       }
     });
-
     setOpen(false);
   };
+  if(loading) return <LoadingWithCircularProgress />
+  if(error) return <ErrorMessage />
+  if(!data) return <NoDataMessage />  
 
   return (
     <Box sx={{ overflowY: "auto" }}>
@@ -74,12 +75,13 @@ const IssuingRequests = () => {
         gutterBottom
         marginLeft={6}
         fontWeight="bold"
+        textAlign="center"
+        margin="20px"
       >
         Issuing Requests
       </Typography>
-      <LoadingError loading={loading} error={error} />
       {!loading && !error && (
-        <>
+        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
           {data.issuing_requests_view.map((request) => (
             <IssuingRequestCard
               key={request.id}
@@ -95,10 +97,9 @@ const IssuingRequests = () => {
             onClose={handleClose}
             onSubmit={handleSubmit}
           />
-        </>
+        </Box>
       )}
     </Box>
   );
 };
-
 export default IssuingRequests;
