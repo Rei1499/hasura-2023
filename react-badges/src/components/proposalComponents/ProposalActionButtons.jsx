@@ -15,11 +15,23 @@ import {
   DISAPPROVE_CANDIDATURE_PROPOSAL,
   APPROVE_CANDIDATURE_PROPOSAL
 } from "../../queries/CandidatureMutations";
+import { useDisapprovalCandidatureProposal } from "../../containers/Manager/ProposalFunctions";
 
 const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
   const [open, setOpen] = useState(false);
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
- 
+  const {
+    handleDisapprove,
+    loading: loadingDisapprove,
+    error: errorDisapprove
+  } = useDisapprovalCandidatureProposal(
+    rowId,
+    disapprovalMotivation,
+    setOpen,
+    setDisapprovalMotivation,
+    refetch
+  );
+
   const [
     approveCandidatureProposal,
     { loading: loadingApprove, error: errorApprove }
@@ -45,17 +57,12 @@ const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
   };
 
   const handleSubmit = () => {
-    disapproveCandidatureProposal({
-      variables: {
-        proposalId: rowId,
-        disapprovalMotivation: disapprovalMotivation
-      }
-    });
-
+    handleDisapprove();
     setOpen(false);
     setDisapprovalMotivation("");
   };
   console.log(approvalStatus);
+
   if (approvalStatus === "Approved" || approvalStatus === "Rejected") {
     return null;
   }

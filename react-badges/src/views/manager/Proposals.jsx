@@ -10,6 +10,7 @@ import {
   proposalColumnsToManager
 } from "../../components/reUsable/DataTable";
 import useStyles from "../../components/proposalComponents/style.js";
+import ProposalActionButtons from "../../components/proposalComponents/ProposalActionButtons";
 
 const Proposals = () => {
   const classes = useStyles();
@@ -40,6 +41,29 @@ const Proposals = () => {
     data?.manager_to_engineer_badge_candidature_proposals || [];
   const rowsToManager =
     data?.engineer_to_manager_badge_candidature_proposals || [];
+
+  const updatedColumnsToManager = [
+    ...proposalColumnsToManager,
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 150,
+      renderCell: (params) => (
+        <ProposalActionButtons
+          rowId={params.row.id}
+          approvalStatus={
+            params.row.manager_badge_candidature_proposal_responses.length === 0
+              ? "Pending"
+              : params.row.manager_badge_candidature_proposal_responses[0]
+                  .is_approved === true
+              ? "Approved"
+              : "Rejected"
+          }
+          refetch={refetch}
+        />
+      )
+    }
+  ];
 
   return (
     <>
@@ -72,7 +96,7 @@ const Proposals = () => {
               </Typography>
               <DataGrid
                 rows={rowsToManager}
-                columns={proposalColumnsToManager}
+                columns={updatedColumnsToManager}
               />
             </>
           ) : (
