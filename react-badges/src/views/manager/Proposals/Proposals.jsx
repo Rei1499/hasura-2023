@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Typography, Button, Container, Grid, Paper } from "@mui/material";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { DataGrid } from "@mui/x-data-grid";
 import { useAuth } from "../../../state/with-auth";
 import { GET_PROPOSALS_WITH_STATUS } from "../../../queries/CandidatureMutations";
@@ -37,9 +37,13 @@ const useStyles = makeStyles((theme) => ({
   },
   gridContainer: {
     marginTop: theme.spacing(2)
+  },
+  customDataGrid: {
+    "& .MuiDataGrid-root .MuiDataGrid-cell:focus": {
+      outline: "none" // Remove focus outline
+    }
   }
 }));
-
 const Proposals = () => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -70,21 +74,6 @@ const Proposals = () => {
   const rowsToManager =
     data?.engineer_to_manager_badge_candidature_proposals || [];
 
-  const renderDataGrid = (title, rows, columns) => (
-    <Grid item xs={12} md={6}>
-      <Typography variant="h3" className={classes.sectionTitle}>
-        {title}
-      </Typography>
-      <Paper className={classes.paper}>
-        {rows.length > 0 ? (
-          <DataGrid rows={rows} columns={columns} autoHeight />
-        ) : (
-          <Typography variant="body1">No Proposals Found.</Typography>
-        )}
-      </Paper>
-    </Grid>
-  );
-
   return (
     <Container className={classes.container}>
       <Grid container spacing={2} className={classes.gridContainer}>
@@ -97,20 +86,34 @@ const Proposals = () => {
             well as the proposals that require your approval.
           </Typography>
         </Grid>
-        {renderDataGrid(
-          "Proposals From You",
-          rowsFromManager,
-          proposalColumnsFromManager
-        )}
-        {renderDataGrid(
-          "Proposals Requiring Your Approval",
-          rowsToManager,
-          proposalColumnsToManager.map((column) => ({
-            ...column,
-            flex: 1,
-            minWidth: 150
-          }))
-        )}
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <Typography variant="h1" className={classes.title}>
+              Proposals Created From You
+            </Typography>
+            <DataGrid
+              rows={rowsFromManager}
+              columns={proposalColumnsFromManager}
+              hideFooter
+              disableSelectionOnClick
+              className={classes.customDataGrid}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <Typography variant="h1" className={classes.title}>
+              Proposals Coming To You
+            </Typography>
+            <DataGrid
+              rows={rowsToManager}
+              columns={proposalColumnsToManager}
+              hideFooter // Hide the footer with pagination controls
+              disableSelectionOnClick // Disable selection outline on row click
+              className={classes.customDataGrid} // Apply custom style
+            />
+          </Paper>
+        </Grid>
         <Grid item xs={12}>
           <Button
             variant="contained"
