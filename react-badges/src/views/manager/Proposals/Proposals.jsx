@@ -10,7 +10,7 @@ import {
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
 import useStyles from "../../../components/proposalComponents/style.js";
-import ProposalActionButtons from "../../components/proposalComponents/ProposalActionButtons";
+import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
 
 const Proposals = () => {
   const classes = useStyles();

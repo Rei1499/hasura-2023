@@ -1,5 +1,5 @@
 import ProposalStatusCell from "../proposalComponents/ProposalStatusButtons";
-import ProposalActionButtons from "../proposalComponents/ProposalActionButtons";
+
 export const userColumns = [
   { field: "id", headerName: "ID", width: 40 },
   { field: "name", headerName: "Name", width: 170 },
@@ -125,5 +125,5 @@ export const proposalColumnsToManager = [
     headerName: "Approval Status",
     width: 200,
     renderCell: (params) => <ProposalStatusCell value={params.value} />
-  },
+  }
 ];

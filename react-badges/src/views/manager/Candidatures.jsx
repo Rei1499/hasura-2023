@@ -6,8 +6,43 @@ import Table from "../../components/reUsable/Table";
 import { useQuery } from "@apollo/client";
 import { GET_CANDIDATURE_VIEW } from "../../queries/CandidatureMutations";
 import { useAuth } from "../../state/with-auth";
+import { makeStyles } from "@mui/styles";
+import { DataGrid } from "@mui/x-data-grid";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3),
+    textAlign: "center"
+  },
+  header: {
+    marginBottom: theme.spacing(3)
+  },
+  title: {
+    fontWeight: "bold"
+  },
+  subtitle: {
+    margin: "30px 0"
+  },
+  tableContainer: {
+    height: 300, // Adjust the height as needed
+    width: "100%"
+  },
+  loadingContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 300 // Adjust the height as needed
+  },
+  noDataText: {
+    margin: theme.spacing(2)
+  },
+  button: {
+    margin: theme.spacing(2)
+  }
+}));
 
 const Candidatures = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const auth = useAuth();
 
@@ -20,7 +55,9 @@ const Candidatures = () => {
   }, [refetch]);
 
   if (loading) {
-    return <Box>Loading candidatures...</Box>;
+    return (
+      <Box className={classes.loadingContainer}>Loading candidatures...</Box>
+    );
   }
 
   if (error) {
@@ -31,24 +68,29 @@ const Candidatures = () => {
 
   return (
     <>
-      <Box>
-        <Typography variant="h2" fontWeight="bold">
-          Candidatures
-        </Typography>
-        <Typography variant="h5" style={{ margin: "30px 0" }}>
-          Inside the following page you will find the full list of candidatures
-          that include you as the manager
-        </Typography>
+      <Box className={classes.root}>
+        <Box className={classes.header}>
+          <Typography variant="h2" className={classes.title}>
+            Candidatures
+          </Typography>
+          <Typography variant="h5" className={classes.subtitle}>
+            Inside the following page you will find the full list of
+            candidatures that include you as the manager
+          </Typography>
+        </Box>
         {rows.length > 0 ? (
-          <Table row={rows} columns={candidatureColumns} />
+          <Box className={classes.tableContainer}>
+            <DataGrid rows={rows} columns={candidatureColumns} />
+          </Box>
         ) : (
-          <Box>No candidatures found.</Box>
+          <Box className={classes.noDataText}>No candidatures found.</Box>
         )}
         <Box>
           <Button
             onClick={() => {
               navigate("/proposals");
             }}
+            className={classes.button}
           >
             Proposals
           </Button>
