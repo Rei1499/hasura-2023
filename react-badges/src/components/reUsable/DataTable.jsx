@@ -104,7 +104,7 @@ export const proposalColumnsToManager = [
   {
     field: "proposal_description",
     headerName: "Proposal Description",
-    width: 400
+    width: 300
   },
   {
     field: "badge_id",
@@ -119,7 +119,7 @@ export const proposalColumnsToManager = [
   {
     field: "manager",
     headerName: "Manager",
-    width: 200
+    width: 150
   },
   {
     field: "manager_badge_candidature_proposal_responses",

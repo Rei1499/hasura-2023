@@ -76,6 +76,7 @@ const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
         {loadingApprove ? <CircularProgress size={20} /> : "Accept"}
       </Button>
       <Button
+        sx={{ marginLeft: "10px" }}
         variant="contained"
         color="error"
         onClick={handleRejectButtonClick}
