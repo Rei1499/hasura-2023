@@ -63,21 +63,22 @@ const IssuingRequestCard = ({
               : `${request.badge_description.slice(0, 20)}...`}
           </Typography>
 
-          {Object.values(request.candidature_evidences).map(
-            (evidence, index) => (
-              <Typography
-                key={index}
-                variant="body1"
-                className={classes.evidence}
-                paragraph
-              >
-                Candidature evidence number {index + 1}:{" "}
-                {expanded || evidence.length <= 10
-                  ? evidence
-                  : `${evidence.slice(0, 10)}...`}
-              </Typography>
-            )
-          )}
+          {request.candidature_evidences &&
+            Object.values(request.candidature_evidences).map(
+              (evidence, index) => (
+                <Typography
+                  key={index}
+                  variant="body1"
+                  className={classes.evidence}
+                  paragraph
+                >
+                  Candidature evidence number {index + 1}:{" "}
+                  {expanded || evidence.length <= 10
+                    ? evidence
+                    : `${evidence.slice(0, 10)}...`}
+                </Typography>
+              )
+            )}
 
           {(request.badge_description.length > 100 ||
             Object.keys(request.candidature_evidences).length > 0) && (

@@ -25,7 +25,6 @@ const IssuingRequests = () => {
   );
   const [requestedId, setRequestedId] = useState();
   const [open, setOpen] = useState(false);
-  const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
   const [expandedData, setExpandedData] = useState({});
 
   const handleExpand = (requestId) => {
@@ -51,14 +50,12 @@ const IssuingRequests = () => {
   };
   const handleClose = () => {
     setOpen(false);
-    setDisapprovalMotivation("");
   };
-  const handleRejectIssuingRequest = (requestId, motivation) => {
+  const handleRejectIssuingRequest = (requestId) => {
     setRequestedId(requestId);
-    setDisapprovalMotivation(motivation);
     setOpen(true);
   };
-  const handleSubmit = () => {
+  const handleSubmit = (disapprovalMotivation) => {
     rejectIssuingRequest({
       variables: {
         id: requestedId,
@@ -67,7 +64,6 @@ const IssuingRequests = () => {
     });
 
     setOpen(false);
-    setDisapprovalMotivation("");
   };
 
   return (

@@ -16,13 +16,62 @@ import {
   CardHeader,
   InputLabel
 } from "@mui/material";
-import useStyles from "../../components/proposalComponents/style.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations.js";
 import {
   GET_ENGINEERS_BY_MANAGER,
   GET_BADGES_LAST
 } from "../../queries/BadgeEngineerMutations.js";
+import ErrorAlert from "../../components/proposalComponents/ProposalAlerts";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "100vh",
+    marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(0.5),
+    textAlign: "center",
+    backgroundColor: theme.palette.primary.secondary
+  },
+  card: {
+    width: 500,
+    borderRadius: 16,
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    backgroundColor: theme.palette.primary.secondary
+  },
+  cardContent: {
+    margin: theme.spacing(2),
+    "& .MuiFormControl-root": {
+      marginBottom: theme.spacing(2)
+    }
+  },
+  formContent: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: theme.spacing(2)
+  },
+  formHelper: {
+    textAlign: "center"
+  },
+  inputField: {
+    width: "100%",
+    marginBottom: theme.spacing(2)
+  },
+  submitButton: {
+    marginTop: theme.spacing(2),
+    backgroundColor: theme.palette.primary.main,
+    color: "#ffffff",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.dark
+    }
+  }
+}));
 
 const ProposalForm = () => {
   const classes = useStyles();
@@ -55,7 +104,10 @@ const ProposalForm = () => {
 
   console.log(badgesData);
 
-  const [createProposalManager] = useMutation(CREATE_PROPOSAL_MANAGER);
+  const [
+    createProposalManager,
+    { loading: submitLoading, error: submitError }
+  ] = useMutation(CREATE_PROPOSAL_MANAGER);
 
   const fetchDataEngineers = async () => {
     try {
@@ -89,8 +141,8 @@ const ProposalForm = () => {
       });
       navigate("/proposals");
       console.log(data);
-    } catch (error) {
-      console.log(error);
+    } catch (submitError) {
+      console.log(submitError);
       console.log(data);
     }
   };
@@ -112,11 +164,12 @@ const ProposalForm = () => {
               <Controller
                 name="engineer"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: "Engineer is required..." }}
                 render={({ field }) => (
                   <Select
                     label="Select Engineer"
                     sx={{ width: "300px" }}
+                    error={!!errors.engineer}
                     {...field}
                   >
                     {loading ? (
@@ -134,7 +187,9 @@ const ProposalForm = () => {
                 )}
               />
               {errors.engineer && (
-                <FormHelperText>Engineer is required</FormHelperText>
+                <FormHelperText error className={classes.formHelper}>
+                  {errors.engineer.message}
+                </FormHelperText>
               )}
             </Box>
             <Box className={classes.inputField}>
@@ -142,11 +197,12 @@ const ProposalForm = () => {
               <Controller
                 name="badge"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: "Badge is required..." }}
                 render={({ field }) => (
                   <Select
                     label="Select Badge"
                     sx={{ width: "300px" }}
+                    error={!!errors.badge}
                     {...field}
                   >
                     {loadingBadges ? (
@@ -164,7 +220,9 @@ const ProposalForm = () => {
                 )}
               />
               {errors.badge && (
-                <FormHelperText>Badge is required</FormHelperText>
+                <FormHelperText error className={classes.formHelper}>
+                  {errors.engineer.message}
+                </FormHelperText>
               )}
             </Box>
             <Box className={classes.inputField}>
@@ -172,19 +230,31 @@ const ProposalForm = () => {
               <TextField
                 multiline
                 rows={4}
-                sx={{ width: "300px" }}
-                {...register("proposal_description", { required: true })}
+                sx={{
+                  width: "300px",
+                  borderColor: errors.proposal_description ? "red" : undefined
+                }}
+                error={!!errors.proposal_description}
+                {...register("proposal_description", {
+                  required: "Proposal description is required..."
+                })}
               />
               {errors.proposal_description && (
-                <FormHelperText>
-                  Proposal Description is required
+                <FormHelperText error className={classes.formHelper}>
+                  {errors.proposal_description.message}
                 </FormHelperText>
               )}
             </Box>
-            <Button type="submit" className={classes.button} disabled={loading}>
+            <Button
+              type="submit"
+              className={classes.button}
+              disabled={submitLoading}
+            >
               Submit
             </Button>
-            {error && <FormHelperText>Error: {error.message}</FormHelperText>}
+            {submitError && (
+              <ErrorAlert message={`Error: ${submitError.message}`} />
+            )}
           </form>
         </CardContent>
       </Card>
