@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Box, Typography, Button, Container, Grid, Paper } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
+import { DataGrid } from "@mui/x-data-grid";
 import { useAuth } from "../../../state/with-auth";
 import { GET_PROPOSALS_WITH_STATUS } from "../../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +9,7 @@ import {
   proposalColumnsFromManager,
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
-import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
 import { makeStyles } from "@mui/styles";
-import ExpandableDataGrid from "../../../components/proposalComponents/ExpandableDataGrid";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,6 +25,17 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   button: {
+    marginTop: theme.spacing(2)
+  },
+  sectionTitle: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2)
+  },
+  paper: {
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(2)
+  },
+  gridContainer: {
     marginTop: theme.spacing(2)
   }
 }));
@@ -60,28 +70,20 @@ const Proposals = () => {
   const rowsToManager =
     data?.engineer_to_manager_badge_candidature_proposals || [];
 
-  const updatedColumnsToManager = [
-    ...proposalColumnsToManager,
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 150,
-      renderCell: (params) => (
-        <ProposalActionButtons
-          rowId={params.row.id}
-          approvalStatus={
-            params.row.manager_badge_candidature_proposal_responses.length === 0
-              ? "Pending"
-              : params.row.manager_badge_candidature_proposal_responses[0]
-                  .is_approved === true
-              ? "Approved"
-              : "Rejected"
-          }
-          refetch={refetch}
-        />
-      )
-    }
-  ];
+  const renderDataGrid = (title, rows, columns) => (
+    <Grid item xs={12} md={6}>
+      <Typography variant="h3" className={classes.sectionTitle}>
+        {title}
+      </Typography>
+      <Paper className={classes.paper}>
+        {rows.length > 0 ? (
+          <DataGrid rows={rows} columns={columns} autoHeight />
+        ) : (
+          <Typography variant="body1">No Proposals Found.</Typography>
+        )}
+      </Paper>
+    </Grid>
+  );
 
   return (
     <Container className={classes.container}>
@@ -95,26 +97,20 @@ const Proposals = () => {
             well as the proposals that require your approval.
           </Typography>
         </Grid>
-        <Grid container spacing={3}>
-          {rowsFromManager.length > 0 ? (
-            <ExpandableDataGrid
-              title="Proposals Created By You"
-              data={rowsFromManager}
-              columns={proposalColumnsFromManager}
-            />
-          ) : (
-            <Box>No Proposals Found.</Box>
-          )}
-          {rowsToManager.length > 0 ? (
-            <ExpandableDataGrid
-              title="Proposals Requiring Your Approval"
-              data={rowsToManager}
-              columns={updatedColumnsToManager}
-            />
-          ) : (
-            <Box>No Proposals Found.</Box>
-          )}
-        </Grid>
+        {renderDataGrid(
+          "Proposals From You",
+          rowsFromManager,
+          proposalColumnsFromManager
+        )}
+        {renderDataGrid(
+          "Proposals Requiring Your Approval",
+          rowsToManager,
+          proposalColumnsToManager.map((column) => ({
+            ...column,
+            flex: 1,
+            minWidth: 150
+          }))
+        )}
         <Grid item xs={12}>
           <Button
             variant="contained"
