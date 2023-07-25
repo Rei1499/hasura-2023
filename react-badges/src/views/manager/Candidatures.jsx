@@ -8,7 +8,11 @@ import { GET_CANDIDATURE_VIEW } from "../../queries/CandidatureMutations";
 import { useAuth } from "../../state/with-auth";
 import { makeStyles } from "@mui/styles";
 import { DataGrid } from "@mui/x-data-grid";
-
+import {
+  LoadingWithCircularProgress,
+  ErrorMessage,
+  NoDataMessage
+} from "../../layouts/MessagesLayout/Messages";
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
@@ -26,15 +30,6 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     height: 300, // Adjust the height as needed
     width: "100%"
-  },
-  loadingContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 300 // Adjust the height as needed
-  },
-  noDataText: {
-    margin: theme.spacing(2)
   },
   button: {
     margin: theme.spacing(2)
@@ -55,13 +50,11 @@ const Candidatures = () => {
   }, [refetch]);
 
   if (loading) {
-    return (
-      <Box className={classes.loadingContainer}>Loading candidatures...</Box>
-    );
+    return <LoadingWithCircularProgress />;
   }
 
   if (error) {
-    return <Box>Error loading candidatures: {error.message}</Box>;
+    return <ErrorMessage />;
   }
 
   const rows = data?.badge_candidature_view || [];
