@@ -1,8 +1,8 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import BadgeCard from "../../components/reUsable/BadgeCard";
+import BadgeCard from "../../../components/reUsable/BadgeCard";
 import Box from "@mui/material/Box";
-import { GET_BADGES_LAST } from "../../queries/BadgeEngineerMutations";
+import { GET_BADGES_LAST } from "../../../queries/BadgeEngineerMutations";
 
 const Badges = () => {
 
