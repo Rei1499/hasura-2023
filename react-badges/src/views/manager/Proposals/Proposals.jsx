@@ -9,14 +9,6 @@ import {
   proposalColumnsFromManager,
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
-import useStyles from "../../../components/proposalComponents/style.js";
-import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
-import {
-  LoadingWithCircularProgress,
-  ErrorMessage,
-  NoDataMessage
-} from "../../layouts/MessagesLayout/Messages";
-
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,14 +58,11 @@ const Proposals = () => {
   }, [refetch]);
 
   if (loading) {
-    return <LoadingWithCircularProgress />;
+    return <Box>Loading...</Box>;
   }
 
   if (error) {
-    return <ErrorMessage />;
-  }
-  if (!data) {
-    return <NoDataMessage />;
+    return <Box>Error: {error.message}</Box>;
   }
 
   const rowsFromManager =
