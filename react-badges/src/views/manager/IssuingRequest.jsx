@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Box, Typography } from "@mui/material";
-import { useAuth } from "../../../state/with-auth";
+import { useAuth } from "../../state/with-auth";
 
-import IssuingRequestCard from "../../../components/reUsable/IssuingRequestCard";
-import RejectionDialog from "../../../components/issueComponents/RejectionDialog";
-import LoadingError from "../../../components/issueComponents/LoadingError";
+import IssuingRequestCard from "../../components/reUsable/IssuingRequestCard";
+import RejectionDialog from "../../components/issueComponents/RejectionDialog";
+import LoadingError from "../../components/issueComponents/LoadingError";
 import {
   GET_ISSUING_REQUESTS_FOR_MANAGER,
   UPDATE_ISSUING_REQUEST_APPROVAL,
   UPDATE_ISSUING_REQUEST_REJECTION
-} from "../../../queries/IssueMutations";
+} from "../../queries/IssueMutations";
 
 const IssuingRequests = () => {
   const auth = useAuth();
@@ -71,7 +71,7 @@ const IssuingRequests = () => {
   };
 
   return (
-    <Box sx={{ overflowY: "auto", maxHeight: "calc(100vh - 200px)" }}>
+    <Box sx={{ overflowY: "auto" }}>
       <Typography
         variant="h2"
         color="text.primary"
