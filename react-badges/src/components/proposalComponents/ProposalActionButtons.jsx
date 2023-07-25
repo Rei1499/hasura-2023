@@ -10,12 +10,11 @@ import {
   CircularProgress,
   FormHelperText
 } from "@mui/material";
-import { useMutation } from "@apollo/client";
+
 import {
-  DISAPPROVE_CANDIDATURE_PROPOSAL,
-  APPROVE_CANDIDATURE_PROPOSAL
-} from "../../queries/CandidatureMutations";
-import { useDisapprovalCandidatureProposal } from "../../containers/Manager/ProposalFunctions";
+  useDisapprovalCandidatureProposal,
+  useApprovalCandidatureProposal
+} from "../../containers/Manager/ProposalFunctions";
 
 const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
   const [open, setOpen] = useState(false);
@@ -31,25 +30,19 @@ const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
     setDisapprovalMotivation,
     refetch
   );
+  const {
+    handleApprove,
+    loading: loadingApprove,
+    error: errorApprove
+  } = useApprovalCandidatureProposal(rowId);
 
-  const [
-    approveCandidatureProposal,
-    { loading: loadingApprove, error: errorApprove }
-  ] = useMutation(APPROVE_CANDIDATURE_PROPOSAL, {
-    onCompleted: () => refetch()
-  });
-
+  const handleAcceptButtonClick = () => {
+    handleApprove();
+  };
   const handleRejectButtonClick = () => {
     setOpen(true);
   };
   console.log(rowId, "rowId");
-  const handleAcceptButtonClick = () => {
-    approveCandidatureProposal({
-      variables: {
-        proposalId: rowId
-      }
-    });
-  };
 
   const handleClose = () => {
     setOpen(false);
