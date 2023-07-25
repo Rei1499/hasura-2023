@@ -12,8 +12,12 @@ const RejectionDialog = ({ open, onClose, onSubmit }) => {
   const [disapprovalMotivation, setDisapprovalMotivation] = useState("");
 
   const handleSubmit = () => {
-    onSubmit(disapprovalMotivation);
-    onClose();
+    if (disapprovalMotivation.trim().length > 0) {
+      onSubmit(disapprovalMotivation.trim());
+      onClose();
+    } else {
+      console.error("Please provide a disapproval motivation.");
+    }
   };
 
   return (

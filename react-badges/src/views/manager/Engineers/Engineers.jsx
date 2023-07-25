@@ -7,7 +7,11 @@ import { useAuth } from "../../../state/with-auth";
 import { useNavigate } from "react-router-dom";
 import { GET_ENGINEERS_BY_MANAGER } from "../../../queries/BadgeEngineerMutations";
 import { Box, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {
+  LoadingWithCircularProgress,
+  ErrorMessage,
+  NoDataMessage
+} from "../../../layouts/MessagesLayout/Messages";
 
 const Engineers = () => {
   const [engineers, setEngineers] = useState([]);
@@ -55,27 +59,7 @@ const Engineers = () => {
     fetchData();
   }, []);
 
-  const LoadingMessage = styled("p")({
-    fontSize: "18px",
-    color: "#666",
-    textAlign: "center",
-    padding: "20px"
-  });
-
-  const ErrorMessage = styled("p")({
-    fontSize: "18px",
-    color: "#ff0000",
-    textAlign: "center",
-    padding: "20px"
-  });
-
-  const NoDataMessage = styled("p")({
-    fontSize: "18px",
-    color: "#666",
-    textAlign: "center",
-    padding: "20px"
-  });
-  if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
+  if (loading) return <LoadingWithCircularProgress />;
   if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
   if (!data || data.get_engineers_by_manager.length < 1)
     return <NoDataMessage>No Data to show</NoDataMessage>;
