@@ -1,4 +1,5 @@
 import { makeStyles } from "@mui/styles";
+import { isCellEnterEditModeKeys } from "@mui/x-data-grid/utils/keyboardUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     padding: theme.spacing(2)
   },
+  formHelper: {
+    textAlign: "center"
+  },
   inputField: {
     width: "100%",
     marginBottom: theme.spacing(2)
@@ -42,23 +46,6 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.dark
     }
-  },
-  container: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
-  },
-  title: {
-    marginBottom: theme.spacing(2)
-  },
-  paragraph: {
-    marginBottom: theme.spacing(2)
-  },
-  button: {
-    marginTop: theme.spacing(2)
-  },
-  sectionTitle: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
   }
 }));
 
