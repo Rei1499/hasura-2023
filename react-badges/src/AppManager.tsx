@@ -11,7 +11,7 @@ import Badges from "./containers/Badges/Badges";
 import Proposals from "./views/manager/Proposals";
 import { DrawerMenu } from "./layouts/BasicLayout";
 import ProposalForm from "./components/proposalComponents/ProposalForm";
-import IssuingRequests from "./views/manager/Issues/IssuingRequest";
+import IssuingRequests from "./views/manager/IssuingRequests";
 
 
 const menuItems = [
