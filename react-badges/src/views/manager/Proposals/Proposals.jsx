@@ -11,6 +11,11 @@ import {
 } from "../../../components/reUsable/DataTable";
 import useStyles from "../../../components/proposalComponents/style.js";
 import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
+import {
+  LoadingWithCircularProgress,
+  ErrorMessage,
+  NoDataMessage
+} from "../../layouts/MessagesLayout/Messages";
 
 const Proposals = () => {
   const classes = useStyles();
@@ -30,11 +35,14 @@ const Proposals = () => {
   }, [refetch]);
 
   if (loading) {
-    return <Box>Loading...</Box>;
+    return <LoadingWithCircularProgress />;
   }
 
   if (error) {
-    return <Box>Error: {error.message}</Box>;
+    return <ErrorMessage />;
+  }
+  if (!data) {
+    return <NoDataMessage />;
   }
 
   const rowsFromManager =

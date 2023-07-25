@@ -56,7 +56,9 @@ const Candidatures = () => {
   if (error) {
     return <ErrorMessage />;
   }
-
+  if (!data) {
+    return <NoDataMessage />;
+  }
   const rows = data?.badge_candidature_view || [];
 
   return (
