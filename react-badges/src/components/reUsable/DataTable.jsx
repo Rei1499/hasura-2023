@@ -1,5 +1,4 @@
 import ProposalStatusCell from "../proposalComponents/ProposalStatusButtons";
-import ProposalActionButtons from "../../containers/Proposals/ProposalActionButtons";
 
 export const userColumns = [
   { field: "id", headerName: "ID", width: 40 },
@@ -126,24 +125,5 @@ export const proposalColumnsToManager = [
     headerName: "Approval Status",
     width: 200,
     renderCell: (params) => <ProposalStatusCell value={params.value} />
-  },
-  {
-    field: "actions",
-    headerName: "Actions",
-    width: 150,
-    renderCell: (params) => (
-      <ProposalActionButtons
-        rowId={params.row.id}
-        approvalStatus={
-          params.row.manager_badge_candidature_proposal_responses.length === 0
-            ? "Pending"
-            : params.row.manager_badge_candidature_proposal_responses[0]
-                .is_approved === true
-            ? "Approved"
-            : "Rejected"
-        }
-        refetch={refetch}
-      />
-    )
   }
 ];

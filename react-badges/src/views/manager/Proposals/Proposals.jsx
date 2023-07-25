@@ -10,6 +10,7 @@ import {
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
 import { makeStyles } from "@mui/styles";
+import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -78,6 +79,28 @@ const Proposals = () => {
   const rowsToManager =
     data?.engineer_to_manager_badge_candidature_proposals || [];
 
+  const updatedColumnsToManager = [
+    ...proposalColumnsToManager,
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 150,
+      renderCell: (params) => (
+        <ProposalActionButtons
+          rowId={params.row.id}
+          approvalStatus={
+            params.row.manager_badge_candidature_proposal_responses.length === 0
+              ? "Pending"
+              : params.row.manager_badge_candidature_proposal_responses[0]
+                  .is_approved === true
+              ? "Approved"
+              : "Rejected"
+          }
+          refetch={refetch}
+        />
+      )
+    }
+  ];
   return (
     <Grid className={classes.container}>
       <Grid item xs={12}>
@@ -108,18 +131,18 @@ const Proposals = () => {
           <Typography variant="h1" className={classes.title}>
             Proposals Coming To You
           </Typography>
-          {rowsToManager > 0 ? (
-            <DataGrid
-              rows={rowsToManager}
-              columns={proposalColumnsToManager}
-              refetch={refetch}
-              hideFooter // Hide the footer with pagination controls
-              disableSelectionOnClick // Disable selection outline on row click
-              className={classes.customDataGrid} // Apply custom style
-            />
-          ) : (
+          {/* {rowsToManager > 0 ? ( */}
+          <DataGrid
+            rows={rowsToManager}
+            columns={updatedColumnsToManager}
+            refetch={refetch}
+            hideFooter // Hide the footer with pagination controls
+            disableSelectionOnClick // Disable selection outline on row click
+            className={classes.customDataGrid} // Apply custom style
+          />
+          {/* ) : (
             <Typography variant="h4">No Proposals Found.</Typography>
-          )}
+          )} */}
         </Paper>
       </Grid>
       <Grid item xs={12}>
