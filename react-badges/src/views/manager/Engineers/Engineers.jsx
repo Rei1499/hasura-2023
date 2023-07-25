@@ -71,7 +71,7 @@ const Engineers = () => {
       <Typography
         variant="h4" // Use the desired heading variant (h1, h2, h3, h4, etc.)
         align="center" // Align the title to the center
-        sx={{ margin: "20px 0", fontWeight: "bold", color: "#333" }} // Apply custom styles
+        sx={{ margin: "20px 0", fontWeight: "bold" }} // Apply custom styles
       >
         List of Engineers
       </Typography>

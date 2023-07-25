@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Box, Typography } from "@mui/material";
 import { useAuth } from "../../state/with-auth";
-
 import IssuingRequestCard from "../../components/reUsable/IssuingRequestCard";
 import RejectionDialog from "../../components/issueComponents/RejectionDialog";
 import LoadingError from "../../components/issueComponents/LoadingError";
@@ -14,7 +13,7 @@ import {
 
 const IssuingRequests = () => {
   const auth = useAuth();
-
+  console.log(auth);
   const managerId = Number(auth.hasura["x-hasura-tenant-id"]);
   console.log(managerId, "ManagerId");
   const { loading, error, data, refetch } = useQuery(
@@ -62,7 +61,6 @@ const IssuingRequests = () => {
         disapprovalMotivation: disapprovalMotivation
       }
     });
-
     setOpen(false);
   };
 
@@ -74,12 +72,14 @@ const IssuingRequests = () => {
         gutterBottom
         marginLeft={6}
         fontWeight="bold"
+        textAlign="center"
+        margin="20px"
       >
         Issuing Requests
       </Typography>
       <LoadingError loading={loading} error={error} />
       {!loading && !error && (
-        <>
+        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
           {data.issuing_requests_view.map((request) => (
             <IssuingRequestCard
               key={request.id}
@@ -95,10 +95,9 @@ const IssuingRequests = () => {
             onClose={handleClose}
             onSubmit={handleSubmit}
           />
-        </>
+        </Box>
       )}
     </Box>
   );
 };
-
 export default IssuingRequests;
