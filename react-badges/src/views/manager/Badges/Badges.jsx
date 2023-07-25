@@ -14,6 +14,7 @@ const Badges = () => {
 
   if (loading) return <LoadingWithCircularProgress/>;
   if (error) return <ErrorMessage />;
+  if(!data) return <NoDataMessage />
   const { badges_versions_last } = data;
 
   console.log(badges_versions_last);
