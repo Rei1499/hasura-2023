@@ -3,13 +3,17 @@ import { useQuery } from "@apollo/client";
 import BadgeCard from "../../../components/reUsable/BadgeCard";
 import Box from "@mui/material/Box";
 import { GET_BADGES_LAST } from "../../../queries/BadgeEngineerMutations";
-
+import {
+  LoadingWithCircularProgress,
+  ErrorMessage,
+  NoDataMessage
+} from "../../../layouts/MessagesLayout/Messages";
 const Badges = () => {
 
   const { loading, error, data } = useQuery(GET_BADGES_LAST);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <LoadingWithCircularProgress/>;
+  if (error) return <ErrorMessage />;
   const { badges_versions_last } = data;
 
   console.log(badges_versions_last);
