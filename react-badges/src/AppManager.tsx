@@ -1,21 +1,18 @@
 import React from "react";
 import { RouteProps } from "react-router-dom";
-
 import {
   Engineering as EngineersIcon,
   Security as ShieldIcon
 } from "@mui/icons-material";
-
 import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
-
 import Candidatures from "./views/manager/Candidatures";
-import Engineers from "./views/manager/Engineers";
-import Badges from "./views/manager/Badges";
+import Engineers from "./containers/Engineers/Engineers";
+import Badges from "./containers/Badges/Badges";
 import Proposals from "./views/manager/Proposals";
-
 import { DrawerMenu } from "./layouts/BasicLayout";
 import ProposalForm from "./components/proposalComponents/ProposalForm";
 import IssuingRequests from "./views/manager/Issues/IssuingRequest";
+
 
 const menuItems = [
   {
