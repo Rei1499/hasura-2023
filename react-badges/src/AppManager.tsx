@@ -1,23 +1,3 @@
-// import React from "react";
-
-// import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
-
-// const AppManager: React.FC = () => (
-//   <AppEntrypoint
-//     icon={<ManagerIcon />}
-//     title="Manager"
-//     defaultRoute="dashboard"
-//     routes={[
-//       {
-//         path: "dashboard",
-//         element: <div>Manager</div>
-//       }
-//     ]}
-//   />
-// );
-
-// export default AppManager;
-
 import React from "react";
 import { RouteProps } from "react-router-dom";
 import {
@@ -30,8 +10,9 @@ import Engineers from "./containers/Engineers/Engineers";
 import Badges from "./containers/Badges/Badges";
 import Proposals from "./views/manager/Proposals";
 import { DrawerMenu } from "./layouts/BasicLayout";
-import ProposalForm from "./views/manager/ProposalForm";
-import IssuingRequests from "./views/manager/IssuingRequests";
+import ProposalForm from "./components/proposalComponents/ProposalForm";
+import IssuingRequests from "./views/manager/Issues/IssuingRequest";
+
 
 const menuItems = [
   {

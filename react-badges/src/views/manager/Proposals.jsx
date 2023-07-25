@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Container } from "@mui/material";
 import { useQuery, useMutation } from "@apollo/client";
-import Table from "../../components/reUsable/Table";
+import { DataGrid } from "@mui/x-data-grid";
 import { useAuth } from "../../state/with-auth";
 import { GET_PROPOSALS_WITH_STATUS } from "../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,11 @@ import {
   proposalColumnsFromManager,
   proposalColumnsToManager
 } from "../../components/reUsable/DataTable";
-import ProposalActionButtons from "./ProposalActionButtons";
+import useStyles from "../../components/proposalComponents/style.js";
+import ProposalActionButtons from "../../components/proposalComponents/ProposalActionButtons";
 
 const Proposals = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
 
   const auth = useAuth();
@@ -65,30 +67,53 @@ const Proposals = () => {
 
   return (
     <>
-      <Box>
-        <Typography variant={"h1"}>Proposals</Typography>
-        <Typography>
-          Inside the following page you will find all the proposal created from
-          you as well as the proposals that have asked your approval.
-        </Typography>
-        {rowsFromManager.length > 0 ? (
-          <Table row={rowsFromManager} columns={proposalColumnsFromManager} />
-        ) : (
-          <Box>No Proposals Found.</Box>
-        )}
-        {rowsToManager.length > 0 ? (
-          <Table row={rowsToManager} columns={updatedColumnsToManager} />
-        ) : (
-          <Box>No Proposals Found.</Box>
-        )}
-        <Button
-          onClick={() => {
-            navigate("/proposalform");
-          }}
-        >
-          Create Proposal Form
-        </Button>
-      </Box>
+      <Container className={classes.container}>
+        <Box>
+          <Typography variant={"h1"} className={classes.title}>
+            Proposals
+          </Typography>
+          <Typography paragraph className={classes.paragraph}>
+            Inside the following page you will find all the proposal created
+            from you as well as the proposals that have asked your approval.
+          </Typography>
+          {rowsFromManager.length > 0 ? (
+            <>
+              <Typography variant="h3" className={classes.sectionTitle}>
+                Proposals From You
+              </Typography>
+              <DataGrid
+                rows={rowsFromManager}
+                columns={proposalColumnsFromManager}
+              />
+            </>
+          ) : (
+            <Box>No Proposals Found.</Box>
+          )}
+          {rowsToManager.length > 0 ? (
+            <>
+              <Typography variant="h3" className={classes.sectionTitle}>
+                Proposals Requiring Your Approval
+              </Typography>
+              <DataGrid
+                rows={rowsToManager}
+                columns={updatedColumnsToManager}
+              />
+            </>
+          ) : (
+            <Box>No Proposals Found.</Box>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => {
+              navigate("/proposalform");
+            }}
+          >
+            Create Proposal Form
+          </Button>
+        </Box>
+      </Container>
     </>
   );
 };
