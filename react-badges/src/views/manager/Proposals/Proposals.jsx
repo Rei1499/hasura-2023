@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Box, Typography, Button, Container, Grid, Paper } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Typography, Button, Grid, Paper } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { DataGrid } from "@mui/x-data-grid";
 import { useAuth } from "../../../state/with-auth";
@@ -13,8 +13,8 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    display: "flex",
-    justifyContent: "center",
+    textAlign: "center",
+    alignItems: "center",
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
   },
@@ -42,13 +42,17 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiDataGrid-root .MuiDataGrid-cell:focus": {
       outline: "none" // Remove focus outline
     }
+  },
+  dialogContent: {
+    padding: theme.spacing(2),
+    minWidth: 400
   }
 }));
 const Proposals = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-
   const auth = useAuth();
+  const [open, setOpen] = useState(false);
 
   const { loading, error, data, refetch } = useQuery(
     GET_PROPOSALS_WITH_STATUS,
@@ -75,59 +79,62 @@ const Proposals = () => {
     data?.engineer_to_manager_badge_candidature_proposals || [];
 
   return (
-    <Container className={classes.container}>
-      <Grid container spacing={2} className={classes.gridContainer}>
-        <Grid item xs={12}>
+    <Grid className={classes.container}>
+      <Grid item xs={12}>
+        <Typography variant="h1" className={classes.title}>
+          Proposals
+        </Typography>
+        <Typography paragraph className={classes.paragraph}>
+          Inside this page, you will find all the proposals created by you as
+          well as the proposals that require your approval.
+        </Typography>
+      </Grid>
+      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+        <Paper className={classes.paper}>
           <Typography variant="h1" className={classes.title}>
-            Proposals
+            Proposals Created From You
           </Typography>
-          <Typography paragraph className={classes.paragraph}>
-            Inside this page, you will find all the proposals created by you as
-            well as the proposals that require your approval.
+          <DataGrid
+            rows={rowsFromManager}
+            columns={proposalColumnsFromManager}
+            hideFooter
+            disableSelectionOnClick
+            className={classes.customDataGrid}
+          />
+        </Paper>
+      </Grid>
+      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+        <Paper className={classes.paper}>
+          <Typography variant="h1" className={classes.title}>
+            Proposals Coming To You
           </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Typography variant="h1" className={classes.title}>
-              Proposals Created From You
-            </Typography>
-            <DataGrid
-              rows={rowsFromManager}
-              columns={proposalColumnsFromManager}
-              hideFooter
-              disableSelectionOnClick
-              className={classes.customDataGrid}
-            />
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Typography variant="h1" className={classes.title}>
-              Proposals Coming To You
-            </Typography>
+          {rowsToManager > 0 ? (
             <DataGrid
               rows={rowsToManager}
               columns={proposalColumnsToManager}
+              refetch={refetch}
               hideFooter // Hide the footer with pagination controls
               disableSelectionOnClick // Disable selection outline on row click
               className={classes.customDataGrid} // Apply custom style
             />
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => {
-              navigate("/proposalform");
-            }}
-          >
-            Create Proposal Form
-          </Button>
-        </Grid>
+          ) : (
+            <Typography variant="h4">No Proposals Found.</Typography>
+          )}
+        </Paper>
       </Grid>
-    </Container>
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={() => {
+            navigate("/proposalform");
+          }}
+        >
+          Create Proposal Form
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 

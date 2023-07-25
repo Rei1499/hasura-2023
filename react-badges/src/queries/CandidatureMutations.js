@@ -26,6 +26,9 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
       badge_id
       badge_version
       engineer
+      userByEngineer {
+        name
+      }
       engineer_badge_candidature_proposal_responses {
         is_approved
       }
@@ -40,6 +43,9 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
       created_at
       created_by
       manager
+      userByManager {
+        name
+      }
       manager_badge_candidature_proposal_responses {
         is_approved
         disapproval_motivation
