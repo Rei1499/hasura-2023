@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Button, Grid, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  Paper,
+  Dialog,
+  DialogContent
+} from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { DataGrid } from "@mui/x-data-grid";
 import { useAuth } from "../../../state/with-auth";
@@ -9,8 +17,8 @@ import {
   proposalColumnsFromManager,
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
-import { makeStyles } from "@mui/styles";
 import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -54,6 +62,7 @@ const Proposals = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const [open, setOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
 
   const { loading, error, data, refetch } = useQuery(
     GET_PROPOSALS_WITH_STATUS,
@@ -66,6 +75,15 @@ const Proposals = () => {
     refetch();
   }, [refetch]);
 
+  const handleRowClick = (params) => {
+    setSelectedRowData(params.row);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   if (loading) {
     return <Box>Loading...</Box>;
   }
@@ -73,6 +91,7 @@ const Proposals = () => {
   if (error) {
     return <Box>Error: {error.message}</Box>;
   }
+  console.log(selectedRowData);
 
   const rowsFromManager =
     data?.manager_to_engineer_badge_candidature_proposals || [];
@@ -123,6 +142,7 @@ const Proposals = () => {
             hideFooter
             disableSelectionOnClick
             className={classes.customDataGrid}
+            onRowClick={handleRowClick}
           />
         </Paper>
       </Grid>
@@ -131,18 +151,19 @@ const Proposals = () => {
           <Typography variant="h1" className={classes.title}>
             Proposals Coming To You
           </Typography>
-          {/* {rowsToManager > 0 ? ( */}
-          <DataGrid
-            rows={rowsToManager}
-            columns={updatedColumnsToManager}
-            refetch={refetch}
-            hideFooter // Hide the footer with pagination controls
-            disableSelectionOnClick // Disable selection outline on row click
-            className={classes.customDataGrid} // Apply custom style
-          />
-          {/* ) : (
+          {rowsToManager !== 0 ? (
+            <DataGrid
+              rows={rowsToManager}
+              columns={updatedColumnsToManager}
+              refetch={refetch}
+              hideFooter
+              disableSelectionOnClick
+              className={classes.customDataGrid}
+              onRowClick={handleRowClick}
+            />
+          ) : (
             <Typography variant="h4">No Proposals Found.</Typography>
-          )} */}
+          )}
         </Paper>
       </Grid>
       <Grid item xs={12}>
@@ -157,6 +178,31 @@ const Proposals = () => {
           Create Proposal Form
         </Button>
       </Grid>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+        <DialogContent>
+          {selectedRowData && (
+            <Grid container spacing={2}>
+              {proposalColumnsToManager.map((column) => (
+                <Grid item xs={6} key={column.field}>
+                  <Typography variant="subtitle1">
+                    {column.headerName}
+                  </Typography>
+                  <Typography variant="body1">
+                    {column.field ===
+                    "manager_badge_candidature_proposal_responses"
+                      ? `is_approved: ${
+                          selectedRowData[column.field].is_approved
+                        }, disapproval_motivation: ${
+                          selectedRowData[column.field].disapproval_motivation
+                        }`
+                      : selectedRowData[column.field]}
+                  </Typography>
+                </Grid>
+              ))}
+            </Grid>
+          )}
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 };
