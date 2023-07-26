@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Box, Typography } from "@mui/material";
-import { useAuth } from "../../state/with-auth";
-import IssuingRequestCard from "../../components/reUsable/IssuingRequestCard";
-import RejectionDialog from "../../components/issueComponents/RejectionDialog";
+import { useAuth } from "../../../state/with-auth";
+import IssuingRequestCard from "../../../components/reUsable/IssuingRequestCard";
+import RejectionDialog from "../../../components/issueComponents/RejectionDialog";
 import {
   GET_ISSUING_REQUESTS_FOR_MANAGER,
   UPDATE_ISSUING_REQUEST_APPROVAL,
   UPDATE_ISSUING_REQUEST_REJECTION
-} from "../../queries/IssueMutations";
-import { ErrorMessage, LoadingWithCircularProgress, NoDataMessage } from "../../layouts/MessagesLayout/Messages";
+} from "../../../queries/IssueMutations";
+import { ErrorMessage, LoadingWithCircularProgress, NoDataMessage } from "../../../layouts/MessagesLayout/Messages";
 
 const IssuingRequests = () => {
   const auth = useAuth();

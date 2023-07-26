@@ -10,7 +10,7 @@ import Badges from "./views/manager/Badges/Badges";
 import Proposals from "./views/manager/Proposals/Proposals.jsx";
 import { DrawerMenu } from "./layouts/BasicLayout";
 import ProposalForm from "./containers/Proposals/ProposalForm";
-import IssuingRequests from "./views/manager/IssuingRequests";
+import IssuingRequests from "./views/manager/IssueRequest/IssuingRequests";
 import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
