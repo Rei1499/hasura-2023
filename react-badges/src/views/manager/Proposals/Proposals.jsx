@@ -18,9 +18,12 @@ import {
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
 import { makeStyles } from "@mui/styles";
-import { ErrorMessage, LoadingWithCircularProgress, NoDataMessage } from "../../../layouts/MessagesLayout/Messages";
+import {
+  ErrorMessage,
+  LoadingWithCircularProgress,
+  NoDataMessage
+} from "../../../layouts/MessagesLayout/Messages";
 import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
-import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   paper: {
+    position: "relative",
     padding: theme.spacing(2),
     marginBottom: theme.spacing(2)
   },
@@ -94,7 +98,7 @@ const Proposals = () => {
     return <ErrorMessage />;
   }
 
-  if(!data) return <NoDataMessage />
+  if (!data) return <NoDataMessage />;
 
   const rowsFromManager =
     data?.manager_to_engineer_badge_candidature_proposals || [];
@@ -106,7 +110,7 @@ const Proposals = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 200,
       renderCell: (params) => (
         <ProposalActionButtons
           rowId={params.row.id}
@@ -145,6 +149,7 @@ const Proposals = () => {
             hideFooter
             disableSelectionOnClick
             className={classes.customDataGrid}
+            filterMode="server"
             onRowClick={handleRowClick}
           />
         </Paper>
