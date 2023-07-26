@@ -119,6 +119,7 @@ export const proposalColumnsToManager = [
     field: "manager",
     headerName: "Manager",
     width: 100
+
   },
   {
     field: "manager_badge_candidature_proposal_responses",
