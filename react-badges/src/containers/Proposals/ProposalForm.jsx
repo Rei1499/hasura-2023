@@ -14,7 +14,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  InputLabel
+  InputLabel,
+  FormControl
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CREATE_PROPOSAL_MANAGER } from "../../queries/CandidatureMutations.js";
@@ -24,6 +25,7 @@ import {
 } from "../../queries/BadgeEngineerMutations.js";
 import ErrorAlert from "../../components/proposalComponents/ProposalAlerts";
 import { makeStyles } from "@mui/styles";
+import { LoadingWithCircularProgress } from "../../layouts/MessagesLayout/Messages";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -147,7 +149,7 @@ const ProposalForm = () => {
     }
   };
 
-  if (loading || loadingBadges) return <Box>Loading...</Box>;
+  if (loading || loadingBadges) return <LoadingWithCircularProgress />;
   if (error || errorBadges)
     return <Box>Error: {error?.message || errorBadges?.message}</Box>;
 
@@ -160,70 +162,78 @@ const ProposalForm = () => {
         <CardContent className={classes.cardContent}>
           <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <Box className={classes.inputField}>
-              <InputLabel>Select Engineer</InputLabel>
-              <Controller
-                name="engineer"
-                control={control}
-                rules={{ required: "Engineer is required..." }}
-                render={({ field }) => (
-                  <Select
-                    label="Select Engineer"
-                    sx={{ width: "300px" }}
-                    error={!!errors.engineer}
-                    {...field}
-                  >
-                    {loading ? (
-                      <MenuItem value="">Loading...</MenuItem>
-                    ) : error ? (
-                      <MenuItem value="">Error loading engineers</MenuItem>
-                    ) : (
-                      data?.get_engineers_by_manager?.map((engineer) => (
-                        <MenuItem key={engineer.id} value={engineer.id}>
-                          {engineer.name}
-                        </MenuItem>
-                      ))
-                    )}
-                  </Select>
+              <FormControl sx={{ width: "300px" }} error={!!errors.engineer}>
+                <InputLabel id="engineer-label">Select Engineer</InputLabel>
+                <Controller
+                  name="engineer"
+                  control={control}
+                  rules={{ required: "Engineer is required..." }}
+                  render={({ field }) => (
+                    <>
+                      <Select
+                        labelId="engineer-label"
+                        id="engineer-select"
+                        label="Select Engineer"
+                        sx={{ width: "300px" }}
+                        error={!!errors.engineer}
+                        {...field}
+                      >
+                        {loading ? (
+                          <MenuItem value="">Loading...</MenuItem>
+                        ) : error ? (
+                          <MenuItem value="">Error loading engineers</MenuItem>
+                        ) : (
+                          data?.get_engineers_by_manager?.map((engineer) => (
+                            <MenuItem key={engineer.id} value={engineer.id}>
+                              {engineer.name}
+                            </MenuItem>
+                          ))
+                        )}
+                      </Select>
+                    </>
+                  )}
+                />
+                {errors.engineer && (
+                  <FormHelperText error className={classes.formHelper}>
+                    {errors.engineer.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.engineer && (
-                <FormHelperText error className={classes.formHelper}>
-                  {errors.engineer.message}
-                </FormHelperText>
-              )}
+              </FormControl>
             </Box>
             <Box className={classes.inputField}>
-              <InputLabel>Select Badge</InputLabel>
-              <Controller
-                name="badge"
-                control={control}
-                rules={{ required: "Badge is required..." }}
-                render={({ field }) => (
-                  <Select
-                    label="Select Badge"
-                    sx={{ width: "300px" }}
-                    error={!!errors.badge}
-                    {...field}
-                  >
-                    {loadingBadges ? (
-                      <MenuItem value="">Loading...</MenuItem>
-                    ) : errorBadges ? (
-                      <MenuItem value="">Error loading badges</MenuItem>
-                    ) : (
-                      badgesData?.badges_versions_last?.map((badge) => (
-                        <MenuItem key={badge.id} value={badge.id}>
-                          {badge.title}
-                        </MenuItem>
-                      ))
-                    )}
-                  </Select>
+              <FormControl sx={{ width: "300px" }} error={!!errors.badge}>
+                <InputLabel>Select Badge</InputLabel>
+                <Controller
+                  name="badge"
+                  control={control}
+                  rules={{ required: "Badge is required..." }}
+                  render={({ field }) => (
+                    <Select
+                      label="Select Badge"
+                      sx={{ width: "300px" }}
+                      error={!!errors.badge}
+                      {...field}
+                    >
+                      {loadingBadges ? (
+                        <MenuItem value="">Loading...</MenuItem>
+                      ) : errorBadges ? (
+                        <MenuItem value="">Error loading badges</MenuItem>
+                      ) : (
+                        badgesData?.badges_versions_last?.map((badge) => (
+                          <MenuItem key={badge.id} value={badge.id}>
+                            {badge.title}
+                          </MenuItem>
+                        ))
+                      )}
+                    </Select>
+                  )}
+                />
+                {errors.badge && (
+                  <FormHelperText error className={classes.formHelper}>
+                    {errors.badge.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.badge && (
-                <FormHelperText error className={classes.formHelper}>
-                  {errors.badge.message}
-                </FormHelperText>
-              )}
+              </FormControl>
             </Box>
             <Box className={classes.inputField}>
               <InputLabel>Proposal Description</InputLabel>
