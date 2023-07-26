@@ -46,9 +46,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.secondary
   },
   cardContent: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     "& .MuiFormControl-root": {
-      marginBottom: theme.spacing(2)
+      marginBottom: theme.spacing(1)
     }
   },
   formContent: {
@@ -56,17 +56,17 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    padding: theme.spacing(2)
+    padding: theme.spacing(1)
   },
   formHelper: {
     textAlign: "center"
   },
   inputField: {
     width: "100%",
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(1)
   },
   submitButton: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
     color: "#ffffff",
     "&:hover": {

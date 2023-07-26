@@ -71,6 +71,11 @@ const Proposals = () => {
   const auth = useAuth();
   const [open, setOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
+  const [openFirstTableDialog, setOpenFirstTableDialog] = useState(false);
+
+  const handleCloseFirstTableDialog = () => {
+    setOpenFirstTableDialog(false);
+  };
 
   const { loading, error, data, refetch } = useQuery(
     GET_PROPOSALS_WITH_STATUS,
@@ -83,8 +88,12 @@ const Proposals = () => {
     refetch();
   }, [refetch]);
 
+  const handleRowClickFirstTable = (params) => {
+    setSelectedRowData(params.row);
+    setOpenFirstTableDialog(true);
+  };
+
   const handleRowClick = (params, event) => {
-    // Check if the clicked column is the "Actions" column
     const isActionsColumn =
       event && event.target && event.target.tagName === "BUTTON";
 
@@ -159,7 +168,7 @@ const Proposals = () => {
               disableSelectionOnClick
               className={classes.customDataGrid}
               filterMode="server"
-              onRowClick={handleRowClick}
+              onRowClick={handleRowClickFirstTable}
             />
           ) : (
             <Typography variant="h4">No Proposals Found.</Typography>
@@ -198,18 +207,48 @@ const Proposals = () => {
           Create Proposal Form
         </Button>
       </Grid>
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openFirstTableDialog}
+        onClose={handleCloseFirstTableDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogContent>
           {selectedRowData && (
             <Grid container spacing={2}>
-              {proposalColumnsToManager.map((column) => (
+              {proposalColumnsFromManager.map((column) => (
                 <Grid item xs={6} key={column.field}>
                   <Typography variant="subtitle1">
                     {column.headerName}
                   </Typography>
                   <Typography variant="body1">
                     {column.field ===
-                    "manager_badge_candidature_proposal_responses"
+                    "manager_badge_candidature_proposal_responses[0]"
+                      ? `is_approved: ${
+                          selectedRowData[column.field].is_approved
+                        }, disapproval_motivation: ${
+                          selectedRowData[column.field].disapproval_motivation
+                        }`
+                      : selectedRowData[column.field]}
+                  </Typography>
+                </Grid>
+              ))}
+            </Grid>
+          )}
+        </DialogContent>
+      </Dialog>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+        <DialogContent>
+          {selectedRowData && (
+            <Grid container spacing={2}>
+              {updatedColumnsToManager.map((column) => (
+                <Grid item xs={6} key={column.field}>
+                  <Typography variant="subtitle1">
+                    {column.headerName}
+                  </Typography>
+                  <Typography variant="body1">
+                    {column.field ===
+                    "manager_badge_candidature_proposal_responses[0]"
                       ? `is_approved: ${
                           selectedRowData[column.field].is_approved
                         }, disapproval_motivation: ${
