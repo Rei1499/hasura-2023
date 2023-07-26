@@ -25,6 +25,7 @@ import {
 } from "../../queries/BadgeEngineerMutations.js";
 import ErrorAlert from "../../components/proposalComponents/ProposalAlerts";
 import { makeStyles } from "@mui/styles";
+import { LoadingWithCircularProgress } from "../../layouts/MessagesLayout/Messages";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -148,7 +149,7 @@ const ProposalForm = () => {
     }
   };
 
-  if (loading || loadingBadges) return <Box>Loading...</Box>;
+  if (loading || loadingBadges) return <LoadingWithCircularProgress />;
   if (error || errorBadges)
     return <Box>Error: {error?.message || errorBadges?.message}</Box>;
 
@@ -192,11 +193,11 @@ const ProposalForm = () => {
                     </>
                   )}
                 />
-              {errors.engineer && (
-                <FormHelperText error className={classes.formHelper}>
-                  {errors.engineer.message}
-                </FormHelperText>
-              )}
+                {errors.engineer && (
+                  <FormHelperText error className={classes.formHelper}>
+                    {errors.engineer.message}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Box>
             <Box className={classes.inputField}>
@@ -227,11 +228,11 @@ const ProposalForm = () => {
                     </Select>
                   )}
                 />
-              {errors.badge && (
-                <FormHelperText error className={classes.formHelper}>
-                  {errors.badge.message}
-                </FormHelperText>
-              )}
+                {errors.badge && (
+                  <FormHelperText error className={classes.formHelper}>
+                    {errors.badge.message}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Box>
             <Box className={classes.inputField}>
