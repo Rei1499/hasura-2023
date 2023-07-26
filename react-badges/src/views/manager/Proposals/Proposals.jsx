@@ -18,9 +18,12 @@ import {
   proposalColumnsToManager
 } from "../../../components/reUsable/DataTable";
 import { makeStyles } from "@mui/styles";
-import { ErrorMessage, LoadingWithCircularProgress, NoDataMessage } from "../../../layouts/MessagesLayout/Messages";
+import {
+  ErrorMessage,
+  LoadingWithCircularProgress,
+  NoDataMessage
+} from "../../../layouts/MessagesLayout/Messages";
 import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
-import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -94,7 +97,7 @@ const Proposals = () => {
     return <ErrorMessage />;
   }
 
-  if(!data) return <NoDataMessage />
+  if (!data) return <NoDataMessage />;
 
   const rowsFromManager =
     data?.manager_to_engineer_badge_candidature_proposals || [];
