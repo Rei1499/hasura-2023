@@ -81,9 +81,15 @@ const Proposals = () => {
     refetch();
   }, [refetch]);
 
-  const handleRowClick = (params) => {
-    setSelectedRowData(params.row);
-    setOpen(true);
+  const handleRowClick = (params, event) => {
+    // Check if the clicked column is the "Actions" column
+    const isActionsColumn =
+      event && event.target && event.target.tagName === "BUTTON";
+
+    if (!isActionsColumn) {
+      setSelectedRowData(params.row);
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
@@ -167,7 +173,7 @@ const Proposals = () => {
               hideFooter
               disableSelectionOnClick
               className={classes.customDataGrid}
-              onRowClick={handleRowClick}
+              onRowClick={(params, event) => handleRowClick(params, event)}
             />
           ) : (
             <Typography variant="h4">No Proposals Found.</Typography>
