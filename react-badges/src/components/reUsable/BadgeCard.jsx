@@ -38,7 +38,7 @@ const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
   const navigate = useNavigate();
 
   const RequirementItem = styled("div")(({ theme }) => ({
-    backgroundColor: teal[50], 
+    backgroundColor: teal[50],
     padding: "16px",
     borderRadius: "8px",
     marginBottom: "8px",
@@ -48,10 +48,10 @@ const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
     alignItems: "center",
     transition: "background-color 0.2s ease-in-out",
     "&:hover": {
-      backgroundColor: teal[100] 
+      backgroundColor: teal[100]
     },
     "& > p": {
-      margin: 0 
+      margin: 0
     }
   }));
 
@@ -98,13 +98,13 @@ const BadgeCard = ({ created, title, photo, description, requirement, id }) => {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            {requirement &&
+            {/* {requirement &&
               requirement.map((item, index) => (
                 <RequirementItem key={index}>
                   <Typography paragraph>{item.title}</Typography>
                   <Typography paragraph>{item.description}</Typography>
                 </RequirementItem>
-              ))}
+              ))} */}
           </CardContent>
         </Collapse>
       </Card>
