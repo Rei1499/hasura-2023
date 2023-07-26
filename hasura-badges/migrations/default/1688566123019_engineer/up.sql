@@ -236,7 +236,7 @@ CREATE TABLE reselect_flags (
   )
 );
 
-CREATE OR REPLACE FUNCTION set_default_reselect_flags()
+CREATE OR REPLACE FUNCTION set_default_reselect_flags_manager()
 RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO reselect_flags (engineer_id, badge_id, is_approved_responses, is_approved_issue_request, created_by)
@@ -253,10 +253,33 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
+
 CREATE TRIGGER trigger_set_default_reselect_flags
 AFTER INSERT ON manager_to_engineer_badge_candidature_proposals
 FOR EACH ROW
-EXECUTE FUNCTION set_default_reselect_flags();
+EXECUTE FUNCTION set_default_reselect_flags_manager();
+
+CREATE OR REPLACE FUNCTION set_default_reselect_flags_engineer()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO reselect_flags (engineer_id, badge_id, is_approved_responses, is_approved_issue_request, created_by)
+  VALUES (NEW.created_by, NEW.badge_id, NULL, NULL, NEW.created_by)
+  ON CONFLICT (engineer_id, badge_id) DO NOTHING;
+  
+  -- Set can_reselect to false for the corresponding engineer and badge for new proposals
+  UPDATE reselect_flags
+  SET can_reselect = FALSE
+  WHERE engineer_id = NEW.created_by AND badge_id = NEW.badge_id;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_set_default_reselect_flags
+AFTER INSERT ON engineer_to_manager_badge_candidature_proposals
+FOR EACH ROW
+EXECUTE FUNCTION set_default_reselect_flags_engineer();
 
 CREATE OR REPLACE FUNCTION update_reselect_flags_on_response_insert()
 RETURNS TRIGGER AS $$
