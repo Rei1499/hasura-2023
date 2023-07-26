@@ -221,7 +221,7 @@ const ProposalForm = () => {
               />
               {errors.badge && (
                 <FormHelperText error className={classes.formHelper}>
-                  {errors.engineer.message}
+                  {errors.badge.message}
                 </FormHelperText>
               )}
             </Box>
