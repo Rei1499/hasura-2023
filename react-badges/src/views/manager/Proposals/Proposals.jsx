@@ -46,7 +46,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   paper: {
+    position: "relative",
     padding: theme.spacing(2),
+    border: `2px solid ${theme.palette.primary.main}`,
+    boxShadow: theme.shadows[4],
     marginBottom: theme.spacing(2)
   },
   gridContainer: {
@@ -80,9 +83,15 @@ const Proposals = () => {
     refetch();
   }, [refetch]);
 
-  const handleRowClick = (params) => {
-    setSelectedRowData(params.row);
-    setOpen(true);
+  const handleRowClick = (params, event) => {
+    // Check if the clicked column is the "Actions" column
+    const isActionsColumn =
+      event && event.target && event.target.tagName === "BUTTON";
+
+    if (!isActionsColumn) {
+      setSelectedRowData(params.row);
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
@@ -109,7 +118,7 @@ const Proposals = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 200,
       renderCell: (params) => (
         <ProposalActionButtons
           rowId={params.row.id}
@@ -142,14 +151,19 @@ const Proposals = () => {
           <Typography variant="h1" className={classes.title}>
             Proposals Created From You
           </Typography>
-          <DataGrid
-            rows={rowsFromManager}
-            columns={proposalColumnsFromManager}
-            hideFooter
-            disableSelectionOnClick
-            className={classes.customDataGrid}
-            onRowClick={handleRowClick}
-          />
+          {rowsFromManager.length > 0 ? (
+            <DataGrid
+              rows={rowsFromManager}
+              columns={proposalColumnsFromManager}
+              hideFooter
+              disableSelectionOnClick
+              className={classes.customDataGrid}
+              filterMode="server"
+              onRowClick={handleRowClick}
+            />
+          ) : (
+            <Typography variant="h4">No Proposals Found.</Typography>
+          )}
         </Paper>
       </Grid>
       <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -157,7 +171,7 @@ const Proposals = () => {
           <Typography variant="h1" className={classes.title}>
             Proposals Coming To You
           </Typography>
-          {rowsToManager !== 0 ? (
+          {rowsToManager.length > 0 ? (
             <DataGrid
               rows={rowsToManager}
               columns={updatedColumnsToManager}
@@ -165,7 +179,7 @@ const Proposals = () => {
               hideFooter
               disableSelectionOnClick
               className={classes.customDataGrid}
-              onRowClick={handleRowClick}
+              onRowClick={(params, event) => handleRowClick(params, event)}
             />
           ) : (
             <Typography variant="h4">No Proposals Found.</Typography>
