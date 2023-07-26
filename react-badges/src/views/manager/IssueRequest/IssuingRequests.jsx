@@ -9,22 +9,26 @@ import {
   UPDATE_ISSUING_REQUEST_APPROVAL,
   UPDATE_ISSUING_REQUEST_REJECTION
 } from "../../../queries/IssueMutations";
-import { ErrorMessage, LoadingWithCircularProgress, NoDataMessage } from "../../../layouts/MessagesLayout/Messages";
+import {
+  ErrorMessage,
+  LoadingWithCircularProgress,
+  NoDataMessage
+} from "../../../layouts/MessagesLayout/Messages";
 
 const IssuingRequests = () => {
   const auth = useAuth();
+  const [requestedId, setRequestedId] = useState();
+  const [open, setOpen] = useState(false);
+  const [expandedData, setExpandedData] = useState({});
   console.log(auth);
-  const managerId = Number(auth.hasura["x-hasura-tenant-id"]);
-  console.log(managerId, "ManagerId");
+  const managerId = auth.userId;
+
   const { loading, error, data, refetch } = useQuery(
     GET_ISSUING_REQUESTS_FOR_MANAGER,
     {
       variables: { managerId: { _eq: managerId } }
     }
   );
-  const [requestedId, setRequestedId] = useState();
-  const [open, setOpen] = useState(false);
-  const [expandedData, setExpandedData] = useState({});
 
   const handleExpand = (requestId) => {
     setExpandedData((prevExpandedData) => {
@@ -63,10 +67,10 @@ const IssuingRequests = () => {
     });
     setOpen(false);
   };
-  if(loading) return <LoadingWithCircularProgress />
-  if(error) return <ErrorMessage />
-  if(!data) return <NoDataMessage />  
-
+  if (loading) return <LoadingWithCircularProgress />;
+  if (error) return <ErrorMessage />;
+  if (!data) return <NoDataMessage />;
+  console.log(data, "data");
   return (
     <Box sx={{ overflowY: "auto" }}>
       <Typography
