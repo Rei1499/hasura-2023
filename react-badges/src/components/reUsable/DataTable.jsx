@@ -73,11 +73,6 @@ export const candidatureColumns = [
 
 export const proposalColumnsFromManager = [
   {
-    field: "proposal_description",
-    headerName: "Proposal Description",
-    width: 100
-  },
-  {
     field: "badge_id",
     headerName: "Badge ID",
     width: 100
@@ -85,7 +80,7 @@ export const proposalColumnsFromManager = [
   {
     field: "badge_version",
     headerName: "Badge Version",
-    width: 100
+    width: 200
   },
   {
     field: "engineer",
@@ -93,19 +88,19 @@ export const proposalColumnsFromManager = [
     width: 100
   },
   {
+    field: "proposal_description",
+    headerName: "Proposal Description",
+    width: 200
+  },
+  {
     field: "engineer_badge_candidature_proposal_responses",
     headerName: "Approval Status",
-    width: 100,
+    width: 200,
     filterable: true,
     renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
 ];
 export const proposalColumnsToManager = [
-  {
-    field: "proposal_description",
-    headerName: "Proposal Description",
-    width: 100
-  },
   {
     field: "badge_id",
     headerName: "Badge ID",
@@ -114,17 +109,22 @@ export const proposalColumnsToManager = [
   {
     field: "badge_version",
     headerName: "Badge Version",
+    width: 200
+  },
+  {
+    field: "created_by",
+    headerName: "Engineer",
     width: 100
   },
   {
-    field: "manager",
-    headerName: "Manager",
-    width: 100
+    field: "proposal_description",
+    headerName: "Proposal Description",
+    width: 200
   },
   {
     field: "manager_badge_candidature_proposal_responses",
     headerName: "Approval Status",
-    width: 100,
+    width: 200,
     filterable: true,
     renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
