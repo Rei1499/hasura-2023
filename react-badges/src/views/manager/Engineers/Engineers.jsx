@@ -13,6 +13,7 @@ import {
   NoDataMessage
 } from "../../../layouts/MessagesLayout/Messages";
 
+
 const Engineers = () => {
   const [engineers, setEngineers] = useState([]);
   const [executeMutation, { loading, error, data }] = useMutation(
@@ -69,13 +70,20 @@ const Engineers = () => {
   return (
     <>
       <Typography
-        variant="h4" 
-        align="center" 
+        variant="h4"
+        align="center"
         sx={{ margin: "20px 0", fontWeight: "bold" }}
       >
         List of Engineers
       </Typography>
-      <Box sx={{ width: "75%", margin: "20px auto 0" }}>
+      <Box
+        sx={{
+          width: "75%",
+          margin: "20px auto 0",
+          border: `2px solid ${theme.palette.primary.main}`,
+          boxShadow: theme.shadows[4]
+        }}
+      >
         <Table row={engineers} columns={updatedColumns} />
       </Box>
     </>

@@ -48,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "relative",
     padding: theme.spacing(2),
+    border: `2px solid ${theme.palette.primary.main}`,
+    boxShadow: theme.shadows[4],
     marginBottom: theme.spacing(2)
   },
   gridContainer: {
@@ -149,15 +151,19 @@ const Proposals = () => {
           <Typography variant="h1" className={classes.title}>
             Proposals Created From You
           </Typography>
-          <DataGrid
-            rows={rowsFromManager}
-            columns={proposalColumnsFromManager}
-            hideFooter
-            disableSelectionOnClick
-            className={classes.customDataGrid}
-            filterMode="server"
-            onRowClick={handleRowClick}
-          />
+          {rowsFromManager.length > 0 ? (
+            <DataGrid
+              rows={rowsFromManager}
+              columns={proposalColumnsFromManager}
+              hideFooter
+              disableSelectionOnClick
+              className={classes.customDataGrid}
+              filterMode="server"
+              onRowClick={handleRowClick}
+            />
+          ) : (
+            <Typography variant="h4">No Proposals Found.</Typography>
+          )}
         </Paper>
       </Grid>
       <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -165,7 +171,7 @@ const Proposals = () => {
           <Typography variant="h1" className={classes.title}>
             Proposals Coming To You
           </Typography>
-          {rowsToManager !== 0 ? (
+          {rowsToManager.length > 0 ? (
             <DataGrid
               rows={rowsToManager}
               columns={updatedColumnsToManager}
