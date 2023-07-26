@@ -78,7 +78,10 @@ const Engineers = () => {
       <Box
         sx={{
           width: "75%",
-          margin: "20px auto 0"
+          margin: "20px auto 0",
+          boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
+          borderRadius: "8px",
+          overflow: "hidden"
         }}
       >
         <Table row={engineers} columns={updatedColumns} />
