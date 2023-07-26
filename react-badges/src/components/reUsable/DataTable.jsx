@@ -16,18 +16,18 @@ export const candidatureColumns = [
   {
     field: "badge_title",
     headerName: "Badge Title",
-    width: 170
+    width: 100
   },
   {
     field: "badge_description",
     headerName: "Badge Description",
-    width: 970
+    width: 100
   },
 
   {
     field: "badge_requirements",
     headerName: "Badge Requirements",
-    width: 970,
+    width: 100,
     renderCell: (params) => {
       const badgeRequirements = params.value;
 
@@ -47,22 +47,22 @@ export const candidatureColumns = [
   {
     field: "badge_version",
     headerName: "Badge Version",
-    width: 170
+    width: 100
   },
   {
     field: "candidature_evidences",
     headerName: "Candidature Evidences",
-    width: 970
+    width: 100
   },
   {
     field: "created_at",
     headerName: "Created At",
-    width: 170
+    width: 100
   },
   {
     field: "engineer_name",
     headerName: "Engineer",
-    width: 180
+    width: 100
   },
   {
     field: "is_issued",
@@ -75,7 +75,7 @@ export const proposalColumnsFromManager = [
   {
     field: "proposal_description",
     headerName: "Proposal Description",
-    width: 400
+    width: 100
   },
   {
     field: "badge_id",
@@ -85,17 +85,17 @@ export const proposalColumnsFromManager = [
   {
     field: "badge_version",
     headerName: "Badge Version",
-    width: 200
+    width: 100
   },
   {
     field: "engineer",
     headerName: "Engineer",
-    width: 200
+    width: 100
   },
   {
     field: "engineer_badge_candidature_proposal_responses",
     headerName: "Approval Status",
-    width: 200,
+    width: 100,
     renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
 ];
@@ -103,7 +103,7 @@ export const proposalColumnsToManager = [
   {
     field: "proposal_description",
     headerName: "Proposal Description",
-    width: 300
+    width: 100
   },
   {
     field: "badge_id",
@@ -113,17 +113,18 @@ export const proposalColumnsToManager = [
   {
     field: "badge_version",
     headerName: "Badge Version",
-    width: 200
+    width: 100
   },
   {
     field: "manager",
     headerName: "Manager",
-    width: 150
+    width: 100
+
   },
   {
     field: "manager_badge_candidature_proposal_responses",
     headerName: "Approval Status",
-    width: 200,
+    width: 100,
     renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
 ];
