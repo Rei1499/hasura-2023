@@ -24,6 +24,7 @@ import {
   NoDataMessage
 } from "../../../layouts/MessagesLayout/Messages";
 import ProposalActionButtons from "../../../containers/Proposals/ProposalActionButtons";
+import { updateCacheWithNewRows } from "@mui/x-data-grid/hooks/features/rows/gridRowsUtils";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -73,10 +74,6 @@ const Proposals = () => {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [openFirstTableDialog, setOpenFirstTableDialog] = useState(false);
 
-  const handleCloseFirstTableDialog = () => {
-    setOpenFirstTableDialog(false);
-  };
-
   const { loading, error, data, refetch } = useQuery(
     GET_PROPOSALS_WITH_STATUS,
     {
@@ -87,6 +84,11 @@ const Proposals = () => {
   useEffect(() => {
     refetch();
   }, [refetch]);
+
+  
+  const handleCloseFirstTableDialog = () => {
+    setOpenFirstTableDialog(false);
+  };
 
   const handleRowClickFirstTable = (params) => {
     setSelectedRowData(params.row);
@@ -144,6 +146,7 @@ const Proposals = () => {
       )
     }
   ];
+
   return (
     <Grid className={classes.container}>
       <Grid item xs={12}>

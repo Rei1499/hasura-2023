@@ -97,16 +97,7 @@ export const proposalColumnsFromManager = [
     headerName: "Approval Status",
     width: 200,
     filterable: true,
-    renderCell: (params) => (
-      <ProposalStatusCell
-        value={params.value}
-        onClick={() =>
-          handleApprovalStatusFilter(
-            params.value[0]?.is_approved ? false : true
-          )
-        }
-      />
-    )
+    renderCell: (params) => <ProposalStatusCell value={params.value} />
   }
 ];
 export const proposalColumnsToManager = [
