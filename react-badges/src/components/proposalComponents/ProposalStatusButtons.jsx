@@ -1,11 +1,16 @@
 import React from "react";
 import { Button } from "@mui/material";
 
-const ProposalStatusCell = ({ value }) => {
+const ProposalStatusCell = ({ value, onClick }) => {
   console.log(value);
   if (value.length === 0) {
     return (
-      <Button variant="contained" color="secondary">
+      <Button
+        variant="contained"
+        color="secondary"
+        value="Pending"
+        onClick={onClick}
+      >
         Pending
       </Button>
     );
@@ -13,13 +18,23 @@ const ProposalStatusCell = ({ value }) => {
     const isApproved = value[0]?.is_approved;
     if (isApproved === true) {
       return (
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          value="Pending"
+          onClick={onClick}
+        >
           Approved
         </Button>
       );
     } else {
       return (
-        <Button variant="contained" color="error">
+        <Button
+          variant="contained"
+          color="error"
+          value="Pending"
+          onClick={onClick}
+        >
           Rejected
         </Button>
       );

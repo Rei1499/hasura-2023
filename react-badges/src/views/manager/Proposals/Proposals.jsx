@@ -9,7 +9,7 @@ import {
   DialogContent
 } from "@mui/material";
 import { useQuery } from "@apollo/client";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useAuth } from "../../../state/with-auth";
 import { GET_PROPOSALS_WITH_STATUS } from "../../../queries/CandidatureMutations";
 import { useNavigate } from "react-router-dom";
@@ -167,7 +167,6 @@ const Proposals = () => {
               hideFooter
               disableSelectionOnClick
               className={classes.customDataGrid}
-              filterMode="server"
               onRowClick={handleRowClickFirstTable}
             />
           ) : (
@@ -188,6 +187,7 @@ const Proposals = () => {
               hideFooter
               disableSelectionOnClick
               className={classes.customDataGrid}
+              filterMode="server"
               onRowClick={(params, event) => handleRowClick(params, event)}
             />
           ) : (
