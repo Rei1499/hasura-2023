@@ -84,7 +84,7 @@ const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
       >
         {loadingDisapprove ? <CircularProgress size={20} /> : "Reject"}
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Rejection</DialogTitle>
         <DialogContent>
           <TextField
@@ -92,6 +92,7 @@ const ProposalActionButtons = ({ rowId, approvalStatus, refetch }) => {
             value={disapprovalMotivation}
             onChange={(e) => setDisapprovalMotivation(e.target.value)}
             fullWidth
+            margin="normal"
           />
           {errorDisapprove && (
             <FormHelperText error>{errorDisapprove.message}</FormHelperText>
