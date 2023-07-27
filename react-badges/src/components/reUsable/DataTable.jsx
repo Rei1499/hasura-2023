@@ -97,7 +97,24 @@ export const proposalColumnsFromManager = [
     headerName: "Approval Status",
     width: 200,
     filterable: true,
-    renderCell: (params) => <ProposalStatusCell value={params.value} />
+    renderCell: (params) => <ProposalStatusCell value={params.value} />,
+    filterOperators: ["contains"],
+    filterRenderer: (params, updateFilter) => (
+      <GridColumnMenuFilter
+        {...params}
+        onFilterModelChange={(model) => {
+          // Convert filter value to string
+          const stringValue = String(model.filterValue).toLowerCase();
+          // Update the filter model with the string value
+          updateFilter({ ...model, filterValue: stringValue }, params);
+        }}
+        items={[
+          { value: "Approved", label: "Approved" },
+          { value: "Rejected", label: "Rejected" },
+          { value: "Pending", label: "Pending" }
+        ]}
+      />
+    )
   }
 ];
 export const proposalColumnsToManager = [

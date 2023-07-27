@@ -223,13 +223,23 @@ const Proposals = () => {
                   </Typography>
                   <Typography variant="body1">
                     {column.field ===
-                    "manager_badge_candidature_proposal_responses[0]"
-                      ? `is_approved: ${
-                          selectedRowData[column.field].is_approved
-                        }, disapproval_motivation: ${
-                          selectedRowData[column.field].disapproval_motivation
-                        }`
-                      : selectedRowData[column.field]}
+                    "engineer_badge_candidature_proposal_responses" ? (
+                      selectedRowData[column.field]?.length > 0 ? (
+                        <>
+                          is_approved:{" "}
+                          {selectedRowData[column.field][0]?.is_approved
+                            ? "Approved"
+                            : "Rejected"}
+                          , disapproval_motivation:{" "}
+                          {selectedRowData[column.field][0]
+                            ?.disapproval_motivation || "N/A"}
+                        </>
+                      ) : (
+                        "Pending"
+                      )
+                    ) : (
+                      selectedRowData[column.field] || "N/A"
+                    )}
                   </Typography>
                 </Grid>
               ))}
@@ -248,13 +258,22 @@ const Proposals = () => {
                   </Typography>
                   <Typography variant="body1">
                     {column.field ===
-                    "manager_badge_candidature_proposal_responses[0]"
-                      ? `is_approved: ${
-                          selectedRowData[column.field].is_approved
-                        }, disapproval_motivation: ${
-                          selectedRowData[column.field].disapproval_motivation
-                        }`
-                      : selectedRowData[column.field]}
+                    "manager_badge_candidature_proposal_responses" ? (
+                      selectedRowData[column.field]?.length > 0 ? (
+                        <>
+                          is_approved:
+                          {selectedRowData[column.field][0]?.is_approved ||
+                            "N/A"}
+                          , disapproval_motivation:{" "}
+                          {selectedRowData[column.field][0]
+                            ?.disapproval_motivation || "N/A"}
+                        </>
+                      ) : (
+                        "N/A"
+                      )
+                    ) : (
+                      selectedRowData[column.field] || "N/A"
+                    )}
                   </Typography>
                 </Grid>
               ))}

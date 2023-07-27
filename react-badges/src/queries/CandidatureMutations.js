@@ -1,21 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const GET_CANDIDATURE_VIEW = gql`
-  query getCandidatureView($managerId: Int!) {
-    badge_candidature_view(where: { manager_id: { _eq: $managerId } }) {
-      badge_description
-      badge_title
-      badge_requirements
-      badge_version
-      candidature_evidences
-      created_at
-      engineer_name
-      is_issued
-      id
-    }
-  }
-`;
-
 export const GET_PROPOSALS_WITH_STATUS = gql`
   query getProposalsWithStatus($managerId: Int!) {
     manager_to_engineer_badge_candidature_proposals(
@@ -28,6 +12,7 @@ export const GET_PROPOSALS_WITH_STATUS = gql`
       engineer
       engineer_badge_candidature_proposal_responses {
         is_approved
+        disapproval_motivation
       }
     }
     engineer_to_manager_badge_candidature_proposals(

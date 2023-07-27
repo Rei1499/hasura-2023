@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@mui/material";
 
 const ProposalStatusCell = ({ value }) => {
+  console.log(value);
   if (value.length === 0) {
     return (
       <Button variant="contained" color="secondary">
